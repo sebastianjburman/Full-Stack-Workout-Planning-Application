@@ -1,21 +1,28 @@
 using Microsoft.AspNetCore.Mvc;
+using Backend.Interfaces;
+using Backend.Models;
 
-namespace workout_planning_application_backend.Controllers;
-
-[ApiController]
-[Route("v1/[controller]")]
-public class UserController : ControllerBase
+namespace Backend.Controllers
 {
-    private readonly ILogger<UserController> _logger;
 
-    public UserController(ILogger<UserController> logger)
+    [ApiController]
+    [Route("v1/[controller]")]
+    public class UserController : ControllerBase
     {
-        _logger = logger;
-    }
+        private readonly ILogger<UserController> _logger;
+        private readonly IUserService _userService;
 
-    [HttpGet]
-    public string Get()
-    {
-        return "User";
+        public UserController(ILogger<UserController> logger, IUserService userService)
+        {
+            _logger = logger;
+            _userService = userService;
+        }
+
+        [HttpPost]
+        public async Task<string>CreateUser([FromBody] User newUser)
+        {
+            await _userService.CreateUser(newUser);
+            return "Success"; 
+        }
     }
 }
