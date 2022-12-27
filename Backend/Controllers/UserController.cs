@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Backend.Interfaces;
-using Backend.Models;
+using Backend.DTO;
+using System.Net;
 
 namespace Backend.Controllers
 {
@@ -19,10 +20,17 @@ namespace Backend.Controllers
         }
 
         [HttpPost]
-        public async Task<string>CreateUser([FromBody] User newUser)
+        public async Task<ActionResult> CreateUser([FromBody] UserDTO newUser)
         {
-            await _userService.CreateUser(newUser);
-            return "Success"; 
+            if (ModelState.IsValid)
+            {
+                await _userService.CreateUser(newUser);
+                return Ok();
+            }
+            else
+            {
+                return BadRequest(ModelState);              
+            }
         }
     }
 }

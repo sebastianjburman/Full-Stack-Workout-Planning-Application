@@ -1,19 +1,19 @@
+using Backend.Models;
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
 using System.ComponentModel.DataAnnotations;
-namespace Backend.Models
+namespace Backend.DTO
 {
-    public class User
+    public class UserDTO
     {
-        [BsonId]
-        public ObjectId Id { get; set; }
         [BsonElement("email")]
         [Required]
         [RegularExpression(@"^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$", ErrorMessage = "Email is not in correct format.")]
         public string? Email { get; set; }
         [Required]
-        [BsonElement("hash")]
-        public string? Hash { get; set; }
+        [RegularExpression(@"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$", ErrorMessage = "Password must be minimum eight characters, at least one uppercase letter, one lowercase letter and one number.")]
+        [BsonElement("password")]
+        public string? Password { get; set; }
         [Required]
         [RegularExpression(@"^[a-zA-Z0-9]([._-](?![._-])|[a-zA-Z0-9]){3,18}[a-zA-Z0-9]$", ErrorMessage = "Username must be 5-20 characters alphanumeric characters.")]
         [BsonElement("username")]
@@ -41,6 +41,6 @@ namespace Backend.Models
         public int Height { get; set; }
         [Required]
         [BsonElement("profile")]
-        public UserProfile? profile { get; set; }
+        public UserProfileDTO? profile { get; set; }
     }
 }

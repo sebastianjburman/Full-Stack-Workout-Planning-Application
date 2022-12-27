@@ -1,8 +1,9 @@
-using Backend.Models;
+using Backend.DTO;
+
 namespace Backend.Interfaces
 {
     public interface IUserService
     {
-        Task CreateUser(User user);
+        Task CreateUser(UserDTO user);
     }
 }
