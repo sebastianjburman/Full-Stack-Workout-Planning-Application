@@ -1,36 +1,80 @@
-<div class="container">
-    <div class="row">
-      <div class="col-sm-9 col-md-7 col-lg-5 mx-auto">
-        <div class="card border-0 shadow rounded-4 my-5">
-          <div class="card-body p-4 p-sm-5">
-            <h5 class="card-wwtitle text-center mb-5 fw-light fs-5">Sign Up</h5>
-            <form>
-              <div class="form-floating mb-3">
-                <input type="email" class="form-control" id="loginEmailInput" placeholder="name@example.com">
-                <label for="loginEmailInput">Email address</label>
-              </div>
-              <div class="form-floating mb-3">
-                <input type="text" class="form-control" id="displayNameInput" placeholder="Display Name">
-                <label for="displayNameInput">Display Name</label>
-              </div>
-              <div class="form-floating mb-3">
-                <input type="password" class="form-control" id="loadingPasswordInput" placeholder="Password">
-                <label for="loadingPasswordInput">Password</label>
-              </div>
-              <div class="form-floating mb-3">
-                <input type="password" class="form-control" id="passwordConfirmationInput" placeholder="Password">
-                <label for="loadingPasswordInput">Password Confirmation</label>
-              </div>
-              <div class="d-grid">
-                <button class="btn btn-primary btn-login  text-uppercase fw-bold" type="submit">Sign Up</button>
-              </div>
-              <div class="d-flex mt-4 justify-content-center flex-column align-items-center">
-                <p>Already have an account</p>
-                <a class="text-uppercase fw-bold" [routerLink]="['/login']">Login</a>
-              </div>
-            </form>
-          </div>
+<div *ngIf="signUpPageNum === 1" class="container">
+  <div class="row">
+    <div class="col-sm-9 col-md-7 col-lg-5 mx-auto">
+      <div class="card border-0 shadow rounded-4 my-5">
+        <div class="card-body p-4 p-sm-5">
+          <h5 class="card-wwtitle text-center mb-5 fw-light fs-5">Sign Up</h5>
+          <form>
+            <div class="form-floating mb-3">
+              <input type="email" class="form-control" id="loginEmailInput" placeholder="name@example.com">
+              <label for="loginEmailInput">Email address</label>
+            </div>
+            <div class="form-floating mb-3">
+              <input type="text" class="form-control" id="displayNameInput" placeholder="Display Name">
+              <label for="displayNameInput">Display Name</label>
+            </div>
+            <div class="form-floating mb-3">
+              <input type="password" class="form-control" id="loadingPasswordInput" placeholder="Password">
+              <label for="loadingPasswordInput">Password</label>
+            </div>
+            <div class="form-floating mb-3">
+              <input type="password" class="form-control" id="passwordConfirmationInput" placeholder="Password">
+              <label for="loadingPasswordInput">Password Confirmation</label>
+            </div>
+            <div class="d-grid">
+              <button class="btn btn-primary btn-login  text-uppercase fw-bold" type="submit"
+                (click)="changeSignUpPage()">Continue</button>
+            </div>
+            <div class="d-flex mt-4 justify-content-center flex-column align-items-center">
+              <p>Already have an account</p>
+              <a class="text-uppercase fw-bold" [routerLink]="['/login']">Login</a>
+            </div>
+          </form>
         </div>
       </div>
     </div>
   </div>
+</div>
+<div class="container" *ngIf="signUpPageNum === 2">
+  <div class="row">
+    <div class="col-sm-9 col-md-7 col-lg-5 mx-auto">
+      <div class="card border-0 shadow rounded-4 my-5">
+        <div class="container mt-3">
+            <button class='btn btn-primary pull-right' (click)="changeSignUpPage()">Back</button>
+        </div>
+        <div class="card-body p-4 p-sm-5">
+          <h5 class="card-wwtitle text-center mb-5 fw-light fs-5">Tell Us More About Yourself</h5>
+          <form>
+            <div class="form-floating mb-3">
+              <input type="text" class="form-control" id="firstNameInput" placeholder="name">
+              <label for="firstNameInput">First Name</label>
+            </div>
+            <div class="form-floating mb-3">
+              <input type="text" class="form-control" id="lastNameInput" placeholder="lastname">
+              <label for="lastNameInput">Last Name</label>
+            </div>
+            <div class="form-floating mb-3">
+              <input type="text" class="form-control" id="ageInput" placeholder="age">
+              <label for="ageInput">Age</label>
+            </div>
+            <div class="form-floating mb-3">
+              <input type="text" class="form-control" id="weightInput" placeholder="weight">
+              <label for="weightInput">Weight</label>
+            </div>
+            <div class="form-floating mb-3">
+              <input type="text" class="form-control" id="heightInput" placeholder="height">
+              <label for="heightInput">Height</label>
+            </div>
+            <div class="d-grid">
+              <button class="btn btn-primary btn-login  text-uppercase fw-bold" type="submit">Create Account</button>
+            </div>
+            <div class="d-flex mt-4 justify-content-center flex-column align-items-center">
+              <p>Already have an account</p>
+              <a class="text-uppercase fw-bold" [routerLink]="['/login']">Login</a>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

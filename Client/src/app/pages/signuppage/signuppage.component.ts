@@ -7,9 +7,20 @@ import { Component, OnInit } from '@angular/core';
 })
 export class SignuppageComponent implements OnInit {
 
+  signUpPageNum:Number = 1;
+  
   constructor() { }
 
   ngOnInit(): void {
+  }
+
+  public changeSignUpPage():void{
+    if(this.signUpPageNum === 1){
+      this.signUpPageNum = 2;
+    }
+    else{
+      this.signUpPageNum = 1;
+    }
   }
 
 }
