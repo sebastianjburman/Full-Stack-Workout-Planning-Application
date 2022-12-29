@@ -11,7 +11,7 @@ namespace Backend.DTO
         [RegularExpression(@"^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$", ErrorMessage = "Email is not in correct format.")]
         public string? Email { get; set; }
         [Required]
-        [RegularExpression(@"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$", ErrorMessage = "Password must be minimum eight characters, at least one uppercase letter, one lowercase letter and one number.")]
+        [RegularExpression(@"^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,20}$", ErrorMessage = "Password be minimum 8 and maximum 20 characters, at least one uppercase letter, one lowercase letter, one number and one special character")]
         [BsonElement("password")]
         public string? Password { get; set; }
         [Required]

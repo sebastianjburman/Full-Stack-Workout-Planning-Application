@@ -13,8 +13,6 @@ export class LoginpageComponent implements OnInit {
     password: new FormControl('', Validators.required),
     rememberMe: new FormControl(false, Validators.required)
   });
-  get formEmail() { return this.loginForm.get('email'); }
-  get formPassword() { return this.loginForm.get('password'); }
 
   constructor() { }
 
@@ -29,4 +27,7 @@ export class LoginpageComponent implements OnInit {
       this.loginForm.markAllAsTouched()
     }
   }
+  
+  get formEmail() { return this.loginForm.get('email'); }
+  get formPassword() { return this.loginForm.get('password'); }
 }
