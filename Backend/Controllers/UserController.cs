@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using Backend.Interfaces;
 using Backend.DTO;
 using System.Net;
+using MongoDB.Driver;
 
 namespace Backend.Controllers
 {
@@ -24,12 +25,19 @@ namespace Backend.Controllers
         {
             if (ModelState.IsValid)
             {
-                await _userService.CreateUser(newUser);
-                return Ok();
+                try
+                {
+                    await _userService.CreateUser(newUser);
+                    return Ok();
+                }
+                catch (Exception ex)
+                {
+                    return BadRequest(ex.Message);
+                }
             }
             else
             {
-                return BadRequest(ModelState);              
+                return BadRequest(ModelState);
             }
         }
     }

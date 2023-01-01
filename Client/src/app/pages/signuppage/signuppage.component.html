@@ -1,3 +1,19 @@
+<ng-template #content let-modal>
+	<div class="modal-header">
+		<h4 class="modal-title">{{modalTitle}}</h4>
+		<button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
+	</div>
+	<div class="modal-body">
+		<p>{{modalBody}}</p>
+	</div>
+	<div *ngIf="!createdAccountSuccesfully" class="modal-footer">
+		<button type="button" class="btn btn-primary btn-login text-uppercase fw-bold" (click)="modal.close('Close click')">Close</button>
+	</div>
+  <div *ngIf="createdAccountSuccesfully" class="modal-footer">
+		<button type="button" class="btn btn-primary btn-login text-uppercase fw-bold" [routerLink]="['/login']" (click)="modal.close('Close click')">Login</button>
+	</div>
+</ng-template>
+
 <form [formGroup]="signUpForm">
   <div *ngIf="signUpPageNum === 1" class="container">
     <div class="row">
@@ -81,7 +97,7 @@
               Age range is 1 to 120
             </div>
             <div class="form-floating mb-3">
-              <input type="text" class="form-control" formControlName="weight" id="weightInput" placeholder="weight">
+              <input type="text" class="form-control" formControlName="currentWeight" id="weightInput" placeholder="weight">
               <label for="weightInput">Weight(lbs)</label>
             </div>
             <div class="alert show alert-danger fade mt-2" *ngIf="formWeight!.invalid && (formWeight!.dirty || formWeight!.touched)">
