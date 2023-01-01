@@ -38,7 +38,7 @@ namespace Backend.Controllers
                 return BadRequest(ModelState);
             }
         }
-        [HttpPost("/authenticate")]
+        [HttpPost("authenticate")]
         public ActionResult Authenticate([FromBody] UserLoginDTO loginUser)
         {
             if (ModelState.IsValid)
