@@ -3,6 +3,10 @@ using Backend.DTO;
 using Backend.Interfaces;
 using MongoDB.Driver;
 using Backend.Helpers;
+using System.IdentityModel.Tokens.Jwt;
+using System.Text;
+using Microsoft.IdentityModel.Tokens;
+using System.Security.Claims;
 
 namespace Backend.Services
 {
@@ -32,6 +36,38 @@ namespace Backend.Services
             // Hash users password
             user.Hash = BCrypt.Net.BCrypt.HashPassword(userDTO.Password);
             await _usersCollection.InsertOneAsync(user);
+        }
+        public string Authenticate(string email, string password)
+        {
+            User foundUser = _usersCollection.Find(user => user.Email == email).FirstOrDefault();
+            if (foundUser != null )
+            {
+                bool verified = BCrypt.Net.BCrypt.Verify(password, foundUser.Hash);
+                if(verified){
+                    return GenerateJwtToken(foundUser);
+                }
+                else{
+                    return "User not found";
+                }
+            }
+            else
+            {
+                return "User not found";
+            }
+        }
+
+        private string GenerateJwtToken(User user)
+        {
+            var tokenHandler = new JwtSecurityTokenHandler();
+            var key = Encoding.ASCII.GetBytes("eyJhbGciOiJIUzI1NiJ9.eyJSb2xlIjoiQWRtaW4iLCJJc3N1ZXIiOiJJc3N1ZXIiLCJVc2VybmFtZSI6IkphdmFJblVzZSIsImV4cCI6MTY3MjYwODA4NCwiaWF0IjoxNjcyNjA4MDg0fQ.3Xerv6eY7OVSWmw3Cr829ScidVu3cD8XUcieY-uAc0c");
+            var tokenDescriptor = new SecurityTokenDescriptor
+            {
+                Subject = new ClaimsIdentity(new[] { new Claim("id", user.Id.ToString()) }),
+                Expires = DateTime.UtcNow.AddHours(1),
+                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
+            };
+            var token = tokenHandler.CreateToken(tokenDescriptor);
+            return tokenHandler.WriteToken(token);
         }
     }
 }

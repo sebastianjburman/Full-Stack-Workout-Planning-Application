@@ -1,8 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Backend.Interfaces;
 using Backend.DTO;
-using System.Net;
-using MongoDB.Driver;
 
 namespace Backend.Controllers
 {
@@ -37,6 +35,17 @@ namespace Backend.Controllers
             }
             else
             {
+                return BadRequest(ModelState);
+            }
+        }
+        [HttpPost("/authenticate")]
+        public ActionResult<string> Authenticate([FromBody] UserLoginDTO loginUser)
+        {
+            if(ModelState.IsValid){
+                string authenticate = _userService.Authenticate(loginUser.Email!,loginUser.Password!);
+                return authenticate;
+            }
+            else{
                 return BadRequest(ModelState);
             }
         }
