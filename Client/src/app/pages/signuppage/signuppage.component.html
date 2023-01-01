@@ -43,7 +43,7 @@
               <label for="loadingPasswordInput">Password</label>
             </div>
             <div class="alert show alert-danger fade mt-2" *ngIf="formPassword!.invalid && (formPassword!.dirty || formPassword!.touched)">
-              Password must be minimum 8 and maximum 20 characters, at least one uppercase letter, one lowercase letter, one number and one special character
+              Password must be minimum 8 and maximum 20 characters, at least one uppercase letter, one lowercase letter and one number.
             </div>
             <div class="form-floating mb-3">
               <input type="password" class="form-control" formControlName="passwordConfirmation"
