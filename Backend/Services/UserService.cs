@@ -26,6 +26,10 @@ namespace Backend.Services
         public async Task CreateUser(UserDTO userDTO)
         {
             User user = userDTO.ToUser();
+            //Make unique fields lowercase
+            user.Email = user.Email?.ToLower();
+            user.UserName = user.UserName?.ToLower();
+            // Hash users password
             user.Hash = BCrypt.Net.BCrypt.HashPassword(userDTO.Password);
             await _usersCollection.InsertOneAsync(user);
         }
