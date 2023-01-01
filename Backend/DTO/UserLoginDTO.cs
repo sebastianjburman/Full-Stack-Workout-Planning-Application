@@ -9,5 +9,7 @@ namespace Backend.DTO
         [Required]
         [RegularExpression(@"^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,20}$", ErrorMessage = "Password be minimum 8 and maximum 20 characters, at least one uppercase letter, one lowercase letter, and one number.")]
         public string? Password { get; set; }
+        [Required]
+        public bool RememberMe {get;set;}
     }
 }

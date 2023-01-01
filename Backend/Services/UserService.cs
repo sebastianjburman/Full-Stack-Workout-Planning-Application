@@ -38,14 +38,14 @@ namespace Backend.Services
             user.Hash = BCrypt.Net.BCrypt.HashPassword(userDTO.Password);
             await _usersCollection.InsertOneAsync(user);
         }
-        public string Authenticate(string email, string password)
+        public string Authenticate(string email, string password, bool rememberMe)
         {
             User foundUser = _usersCollection.Find(user => user.Email == email).FirstOrDefault();
             if (foundUser != null )
             {
                 bool verified = BCrypt.Net.BCrypt.Verify(password, foundUser.Hash);
                 if(verified){
-                    return GenerateJwtToken(foundUser);
+                    return GenerateJwtToken(foundUser,rememberMe);
                 }
                 else{
                     throw new UserNotFoundException();
@@ -57,14 +57,19 @@ namespace Backend.Services
             }
         }
 
-        private string GenerateJwtToken(User user)
+        private string GenerateJwtToken(User user, bool rememberMe)
         {
             var tokenHandler = new JwtSecurityTokenHandler();
             var key = Encoding.ASCII.GetBytes("eyJhbGciOiJIUzI1NiJ9.eyJSb2xlIjoiQWRtaW4iLCJJc3N1ZXIiOiJJc3N1ZXIiLCJVc2VybmFtZSI6IkphdmFJblVzZSIsImV4cCI6MTY3MjYwODA4NCwiaWF0IjoxNjcyNjA4MDg0fQ.3Xerv6eY7OVSWmw3Cr829ScidVu3cD8XUcieY-uAc0c");
+            int hoursTillExpire = 1;
+            if(rememberMe){
+                //One Week till expire
+                hoursTillExpire = 168;
+            }
             var tokenDescriptor = new SecurityTokenDescriptor
             {
                 Subject = new ClaimsIdentity(new[] { new Claim("id", user.Id.ToString()) }),
-                Expires = DateTime.UtcNow.AddHours(1),
+                Expires = DateTime.UtcNow.AddHours(hoursTillExpire),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
             };
             var token = tokenHandler.CreateToken(tokenDescriptor);

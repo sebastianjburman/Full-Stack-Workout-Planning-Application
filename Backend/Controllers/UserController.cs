@@ -45,7 +45,7 @@ namespace Backend.Controllers
             {
                 try
                 {
-                    string authenticate = _userService.Authenticate(loginUser.Email!, loginUser.Password!);
+                    string authenticate = _userService.Authenticate(loginUser.Email!, loginUser.Password!,loginUser.RememberMe);
                     return Ok(authenticate);
                 }
                 catch (UserNotFoundException ex)
