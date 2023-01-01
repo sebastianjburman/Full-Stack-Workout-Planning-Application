@@ -7,6 +7,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Text;
 using Microsoft.IdentityModel.Tokens;
 using System.Security.Claims;
+using Backend.Exceptions;
 
 namespace Backend.Services
 {
@@ -47,12 +48,12 @@ namespace Backend.Services
                     return GenerateJwtToken(foundUser);
                 }
                 else{
-                    return "User not found";
+                    throw new UserNotFoundException();
                 }
             }
             else
             {
-                return "User not found";
+                throw new UserNotFoundException();
             }
         }
 

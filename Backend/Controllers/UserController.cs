@@ -1,10 +1,10 @@
 using Microsoft.AspNetCore.Mvc;
 using Backend.Interfaces;
 using Backend.DTO;
+using Backend.Exceptions;
 
 namespace Backend.Controllers
 {
-
     [ApiController]
     [Route("v1/[controller]")]
     public class UserController : ControllerBase
@@ -39,13 +39,22 @@ namespace Backend.Controllers
             }
         }
         [HttpPost("/authenticate")]
-        public ActionResult<string> Authenticate([FromBody] UserLoginDTO loginUser)
+        public ActionResult Authenticate([FromBody] UserLoginDTO loginUser)
         {
-            if(ModelState.IsValid){
-                string authenticate = _userService.Authenticate(loginUser.Email!,loginUser.Password!);
-                return authenticate;
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    string authenticate = _userService.Authenticate(loginUser.Email!, loginUser.Password!);
+                    return Ok(authenticate);
+                }
+                catch (UserNotFoundException ex)
+                {
+                    return NotFound(ex.Message);
+                }
             }
-            else{
+            else
+            {
                 return BadRequest(ModelState);
             }
         }
