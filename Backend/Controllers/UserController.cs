@@ -46,7 +46,7 @@ namespace Backend.Controllers
                 try
                 {
                     string authenticate = _userService.Authenticate(loginUser.Email!, loginUser.Password!,loginUser.RememberMe);
-                    return Ok(authenticate);
+                    return Ok(new TokenDTO{Token = authenticate});
                 }
                 catch (UserNotFoundException ex)
                 {

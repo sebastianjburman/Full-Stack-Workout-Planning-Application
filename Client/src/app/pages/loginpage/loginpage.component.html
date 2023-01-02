@@ -1,3 +1,16 @@
+<ng-template #content let-modal>
+	<div class="modal-header">
+		<h4 class="modal-title">Error Logging In</h4>
+		<button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
+	</div>
+	<div class="modal-body">
+		<p>{{loginModalBody}}</p>
+	</div>
+	<div class="modal-footer">
+		<button type="button" class="btn btn-primary btn-login text-uppercase fw-bold" (click)="modal.close('Close click')">Close</button>
+	</div>
+</ng-template>
+
 <div class="container">
   <div class="row">
     <div class="col-sm-9 col-md-7 col-lg-5 mx-auto">
@@ -10,14 +23,14 @@
               <label for="loginEmailInput">Email address</label>
             </div>
             <div class="alert show alert-danger fade mt-2" *ngIf="formEmail!.invalid && (formEmail!.dirty || formEmail!.touched)">
-              Email is Not in Correct Format
+              Email is not in correct format
             </div>
             <div class="form-floating mb-3">
               <input type="password" class="form-control" formControlName="password"  id="loadingPasswordInput" placeholder="Password">
               <label for="loadingPasswordInput">Password</label>
             </div>
             <div class="alert show alert-danger fade mt-2" *ngIf="formPassword!.invalid && (formPassword!.dirty || formPassword!.touched)">
-              Password is Required
+              Password is not in correct format
             </div>
             <div class="form-check mb-3">
               <input class="form-check-input" type="checkbox" formControlName="rememberMe"  value="" id="rememberPasswordCheck">
