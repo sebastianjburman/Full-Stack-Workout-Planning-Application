@@ -17,6 +17,13 @@ export class UserService {
     return this.http.post(this.url, user);
   }
   public authenticate(userLogin: UserLoginDTO): Observable<any> {
-    return this.http.post(`${this.url}/authenticate`,userLogin)
+    return this.http.post(`${this.url}/authenticate`, userLogin)
+  }
+  public getUser(token: string): Observable<any> {
+    return this.http.get(this.url, {
+      headers: {
+        'Authorization': `Bearer ${token}`
+      }
+    })
   }
 }

@@ -4,6 +4,7 @@ import { UserLoginDTO } from 'src/app/models/userLoginDTO';
 import { UserService } from 'src/app/services/user.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Router } from '@angular/router';
+import { TokenManagement } from 'src/app/helpers/tokenManagement';
 
 @Component({
   selector: 'app-loginpage',
@@ -31,7 +32,7 @@ export class LoginpageComponent implements OnInit {
 
       this.userService.authenticate(loginUser).subscribe({
         next: (res) => {
-          this.saveTokenToLocalStorage(res.token);
+          TokenManagement.saveTokenToLocalStorage(res.token);
           this._router.navigate(['/'])
         },
         error: (error) => {
@@ -46,10 +47,6 @@ export class LoginpageComponent implements OnInit {
   }
   private openVerticallyCentered() {
     this.modalService.open(this.content, { centered: true });
-  }
-
-  private saveTokenToLocalStorage(token:string){
-    localStorage.setItem('token', token);
   }
 
   get formEmail() { return this.loginForm.get('email'); }

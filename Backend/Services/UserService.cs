@@ -72,7 +72,6 @@ namespace Backend.Services
                 //One Week till expire
                 hoursTillExpire = 168;
             }
-            Console.WriteLine(user.Id);
             var tokenDescriptor = new SecurityTokenDescriptor
             {
                 Subject = new ClaimsIdentity(new[] { new Claim("id", user.Id.ToString()) }),

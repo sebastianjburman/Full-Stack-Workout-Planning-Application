@@ -9,13 +9,15 @@ import { LoginpageComponent } from './pages/loginpage/loginpage.component';
 import { SignuppageComponent } from './pages/signuppage/signuppage.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
+import { HomePageComponent } from './pages/home-page/home-page.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     NavbarComponent,
     LoginpageComponent,
-    SignuppageComponent
+    SignuppageComponent,
+    HomePageComponent
   ],
   imports: [
     BrowserModule,
