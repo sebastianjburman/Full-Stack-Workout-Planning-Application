@@ -33,7 +33,7 @@ export class LoginpageComponent implements OnInit {
       this.userService.authenticate(loginUser).subscribe({
         next: (res) => {
           TokenManagement.saveTokenToLocalStorage(res.token);
-          this._router.navigate(['/'])
+          this._router.navigate(['/home'])
         },
         error: (error) => {
           this.loginModalBody = error.error;
