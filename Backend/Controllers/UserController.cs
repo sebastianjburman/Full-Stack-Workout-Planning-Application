@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using Backend.Interfaces;
 using Backend.DTO;
 using Backend.Exceptions;
+using Backend.Helpers;
 
 namespace Backend.Controllers
 {
@@ -16,6 +17,17 @@ namespace Backend.Controllers
         {
             _logger = logger;
             _userService = userService;
+        }
+        [Authorize]
+        [HttpGet]
+        public ActionResult GetUser()
+        {
+            var contextUser = HttpContext.Items["User"];
+            if (contextUser == null)
+            {
+                return NotFound("User with id was not found");
+            }
+            return Ok((UserDTO)contextUser);
         }
 
         [HttpPost]
@@ -45,8 +57,8 @@ namespace Backend.Controllers
             {
                 try
                 {
-                    string authenticate = _userService.Authenticate(loginUser.Email!, loginUser.Password!,loginUser.RememberMe);
-                    return Ok(new TokenDTO{Token = authenticate});
+                    string authenticate = _userService.Authenticate(loginUser.Email!, loginUser.Password!, loginUser.RememberMe);
+                    return Ok(new TokenDTO { Token = authenticate });
                 }
                 catch (UserNotFoundException ex)
                 {

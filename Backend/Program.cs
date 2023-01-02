@@ -3,6 +3,7 @@ using Backend.Services;
 using Backend.Models;
 using MongoDB.Driver;
 using Microsoft.Extensions.Options;
+using Backend.Helpers;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -25,4 +26,5 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 app.UseAuthorization();
 app.MapControllers();
+app.UseMiddleware<JwtMiddleware>();
 app.Run();

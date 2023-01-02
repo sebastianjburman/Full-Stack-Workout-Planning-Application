@@ -8,6 +8,7 @@ using System.Text;
 using Microsoft.IdentityModel.Tokens;
 using System.Security.Claims;
 using Backend.Exceptions;
+using MongoDB.Bson;
 
 namespace Backend.Services
 {
@@ -38,6 +39,11 @@ namespace Backend.Services
             user.Hash = BCrypt.Net.BCrypt.HashPassword(userDTO.Password);
             await _usersCollection.InsertOneAsync(user);
         }
+        public UserDTO GetUser(ObjectId id){
+            User foundUser = _usersCollection.Find(user => user.Id == id).FirstOrDefault();
+            return foundUser.ToUserDTO();
+
+        }
         public string Authenticate(string email, string password, bool rememberMe)
         {
             User foundUser = _usersCollection.Find(user => user.Email == email).FirstOrDefault();
@@ -66,6 +72,7 @@ namespace Backend.Services
                 //One Week till expire
                 hoursTillExpire = 168;
             }
+            Console.WriteLine(user.Id);
             var tokenDescriptor = new SecurityTokenDescriptor
             {
                 Subject = new ClaimsIdentity(new[] { new Claim("id", user.Id.ToString()) }),
