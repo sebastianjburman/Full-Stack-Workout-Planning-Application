@@ -1,1 +1,24 @@
-<p>navbar works!</p>
+<header class="py-3 border-bottom">
+  <div class="container-fluid d-grid gap-3 align-items-center" style="grid-template-columns: 1fr 2fr;">
+    <a href="/"
+      class="d-flex align-items-center col-lg-4 mb-lg-0 link-dark text-decoration-none dropdown-toggled-flex align-items-center col-lg-4 mb-lg-0 link-dark text-decoration-none">
+      <img class="bi me-2" src="../../../assets/Svg/Aromix.svg" width="50" height="40">
+      <span class="fs-4 fw-bold">Aromix</span>
+    </a>
+    <div class="d-flex align-items-center">
+      <form class="w-100 me-3" role="search">
+        <input type="search" class="form-control" placeholder="Search..." aria-label="Search">
+      </form>
+      <div ngbDropdown class="d-inline-block">
+        <img src="https://www.sebastianjburman.com/Images/sebastian.png" alt="mdo" width="32" height="32"
+          class="rounded-circle" id="dropdownBasic2" ngbDropdownToggle>
+        <div class="mt-2" ngbDropdownMenu aria-labelledby="dropdownBasic1">
+          <button ngbDropdownItem>Settings</button>
+          <button ngbDropdownItem>Profile</button>
+          <div class="dropdown-divider"></div>
+          <button type="button" ngbDropdownItem>Logout</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
