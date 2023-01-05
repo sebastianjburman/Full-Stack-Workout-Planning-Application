@@ -1,0 +1,30 @@
+.side-nav{
+    position: absolute; 
+    height: calc(100% - 73px); 
+    width: 73px; 
+    transition: all .3s ease,background-color 0ms;
+    background-color: white;
+    display: flex;
+    align-items: center;
+}
+.sideNavBtn{
+    background-color: white;
+    transition: all.3s ease;
+}
+.sideNavBtn > svg {
+    fill: black;
+}
+.sideNavBtn:hover{
+    background-color: navy;
+}
+.sideNavBtn:hover > svg{
+    fill: white;
+}
+
+.sideNavBtnHovered{
+    background-color: navy;
+    transition: all.3s ease;
+}
+.sideNavBtnHovered > svg {
+    fill: white;
+}

@@ -11,6 +11,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { HomePageComponent } from './pages/home-page/home-page.component';
 import { SideNavBarComponent } from './components/side-nav-bar/side-nav-bar.component';
+import { BottomNavbarComponent } from './components/bottom-navbar/bottom-navbar.component';
 
 @NgModule({
   declarations: [
@@ -19,7 +20,8 @@ import { SideNavBarComponent } from './components/side-nav-bar/side-nav-bar.comp
     LoginpageComponent,
     SignuppageComponent,
     HomePageComponent,
-    SideNavBarComponent
+    SideNavBarComponent,
+    BottomNavbarComponent
   ],
   imports: [
     BrowserModule,
