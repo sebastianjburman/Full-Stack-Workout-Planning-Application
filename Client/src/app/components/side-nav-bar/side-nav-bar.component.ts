@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-side-nav-bar',
@@ -7,8 +8,14 @@ import { Component, OnInit } from '@angular/core';
 })
 export class SideNavBarComponent implements OnInit {
 
-  constructor() { }
+  constructor(private router: Router) { }
 
   ngOnInit(): void {
+  }
+  checkHighlightedSideMenuItem(pageMenuItemsLoads:string):boolean{
+    if(this.router.url.includes(pageMenuItemsLoads)){
+      return true;
+    }
+    return false;
   }
 }

@@ -12,6 +12,8 @@ import { HttpClientModule } from '@angular/common/http';
 import { HomePageComponent } from './pages/home-page/home-page.component';
 import { SideNavBarComponent } from './components/side-nav-bar/side-nav-bar.component';
 import { BottomNavbarComponent } from './components/bottom-navbar/bottom-navbar.component';
+import { WorkoutsPageComponent } from './pages/workouts-page/workouts-page.component';
+import { PeoplePageComponent } from './pages/people-page/people-page.component';
 
 @NgModule({
   declarations: [
@@ -21,7 +23,9 @@ import { BottomNavbarComponent } from './components/bottom-navbar/bottom-navbar.
     SignuppageComponent,
     HomePageComponent,
     SideNavBarComponent,
-    BottomNavbarComponent
+    BottomNavbarComponent,
+    WorkoutsPageComponent,
+    PeoplePageComponent
   ],
   imports: [
     BrowserModule,
