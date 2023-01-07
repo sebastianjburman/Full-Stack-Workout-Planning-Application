@@ -1,4 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { TokenManagement } from 'src/app/helpers/tokenManagement';
 
 @Component({
   selector: 'app-navbar',
@@ -8,9 +10,19 @@ import { Component, OnInit } from '@angular/core';
 })
 export class NavbarComponent implements OnInit {
 
-  constructor() { }
+  @ViewChild('content') content: any;
+
+  constructor(private modalService: NgbModal){
+  }
 
   ngOnInit(): void {
   }
 
+  public initiateLogoutModal(){
+    this.modalService.open(this.content, { centered: true });
+  }
+  public logout():void{
+    TokenManagement.removeTokenFromLocalStorage();
+    location.reload();
+  } 
 }

@@ -1,3 +1,16 @@
+<ng-template #content let-modal>
+	<div class="modal-header">
+		<h4 class="modal-title">Logout</h4>
+		<button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
+	</div>
+	<div class="modal-body">
+		<p>Are you sure you want to logout?</p>
+	</div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-primary btn-login fw-bold" (click)="logout()">Yes</button>
+		<button type="button" class="btn btn-primary btn-login fw-bold" (click)="modal.close('Close click')">No</button>
+	</div>
+</ng-template>
 <header class="py-3 border-bottom">
   <div class="container-fluid d-grid gap-3 align-items-center" style="grid-template-columns: 1fr 2fr;">
     <a href="/"
@@ -16,7 +29,7 @@
           <button ngbDropdownItem>Settings</button>
           <button ngbDropdownItem>Profile</button>
           <div class="dropdown-divider"></div>
-          <button type="button" ngbDropdownItem>Logout</button>
+          <button type="button" (click)="initiateLogoutModal()" ngbDropdownItem>Logout</button>
         </div>
       </div>
     </div>
