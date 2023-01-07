@@ -13,7 +13,7 @@ export class LoginSignupRedirectGuard implements CanActivate {
     state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
     const { routeConfig } = route;
     const { path } = routeConfig as Route;
-    const token = TokenManagement.getTokenToLocalStorage();
+    const token = TokenManagement.getTokenFromLocalStorage();
     /*If token exist in local storage redirect to home route to check if valid.
       This token is removed if inital auth fails for any authguard routes.
     */

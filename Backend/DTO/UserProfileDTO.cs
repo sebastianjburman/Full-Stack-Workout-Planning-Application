@@ -7,5 +7,6 @@ namespace Backend.DTO
     {
         [BsonElement("bio")]
         public string? Bio { get; set; }
+        public string? Avatar{get;set;}
     }
 }

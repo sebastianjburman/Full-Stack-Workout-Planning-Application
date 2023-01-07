@@ -38,7 +38,8 @@ namespace Backend.Helpers
         {
             return new UserProfileDTO()
             {
-                Bio = userProfile.Bio
+                Bio = userProfile.Bio,
+                Avatar = userProfile.Avatar 
             };
         }
         public static UserProfile ToUserProfile(this UserProfileDTO userProfileDTO)

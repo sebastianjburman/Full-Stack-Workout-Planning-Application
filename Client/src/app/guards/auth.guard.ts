@@ -3,7 +3,6 @@ import { ActivatedRouteSnapshot, CanActivate, Route, Router, RouterStateSnapshot
 import { Observable } from 'rxjs';
 import { UserService } from '../services/user.service';
 import { TokenManagement } from '../helpers/tokenManagement';
-import { UserDTO } from '../models/userDTO';
 
 @Injectable({
   providedIn: 'root'
@@ -13,10 +12,9 @@ export class AuthGuard implements CanActivate {
   canActivate(
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
-    const token = TokenManagement.getTokenToLocalStorage();
+    const token = TokenManagement.getTokenFromLocalStorage();
     const validUser = this.userService.checkAuth(token).subscribe({
       next: (res) => {
-        console.log(res)
         return true;
       },
       error: (error) => {

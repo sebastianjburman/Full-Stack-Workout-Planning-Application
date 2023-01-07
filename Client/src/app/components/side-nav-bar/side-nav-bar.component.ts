@@ -20,7 +20,7 @@ export class SideNavBarComponent implements OnInit {
     this.modalService.open(this.content, { centered: true });
   }
   public logout(): void {
-    TokenManagement.removeTokenFromLocalStorage();
+    TokenManagement.clearLocalStorage();
     location.reload();
   }
 
