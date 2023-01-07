@@ -50,7 +50,8 @@ export class SignuppageComponent implements OnInit {
   public createAccount(): void {
     if (this.signUpForm.valid) {
       const newUser: UserDTO = (this.signUpForm.value) as unknown as UserDTO
-      newUser.profile = { bio: "", avatar:""};
+      const userName:string = this.formUserName?.value||"";
+      newUser.profile = new ProfileDTO("","",userName)
       this.userService.createUser(newUser).subscribe(res => {
         this.modalTitle = "Succesfully Created Account"
         this.modalBody = "Click button below to go to login page"
