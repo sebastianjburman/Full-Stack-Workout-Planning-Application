@@ -26,4 +26,11 @@ export class UserService {
       }
     })
   }
+  public checkAuth(token: string): Observable<any> {
+    return this.http.get(`${this.url}/checkauth`, {
+      headers: {
+        'Authorization': `Bearer ${token}`
+      }
+    })
+  }
 }

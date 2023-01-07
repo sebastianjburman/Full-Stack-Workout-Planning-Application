@@ -29,6 +29,17 @@ namespace Backend.Controllers
             }
             return Ok((UserDTO)contextUser);
         }
+        [Authorize]
+        [HttpGet("checkauth")]
+        public ActionResult checkAuthentication()
+        {
+            var contextUser = HttpContext.Items["User"];
+            if (contextUser == null)
+            {
+                return NotFound(false);
+            }
+            return Ok(true);
+        }
 
         [HttpPost]
         public async Task<ActionResult> CreateUser([FromBody] UserDTO newUser)
