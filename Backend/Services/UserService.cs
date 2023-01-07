@@ -34,7 +34,7 @@ namespace Backend.Services
             User user = userDTO.ToUser();
             //Make unique fields lowercase
             user.Email = user.Email?.ToLower();
-            user.UserName = user.UserName?.ToLower();
+            user.profile.UserName = user.profile.UserName?.ToLower();
             // Hash users password
             user.Hash = BCrypt.Net.BCrypt.HashPassword(userDTO.Password);
             await _usersCollection.InsertOneAsync(user);

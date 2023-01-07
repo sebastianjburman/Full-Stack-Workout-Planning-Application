@@ -15,10 +15,6 @@ namespace Backend.DTO
         [BsonElement("password")]
         public string? Password { get; set; }
         [Required]
-        [RegularExpression(@"^[a-zA-Z0-9]([._-](?![._-])|[a-zA-Z0-9]){3,18}[a-zA-Z0-9]$", ErrorMessage = "Username must be 5-20 characters alphanumeric characters.")]
-        [BsonElement("username")]
-        public string? UserName { get; set; }
-        [Required]
         [RegularExpression(@"^[a-zA-Z''-'\s]{1,40}$",ErrorMessage = "First name is not in correct format.")]
         [BsonElement("firstname")]
         public string? FirstName { get; set; }

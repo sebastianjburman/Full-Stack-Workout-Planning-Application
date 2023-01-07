@@ -10,7 +10,6 @@ namespace Backend.Helpers
             return new UserDTO()
             {
                 Email = user.Email,
-                UserName = user.UserName,
                 FirstName = user.FirstName,
                 LastName = user.LastName,
                 Age = user.Age,
@@ -24,7 +23,6 @@ namespace Backend.Helpers
             return new User()
             {
                 Email = userDTO.Email,
-                UserName = userDTO.UserName,
                 FirstName = userDTO.FirstName,
                 LastName = userDTO.LastName,
                 Age = userDTO.Age,
@@ -39,6 +37,7 @@ namespace Backend.Helpers
             return new UserProfileDTO()
             {
                 Bio = userProfile.Bio,
+                UserName = userProfile.UserName,
                 Avatar = userProfile.Avatar 
             };
         }
@@ -46,7 +45,8 @@ namespace Backend.Helpers
         {
             return new UserProfile()
             {
-                Bio = userProfileDTO.Bio
+                Bio = userProfileDTO.Bio,
+                UserName = userProfileDTO.UserName
             };
         }
     }
