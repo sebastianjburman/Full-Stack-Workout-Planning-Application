@@ -1,6 +1,26 @@
 <app-navbar></app-navbar>
 <app-side-nav-bar></app-side-nav-bar>
 <main class="pageMainContainer">
-    <h1>Profile Page</h1>
+    <div class="p-4 container-xl">
+        <div class="image d-flex flex-column justify-content-center align-items-center card mb-4">
+            <img class="rounded-circle mt-4"
+                src="https://upload.wikimedia.org/wikipedia/commons/d/d8/Friedrich-Johann-Justin-Bertuch_Mythical-Creature-Dragon_1806.jpg"
+                height="200" width="200">
+            <h2 class="mt-2">@sjburman</h2>
+            <div class="text w-75 p-3">
+                <span>
+                    Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the
+                    industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type
+                    and scrambled it to make a type specimen book. It has survived not only five centuries,
+                </span>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-12">
+                <h2 class="text-left">Created Workouts</h2>
+                <app-workout-preview></app-workout-preview>
+            </div>
+        </div>
+    </div>
 </main>
 <app-bottom-navbar></app-bottom-navbar>

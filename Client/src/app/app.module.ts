@@ -15,6 +15,7 @@ import { BottomNavbarComponent } from './components/bottom-navbar/bottom-navbar.
 import { WorkoutsPageComponent } from './pages/workouts-page/workouts-page.component';
 import { PeoplePageComponent } from './pages/people-page/people-page.component';
 import { ProfilePageComponent } from './pages/profile-page/profile-page.component';
+import { WorkoutPreviewComponent } from './components/workout-preview/workout-preview.component';
 
 @NgModule({
   declarations: [
@@ -27,7 +28,8 @@ import { ProfilePageComponent } from './pages/profile-page/profile-page.componen
     BottomNavbarComponent,
     WorkoutsPageComponent,
     PeoplePageComponent,
-    ProfilePageComponent
+    ProfilePageComponent,
+    WorkoutPreviewComponent
   ],
   imports: [
     BrowserModule,

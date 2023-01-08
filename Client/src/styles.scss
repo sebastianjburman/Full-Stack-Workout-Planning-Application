@@ -7,6 +7,7 @@ $primary: navy;
     width: calc(100% - 73px);
     margin-left: 73px;
     height: calc(100% - 73px);
+    overflow-y: scroll;
 }
 // X-Small devices (portrait phones, less than 576px)
 @media (max-width: 575.98px) {  
