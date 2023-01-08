@@ -42,7 +42,6 @@ namespace Backend.Services
         public UserDTO GetUser(ObjectId id){
             User foundUser = _usersCollection.Find(user => user.Id == id).FirstOrDefault();
             return foundUser.ToUserDTO();
-
         }
         public string Authenticate(string email, string password, bool rememberMe)
         {
@@ -61,6 +60,13 @@ namespace Backend.Services
             {
                 throw new UserNotFoundException();
             }
+        }
+        public UserProfileDTO GetUserProfileByUsername(string userName){
+            User foundUser = _usersCollection.Find(user => user.profile.UserName == userName).FirstOrDefault();
+            if(foundUser == null){
+                throw new UserNotFoundException();
+            }
+            return foundUser.ToUserDTO().profile;
         }
 
         private string GenerateJwtToken(User user, bool rememberMe)

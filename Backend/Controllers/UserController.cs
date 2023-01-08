@@ -3,6 +3,7 @@ using Backend.Interfaces;
 using Backend.DTO;
 using Backend.Exceptions;
 using Backend.Helpers;
+using MongoDB.Bson;
 
 namespace Backend.Controllers
 {
@@ -31,7 +32,7 @@ namespace Backend.Controllers
         }
         [Authorize]
         [HttpGet("checkauth")]
-        public ActionResult checkAuthentication()
+        public ActionResult CheckAuthentication()
         {
             var contextUser = HttpContext.Items["User"];
             if (contextUser == null)
@@ -39,6 +40,20 @@ namespace Backend.Controllers
                 return NotFound(false);
             }
             return Ok(true);
+        }
+        [Authorize]
+        [HttpGet("profile")]
+        public ActionResult GetUserProfile([FromHeader] string userName)
+        {
+            try
+            {
+                UserProfileDTO userProfile = _userService.GetUserProfileByUsername(userName);
+                return Ok(userProfile);
+            }
+            catch
+            {
+                return NotFound("No user found");
+            }
         }
 
         [HttpPost]

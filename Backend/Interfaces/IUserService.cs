@@ -7,6 +7,7 @@ namespace Backend.Interfaces
     {
         Task CreateUser(UserDTO user);
         UserDTO GetUser(ObjectId id);
+        UserProfileDTO GetUserProfileByUsername(string userName);
         string Authenticate(string email, string password, bool rememberMe);
     }
 }
