@@ -43,7 +43,7 @@ namespace Backend.Controllers
         }
         [Authorize]
         [HttpGet("profile")]
-        public ActionResult GetUserProfile([FromHeader] string userName)
+        public ActionResult GetUserProfile([FromQuery] string userName)
         {
             try
             {
