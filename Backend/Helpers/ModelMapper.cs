@@ -15,7 +15,7 @@ namespace Backend.Helpers
                 Age = user.Age,
                 CurrentWeight = user.CurrentWeight,
                 Height = user.Height,
-                profile = user.profile?.ToUserProfileDTO()
+                profile = user.profile.ToUserProfileDTO()
             };
         }
         public static User ToUser(this UserDTO userDTO)
@@ -28,7 +28,7 @@ namespace Backend.Helpers
                 Age = userDTO.Age,
                 CurrentWeight = userDTO.CurrentWeight,
                 Height = userDTO.Height,
-                profile = userDTO.profile?.ToUserProfile()
+                profile = userDTO.profile.ToUserProfile()
             };
         }
 

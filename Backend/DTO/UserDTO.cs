@@ -37,6 +37,6 @@ namespace Backend.DTO
         public int Height { get; set; }
         [Required]
         [BsonElement("profile")]
-        public UserProfileDTO? profile { get; set; }
+        public UserProfileDTO profile { get; set; } = new UserProfileDTO();
     }
 }

@@ -37,6 +37,6 @@ namespace Backend.Models
         public int Height { get; set; }
         [Required]
         [BsonElement("profile")]
-        public UserProfile? profile { get; set; }
+        public UserProfile profile { get; set; } = new UserProfile();
     }
 }
