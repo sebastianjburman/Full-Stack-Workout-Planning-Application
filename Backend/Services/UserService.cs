@@ -24,10 +24,13 @@ namespace Backend.Services
             _usersCollection = _database.GetCollection<User>("users");
 
             // Create the unique indexes
-            var options = new CreateIndexOptions { Unique = true };
-            _usersCollection.Indexes.CreateOne("{email:1}", options);
-            _usersCollection.Indexes.CreateOne("{username:1}", options);
-
+            var emailKey = Builders<User>.IndexKeys.Ascending(x=>x.Email);
+            var userNameKey = Builders<User>.IndexKeys.Ascending(x=>x.profile.UserName);
+            var uniqueIndexOption = new CreateIndexOptions { Unique = true };
+            var emailIndexModel = new CreateIndexModel<User>(emailKey, uniqueIndexOption);
+            var userNameIndexModel = new CreateIndexModel<User>(userNameKey,uniqueIndexOption);
+            _usersCollection.Indexes.CreateOne(emailIndexModel);
+            _usersCollection.Indexes.CreateOne(userNameIndexModel);
         }
         public async Task CreateUser(UserDTO userDTO)
         {
