@@ -55,6 +55,17 @@ namespace Backend.Controllers
                 return NotFound("No user found");
             }
         }
+        [Authorize]
+        [HttpGet("myprofile")]
+        public ActionResult GetUsersProfile()
+        {
+            var contextUser = HttpContext.Items["User"];
+            if (contextUser == null)
+            {
+                return NotFound("User profile was not found");
+            }
+            return Ok(((UserDTO)contextUser).profile);
+        }
 
         [HttpPost]
         public async Task<ActionResult> CreateUser([FromBody] UserDTO newUser)

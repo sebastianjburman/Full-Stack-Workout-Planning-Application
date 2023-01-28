@@ -1,7 +1,8 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { TokenManagement } from 'src/app/helpers/tokenManagement';
-import { UserAvatarManager } from 'src/app/helpers/userAvatarManager';
+import { UserProfileManager} from 'src/app/helpers/userAvatarManager';
+import { ProfileDTO } from 'src/app/models/profileDTO';
 import { UserService } from 'src/app/services/user.service';
 
 @Component({
@@ -14,26 +15,33 @@ export class NavbarComponent implements OnInit {
 
   @ViewChild('content') content: any;
   userAvatarUrl:string = "../../../assets/Images/defaultUrl.png";
+  username:string = "";
 
   constructor(private modalService: NgbModal, private userService: UserService) {
   }
 
   ngOnInit(): void {
-    //Check if avatar url alreadu exist in local storage
-    if(!UserAvatarManager.getAvatarUrlFromLocalStorage()){
-      //Get avatar url and store in local storage 
-      this.userService.getUser(TokenManagement.getTokenFromLocalStorage()).subscribe(res=>{
-        if(res.profile.avatar){
-          this.userAvatarUrl = res.profile.avatar;
-          UserAvatarManager.saveAvatarUrlToLocalStorage(res.profile.avatar)
+    //Check if avatar url and username already exist in local storage
+    if(!(UserProfileManager.getAvatarUrlFromLocalStorage() && UserProfileManager.getUsernameFromLocalStorage())){
+      //Get avatar url and username and store it in local storage 
+      this.userService.getUserProfile(TokenManagement.getTokenFromLocalStorage()).subscribe(res=>{
+        const profile:ProfileDTO = res;
+        if(profile.avatar){
+          this.userAvatarUrl = profile.avatar;
+          UserProfileManager.saveAvatarUrlToLocalStorage(profile.avatar)
         }
         else{
-          UserAvatarManager.saveAvatarUrlToLocalStorage(this.userAvatarUrl)
+          UserProfileManager.saveAvatarUrlToLocalStorage(this.userAvatarUrl)
+        }
+        if(profile.userName){
+          this.username = profile.userName;
+          UserProfileManager.saveUsernameToLocalStorage(profile.userName);
         }
       })
     }
     else{
-      this.userAvatarUrl = UserAvatarManager.getAvatarUrlFromLocalStorage();
+      this.userAvatarUrl = UserProfileManager.getAvatarUrlFromLocalStorage();
+      this.username = UserProfileManager.getUsernameFromLocalStorage()
     }
   }
 

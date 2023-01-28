@@ -26,8 +26,10 @@
         <img src={{userAvatarUrl}} alt="mdo" width="32" height="32"
           class="rounded-circle" id="dropdownBasic2" ngbDropdownToggle>
         <div class="mt-2" ngbDropdownMenu aria-labelledby="dropdownBasic1">
+          <button ngbDropdownItem>{{username}}</button>
+          <div class="dropdown-divider"></div>
           <button ngbDropdownItem>Settings</button>
-          <button ngbDropdownItem [routerLink]="['/profile']">Profile</button>
+          <button ngbDropdownItem [routerLink]="['/profile', username]">Profile</button>
           <div class="dropdown-divider"></div>
           <button type="button" (click)="initiateLogoutModal()" ngbDropdownItem>Logout</button>
         </div>

@@ -26,6 +26,23 @@ export class UserService {
       }
     })
   }
+  public getUserProfileByUserName(token:string, username:string): Observable<any>{
+    return this.http.get(`${this.url}/profile`, {
+      headers: {
+        'Authorization': `Bearer ${token}`
+      },
+      params:{
+        'userName': username
+      }
+    })
+  }
+  public getUserProfile(token:string): Observable<any>{
+    return this.http.get(`${this.url}/myprofile`, {
+      headers: {
+        'Authorization': `Bearer ${token}`
+      },
+    })
+  }
   public checkAuth(token: string): Observable<any> {
     return this.http.get(`${this.url}/checkauth`, {
       headers: {
