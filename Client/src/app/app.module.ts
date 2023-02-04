@@ -16,6 +16,7 @@ import { WorkoutsPageComponent } from './pages/workouts-page/workouts-page.compo
 import { PeoplePageComponent } from './pages/people-page/people-page.component';
 import { ProfilePageComponent } from './pages/profile-page/profile-page.component';
 import { WorkoutPreviewComponent } from './components/workout-preview/workout-preview.component';
+import { UserViewProfileComponent } from './components/user-view-profile/user-view-profile.component';
 
 @NgModule({
   declarations: [
@@ -29,7 +30,8 @@ import { WorkoutPreviewComponent } from './components/workout-preview/workout-pr
     WorkoutsPageComponent,
     PeoplePageComponent,
     ProfilePageComponent,
-    WorkoutPreviewComponent
+    WorkoutPreviewComponent,
+    UserViewProfileComponent
   ],
   imports: [
     BrowserModule,
