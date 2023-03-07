@@ -7,15 +7,23 @@ using Backend.Helpers;
 
 var builder = WebApplication.CreateBuilder(args);
 
+//Users
 builder.Services.Configure<UserStoreDatabaseSettings>(builder.Configuration.GetSection(nameof(UserStoreDatabaseSettings)));
 builder.Services.AddSingleton<IUserStoreDatabaseSettings>(sp => sp.GetRequiredService<IOptions<UserStoreDatabaseSettings>>().Value);
 builder.Services.AddSingleton<IMongoClient>(s => new MongoClient(builder.Configuration.GetValue<string>("UserStoreDatabaseSettings:ConnectionString")));
 builder.Services.AddScoped<IUserService, UserService>();
 
+//Exercises
 builder.Services.Configure<ExerciseStoreDatabaseSettings>(builder.Configuration.GetSection(nameof(ExerciseStoreDatabaseSettings)));
 builder.Services.AddSingleton<IExerciseStoreDatabaseSettings>(sp => sp.GetRequiredService<IOptions<ExerciseStoreDatabaseSettings>>().Value);
 builder.Services.AddSingleton<IMongoClient>(s => new MongoClient(builder.Configuration.GetValue<string>("ExerciseStoreDatabaseSettings:ConnectionString")));
 builder.Services.AddScoped<IExerciseService, ExerciseService>();
+
+//Workouts
+builder.Services.Configure<WorkoutStoreDatabaseSettings>(builder.Configuration.GetSection(nameof(WorkoutStoreDatabaseSettings)));
+builder.Services.AddSingleton<IWorkoutStoreDatabaseSettings>(sp => sp.GetRequiredService<IOptions<WorkoutStoreDatabaseSettings>>().Value);
+builder.Services.AddSingleton<IMongoClient>(s => new MongoClient(builder.Configuration.GetValue<string>("WorkoutStoreDatabaseSettings:ConnectionString")));
+builder.Services.AddScoped<IWorkoutService, WorkoutService>();
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();

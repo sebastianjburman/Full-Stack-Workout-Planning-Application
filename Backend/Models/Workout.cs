@@ -7,7 +7,8 @@ namespace Backend.Models
     public class Workout
     {
         [BsonId]
-        public ObjectId Id { get; set; }
+        [BsonRepresentation(BsonType.ObjectId)]
+        public string? Id { get; set; }
         [BsonElement("workoutName")]
         [RegularExpression(@"^[a-zA-Z''-'\s]{5,30}$", ErrorMessage = "Name is not in correct format. Min 5 characters and max 30 characters.")]
         public string? WorkoutName { get; set; }
@@ -17,11 +18,10 @@ namespace Backend.Models
         public DateTime CreatedAt { get; set; }
         [BsonElement("createdBy")]
         public string? CreatedBy { get; set; }
+        [BsonElement("isPublic")]
+        public bool isPublic { get; set; }
         public Workout(List<Exercise> exercises)
         {
-            if (exercises == null || exercises.Count < 1)
-                throw new ArgumentException("A workout must contain at least 1 exercise.");
-
             if (exercises.Count > 12)
                 throw new ArgumentException("A workout cannot contain more than 12 exercises.");
 
