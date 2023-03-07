@@ -8,9 +8,14 @@ using Backend.Helpers;
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.Configure<UserStoreDatabaseSettings>(builder.Configuration.GetSection(nameof(UserStoreDatabaseSettings)));
-builder.Services.AddSingleton<IUserStoreDatabaseSettings>(sp=>sp.GetRequiredService<IOptions<UserStoreDatabaseSettings>>().Value);
-builder.Services.AddSingleton<IMongoClient>(s=>new MongoClient(builder.Configuration.GetValue<string>("UserStoreDatabaseSettings:ConnectionString")));
-builder.Services.AddScoped<IUserService,UserService>();
+builder.Services.AddSingleton<IUserStoreDatabaseSettings>(sp => sp.GetRequiredService<IOptions<UserStoreDatabaseSettings>>().Value);
+builder.Services.AddSingleton<IMongoClient>(s => new MongoClient(builder.Configuration.GetValue<string>("UserStoreDatabaseSettings:ConnectionString")));
+builder.Services.AddScoped<IUserService, UserService>();
+
+builder.Services.Configure<ExerciseStoreDatabaseSettings>(builder.Configuration.GetSection(nameof(ExerciseStoreDatabaseSettings)));
+builder.Services.AddSingleton<IExerciseStoreDatabaseSettings>(sp => sp.GetRequiredService<IOptions<ExerciseStoreDatabaseSettings>>().Value);
+builder.Services.AddSingleton<IMongoClient>(s => new MongoClient(builder.Configuration.GetValue<string>("ExerciseStoreDatabaseSettings:ConnectionString")));
+builder.Services.AddScoped<IExerciseService, ExerciseService>();
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
