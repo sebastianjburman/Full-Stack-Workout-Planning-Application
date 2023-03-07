@@ -3,7 +3,6 @@ using Backend.Interfaces;
 using Backend.DTO;
 using Backend.Exceptions;
 using Backend.Helpers;
-using MongoDB.Bson;
 
 namespace Backend.Controllers
 {
@@ -54,6 +53,17 @@ namespace Backend.Controllers
             {
                 return NotFound("No user found");
             }
+        }
+        [Authorize]
+        [HttpGet("profiles")]
+        public ActionResult GetProfiles()
+        {
+            UserDTO contextUser = (UserDTO)HttpContext.Items["User"]!;
+            //Return 20 random profiles
+            List<UserProfileDTO> profiles = _userService.GetProfiles(20);
+            //Filter to exclude the current user
+            IEnumerable<UserProfileDTO> filteredProfiles = profiles.Where(profile => profile.UserName != contextUser!.profile.UserName);
+            return Ok(filteredProfiles);
         }
         [Authorize]
         [HttpGet("myprofile")]

@@ -9,6 +9,7 @@ using Microsoft.IdentityModel.Tokens;
 using System.Security.Claims;
 using Backend.Exceptions;
 using MongoDB.Bson;
+using MongoDB.Driver.Linq;
 
 namespace Backend.Services
 {
@@ -24,11 +25,11 @@ namespace Backend.Services
             _usersCollection = _database.GetCollection<User>("users");
 
             // Create the unique indexes
-            var emailKey = Builders<User>.IndexKeys.Ascending(x=>x.Email);
-            var userNameKey = Builders<User>.IndexKeys.Ascending(x=>x.profile.UserName);
+            var emailKey = Builders<User>.IndexKeys.Ascending(x => x.Email);
+            var userNameKey = Builders<User>.IndexKeys.Ascending(x => x.profile.UserName);
             var uniqueIndexOption = new CreateIndexOptions { Unique = true };
             var emailIndexModel = new CreateIndexModel<User>(emailKey, uniqueIndexOption);
-            var userNameIndexModel = new CreateIndexModel<User>(userNameKey,uniqueIndexOption);
+            var userNameIndexModel = new CreateIndexModel<User>(userNameKey, uniqueIndexOption);
             _usersCollection.Indexes.CreateOne(emailIndexModel);
             _usersCollection.Indexes.CreateOne(userNameIndexModel);
         }
@@ -42,20 +43,33 @@ namespace Backend.Services
             user.Hash = BCrypt.Net.BCrypt.HashPassword(userDTO.Password);
             await _usersCollection.InsertOneAsync(user);
         }
-        public UserDTO GetUser(ObjectId id){
+        public UserDTO GetUser(ObjectId id)
+        {
             User foundUser = _usersCollection.Find(user => user.Id == id).FirstOrDefault();
             return foundUser.ToUserDTO();
+        }
+        public List<UserProfileDTO> GetProfiles(int count)
+        {
+            IMongoQueryable<User> users = _usersCollection.AsQueryable().Sample(count);
+            List<UserProfileDTO> userProfiles = new List<UserProfileDTO>();
+            foreach (var user in users)
+            {
+                userProfiles.Add(user.profile.ToUserProfileDTO());
+            }
+            return userProfiles;
         }
         public string Authenticate(string email, string password, bool rememberMe)
         {
             User foundUser = _usersCollection.Find(user => user.Email == email).FirstOrDefault();
-            if (foundUser != null )
+            if (foundUser != null)
             {
                 bool verified = BCrypt.Net.BCrypt.Verify(password, foundUser.Hash);
-                if(verified){
-                    return GenerateJwtToken(foundUser,rememberMe);
+                if (verified)
+                {
+                    return GenerateJwtToken(foundUser, rememberMe);
                 }
-                else{
+                else
+                {
                     throw new UserNotFoundException();
                 }
             }
@@ -64,9 +78,11 @@ namespace Backend.Services
                 throw new UserNotFoundException();
             }
         }
-        public UserProfileDTO GetUserProfileByUsername(string userName){
+        public UserProfileDTO GetUserProfileByUsername(string userName)
+        {
             User foundUser = _usersCollection.Find(user => user.profile.UserName == userName).FirstOrDefault();
-            if(foundUser == null){
+            if (foundUser == null)
+            {
                 throw new UserNotFoundException();
             }
             return foundUser.ToUserDTO().profile;
@@ -77,7 +93,8 @@ namespace Backend.Services
             var tokenHandler = new JwtSecurityTokenHandler();
             var key = Encoding.ASCII.GetBytes("eyJhbGciOiJIUzI1NiJ9.eyJSb2xlIjoiQWRtaW4iLCJJc3N1ZXIiOiJJc3N1ZXIiLCJVc2VybmFtZSI6IkphdmFJblVzZSIsImV4cCI6MTY3MjYwODA4NCwiaWF0IjoxNjcyNjA4MDg0fQ.3Xerv6eY7OVSWmw3Cr829ScidVu3cD8XUcieY-uAc0c");
             int hoursTillExpire = 1;
-            if(rememberMe){
+            if (rememberMe)
+            {
                 //One Week till expire
                 hoursTillExpire = 168;
             }

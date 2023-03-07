@@ -1,7 +1,7 @@
 <div class="card mb-3 box-shadow card-body d-flex flex-column justify-content-center mt-3 align-items-center">
     <img _ngcontent-wul-c113="" height="130" width="130" class="rounded-circle"
-        src="https://www.sebastianjburman.com/Images/sebastian.png">
-    <h3>@sjburman</h3>
+        src={{avatar}}>
+    <h3>@{{userName}}</h3>
     <p class="text-muted">10 Workouts</p>
-    <button type="button" class="btn btn-md btn-primary">View Profile</button>
+    <button type="button" class="btn btn-md btn-primary" [routerLink]="['/profile', userName]">View Profile</button>
 </div>

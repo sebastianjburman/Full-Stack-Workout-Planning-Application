@@ -3,15 +3,7 @@
 <main class="pageMainContainer">
     <div class="container">
         <div class="row">
-           <app-user-view-profile class="col-md-3"></app-user-view-profile> 
-           <app-user-view-profile class="col-md-3"></app-user-view-profile> 
-           <app-user-view-profile class="col-md-3"></app-user-view-profile> 
-           <app-user-view-profile class="col-md-3"></app-user-view-profile> 
-           <app-user-view-profile class="col-md-3"></app-user-view-profile> 
-           <app-user-view-profile class="col-md-3"></app-user-view-profile> 
-           <app-user-view-profile class="col-md-3"></app-user-view-profile> 
-           <app-user-view-profile class="col-md-3"></app-user-view-profile> 
-           <app-user-view-profile class="col-md-3"></app-user-view-profile> 
+           <app-user-view-profile *ngFor="let profile of profiles; let i = index" [userName]="profile.userName" [avatar]="profile.avatar"  class="col-md-3"></app-user-view-profile> 
         </div>
       </div>
 </main>

@@ -36,6 +36,13 @@ export class UserService {
       }
     })
   }
+  public getDiscoverProfiles(token:string): Observable<any>{
+    return this.http.get(`${this.url}/profiles`, {
+      headers: {
+        'Authorization': `Bearer ${token}`
+      },
+    })
+  }
   public getUserProfile(token:string): Observable<any>{
     return this.http.get(`${this.url}/myprofile`, {
       headers: {
