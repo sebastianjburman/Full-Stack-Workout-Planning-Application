@@ -18,7 +18,7 @@ export class AuthGuard implements CanActivate {
         return true;
       },
       error: (error) => {
-        TokenManagement.removeTokenFromLocalStorage();
+        TokenManagement.clearLocalStorage();
         this.router.navigateByUrl('/login');
         return false;
       }
