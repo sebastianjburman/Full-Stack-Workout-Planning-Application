@@ -4,6 +4,10 @@ using MongoDB.Bson.Serialization.Attributes;
 
 public class Exercise
 {
+    [BsonId]
+    [BsonRepresentation(BsonType.ObjectId)]
+    public string? Id { get; set; }
+
     [BsonElement("name")]
     [RegularExpression(@"^[a-zA-Z''-'\s]{5,30}$", ErrorMessage = "Workout is not in correct format. Min 5 characters and max 30 characters.")]
     public string? Name { get; set; }

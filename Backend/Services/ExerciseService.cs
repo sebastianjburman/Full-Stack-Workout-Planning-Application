@@ -23,6 +23,8 @@ public class ExerciseService : IExerciseService
 
     public async Task<Exercise> CreateExerciseAsync(Exercise exercise)
     {
+        //Make exercise id null so that mongo will generate a new one
+        exercise.Id = null;
         await _exercises.InsertOneAsync(exercise);
 
         return exercise;
