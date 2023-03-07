@@ -9,7 +9,7 @@ public class Exercise
     public string? Id { get; set; }
 
     [BsonElement("name")]
-    [RegularExpression(@"^[a-zA-Z''-'\s]{5,30}$", ErrorMessage = "Workout is not in correct format. Min 5 characters and max 30 characters.")]
+    [RegularExpression(@"^[a-zA-Z''-'\s]{5,30}$", ErrorMessage = "Name is not in correct format. Min 5 characters and max 30 characters.")]
     public string? Name { get; set; }
     [RegularExpression(@"^[a-zA-Z''-'\s]{10,30}$", ErrorMessage = "Description is not in correct format. Min 10 characters and max 100 characters.")]
     [BsonElement("description")]
