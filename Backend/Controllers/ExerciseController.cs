@@ -3,6 +3,7 @@ using Backend.Interfaces;
 using Backend.DTO;
 using Backend.Exceptions;
 using Backend.Helpers;
+using Backend.Models;
 
 namespace Backend.Controllers
 {
@@ -23,20 +24,33 @@ namespace Backend.Controllers
         [HttpGet]
         public async Task<ActionResult> GetExercise(string id)
         {
-            Exercise exercise = await _exerciseService.GetExerciseByIdAsync(id);
-            if (exercise == null)
+            User contextUser = (User)HttpContext.Items["User"]!;
+            try
             {
-                return NotFound(new { message = "Exercise not found" });
+                Exercise exercise = await _exerciseService.GetExerciseByIdAsync(id, contextUser.Id.ToString());
+                if (exercise == null)
+                {
+                    return NotFound(new { message = "Exercise not found" });
+                }
+                return Ok(exercise);
             }
-            return Ok(exercise);
+            catch (InvalidAccessException e)
+            {
+                return Unauthorized(new { message = e.Message });
+            }
+            catch (Exception e)
+            {
+                return BadRequest(new { message = e.Message });
+            }
         }
         [Authorize]
         [HttpPost]
         public async Task<ActionResult> CreateExercise(Exercise createdExercise)
         {
+            User contextUser = (User)HttpContext.Items["User"]!;
             try
             {
-                await _exerciseService.CreateExerciseAsync(createdExercise);
+                await _exerciseService.CreateExerciseAsync(createdExercise, contextUser.Id.ToString());
                 return Ok();
             }
             catch (Exception e)
@@ -48,10 +62,15 @@ namespace Backend.Controllers
         [HttpPut]
         public async Task<ActionResult> UpdateExercise(string id, Exercise updatedExercise)
         {
+            User contextUser = (User)HttpContext.Items["User"]!;
             try
             {
-                await _exerciseService.UpdateExerciseAsync(id, updatedExercise);
+                await _exerciseService.UpdateExerciseAsync(id, contextUser.Id.ToString(), updatedExercise);
                 return Ok();
+            }
+            catch (InvalidAccessException e)
+            {
+                return Unauthorized(new { message = e.Message });
             }
             catch (Exception e)
             {

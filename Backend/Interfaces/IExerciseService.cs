@@ -3,9 +3,9 @@ using System.Threading.Tasks;
 
 public interface IExerciseService
 {
-    Task<Exercise> GetExerciseByIdAsync(string id);
+    Task<Exercise> GetExerciseByIdAsync(string id, string userId);
 
-    Task<Exercise> CreateExerciseAsync(Exercise exercise);
+    Task<Exercise> CreateExerciseAsync(Exercise exercise, string createdBy);
 
-    Task UpdateExerciseAsync(string id, Exercise exerciseIn);
+    Task UpdateExerciseAsync(string exerciseId, string userId, Exercise exerciseIn);
 }
