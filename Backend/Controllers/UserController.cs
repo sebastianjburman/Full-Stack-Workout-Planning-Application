@@ -3,6 +3,7 @@ using Backend.Interfaces;
 using Backend.DTO;
 using Backend.Exceptions;
 using Backend.Helpers;
+using Backend.Models;
 
 namespace Backend.Controllers
 {
@@ -17,17 +18,6 @@ namespace Backend.Controllers
         {
             _logger = logger;
             _userService = userService;
-        }
-        [Authorize]
-        [HttpGet]
-        public ActionResult GetUser()
-        {
-            var contextUser = HttpContext.Items["User"];
-            if (contextUser == null)
-            {
-                return NotFound("User with id was not found");
-            }
-            return Ok((UserDTO)contextUser);
         }
         [Authorize]
         [HttpGet("checkauth")]
@@ -58,7 +48,7 @@ namespace Backend.Controllers
         [HttpGet("profiles")]
         public ActionResult GetProfiles()
         {
-            UserDTO contextUser = (UserDTO)HttpContext.Items["User"]!;
+            User contextUser = (User)HttpContext.Items["User"]!;
             //Return 20 random profiles
             List<UserProfileDTO> profiles = _userService.GetProfiles(20);
             //Filter to exclude the current user
@@ -69,12 +59,12 @@ namespace Backend.Controllers
         [HttpGet("myprofile")]
         public ActionResult GetUsersProfile()
         {
-            var contextUser = HttpContext.Items["User"];
+            User contextUser = (User)HttpContext.Items["User"]!;
             if (contextUser == null)
             {
                 return NotFound("User profile was not found");
             }
-            return Ok(((UserDTO)contextUser).profile);
+            return Ok(contextUser.ToUserDTO().profile);
         }
 
         [HttpPost]

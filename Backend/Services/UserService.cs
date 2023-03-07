@@ -43,10 +43,10 @@ namespace Backend.Services
             user.Hash = BCrypt.Net.BCrypt.HashPassword(userDTO.Password);
             await _usersCollection.InsertOneAsync(user);
         }
-        public UserDTO GetUser(ObjectId id)
+        public User GetUser(ObjectId id)
         {
             User foundUser = _usersCollection.Find(user => user.Id == id).FirstOrDefault();
-            return foundUser.ToUserDTO();
+            return foundUser;
         }
         public List<UserProfileDTO> GetProfiles(int count)
         {
