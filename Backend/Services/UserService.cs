@@ -8,7 +8,6 @@ using System.Text;
 using Microsoft.IdentityModel.Tokens;
 using System.Security.Claims;
 using Backend.Exceptions;
-using MongoDB.Bson;
 using MongoDB.Driver.Linq;
 
 namespace Backend.Services
@@ -43,7 +42,7 @@ namespace Backend.Services
             user.Hash = BCrypt.Net.BCrypt.HashPassword(userDTO.Password);
             await _usersCollection.InsertOneAsync(user);
         }
-        public User GetUser(ObjectId id)
+        public User GetUser(string id)
         {
             User foundUser = _usersCollection.Find(user => user.Id == id).FirstOrDefault();
             return foundUser;

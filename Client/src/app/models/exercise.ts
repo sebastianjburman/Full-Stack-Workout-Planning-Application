@@ -5,7 +5,6 @@ export class Exercise {
     public description: string,
     public sets: number,
     public reps: number,
-    public relatedLinks: string[],
     public createdBy: string
   ) {}
 }

@@ -11,7 +11,7 @@ public class Exercise
     [BsonElement("name")]
     [RegularExpression(@"^[a-zA-Z''-'\s]{5,30}$", ErrorMessage = "Name is not in correct format. Min 5 characters and max 30 characters.")]
     public string? Name { get; set; }
-    [RegularExpression(@"^[a-zA-Z''-'\s]{10,30}$", ErrorMessage = "Description is not in correct format. Min 10 characters and max 100 characters.")]
+    [RegularExpression(@"[a-zA-Z''-''.','\s]{10,100}$", ErrorMessage = "Description is not in correct format. Min 10 characters and max 100 characters.")]
     [BsonElement("description")]
     public string? Description { get; set; }
 
@@ -23,8 +23,8 @@ public class Exercise
     [Range(1, 30, ErrorMessage = "Value for {0} must be between {1} and {2}.")]
     public int Reps { get; set; }
 
-    [BsonElement("related_links")]
-    public string[]? RelatedLinks { get; set; }
+    [BsonElement("createdAt")]
+    public DateTime CreatedAt { get; set; }
 
     [BsonElement("created_by")]
     public string? CreatedBy { get; set; }
