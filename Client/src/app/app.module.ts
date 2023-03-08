@@ -17,6 +17,7 @@ import { PeoplePageComponent } from './pages/people-page/people-page.component';
 import { ProfilePageComponent } from './pages/profile-page/profile-page.component';
 import { WorkoutPreviewComponent } from './components/workout-preview/workout-preview.component';
 import { UserViewProfileComponent } from './components/user-view-profile/user-view-profile.component';
+import { ExercisePageComponent } from './pages/exercise-page/exercise-page.component';
 
 @NgModule({
   declarations: [
@@ -31,7 +32,8 @@ import { UserViewProfileComponent } from './components/user-view-profile/user-vi
     PeoplePageComponent,
     ProfilePageComponent,
     WorkoutPreviewComponent,
-    UserViewProfileComponent
+    UserViewProfileComponent,
+    ExercisePageComponent
   ],
   imports: [
     BrowserModule,

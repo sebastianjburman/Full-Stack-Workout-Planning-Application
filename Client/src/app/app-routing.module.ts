@@ -8,17 +8,40 @@ import { LoginSignupRedirectGuard } from './guards/login-signup-redirect.guard';
 import { WorkoutsPageComponent } from './pages/workouts-page/workouts-page.component';
 import { PeoplePageComponent } from './pages/people-page/people-page.component';
 import { ProfilePageComponent } from './pages/profile-page/profile-page.component';
+import { ExercisePageComponent } from './pages/exercise-page/exercise-page.component';
 const routes: Routes = [
-  { path: "login", component: LoginpageComponent, canActivate: [LoginSignupRedirectGuard]},
-  { path: "signup", component: SignuppageComponent, canActivate: [LoginSignupRedirectGuard]},
-  { path: "home", component:HomePageComponent,canActivate: [AuthGuard]},
-  { path: "workouts", component:WorkoutsPageComponent, canActivate: [AuthGuard]},
-  { path: "people", component:PeoplePageComponent, canActivate: [AuthGuard]},
-  { path: "profile/:username", component:ProfilePageComponent, canActivate: [AuthGuard]},
-  
-  { path: '',redirectTo: '/login',pathMatch: 'full'}]
+  {
+    path: 'login',
+    component: LoginpageComponent,
+    canActivate: [LoginSignupRedirectGuard],
+  },
+  {
+    path: 'signup',
+    component: SignuppageComponent,
+    canActivate: [LoginSignupRedirectGuard],
+  },
+  { path: 'home', component: HomePageComponent, canActivate: [AuthGuard] },
+  {
+    path: 'workouts',
+    component: WorkoutsPageComponent,
+    canActivate: [AuthGuard],
+  },
+  { path: 'people', component: PeoplePageComponent, canActivate: [AuthGuard] },
+  {
+    path: 'exercises',
+    component: ExercisePageComponent,
+    canActivate: [AuthGuard],
+  },
+  {
+    path: 'profile/:username',
+    component: ProfilePageComponent,
+    canActivate: [AuthGuard],
+  },
+
+  { path: '', redirectTo: '/login', pathMatch: 'full' },
+];
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
-  exports: [RouterModule]
+  exports: [RouterModule],
 })
-export class AppRoutingModule { }
+export class AppRoutingModule {}
