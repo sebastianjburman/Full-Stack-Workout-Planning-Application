@@ -20,12 +20,8 @@ namespace Backend.Models
         public string? CreatedBy { get; set; }
         [BsonElement("isPublic")]
         public bool isPublic { get; set; }
-        public Workout(List<Exercise> exercises)
+        public Workout()
         {
-            if (exercises.Count > 12)
-                throw new ArgumentException("A workout cannot contain more than 12 exercises.");
-
-            this.Exercises = exercises;
         }
         public void AddExercise(Exercise exercise)
         {

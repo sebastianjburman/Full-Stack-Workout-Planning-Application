@@ -19,9 +19,13 @@ public class WorkoutService : IWorkoutService
     public async Task<Workout> GetWorkoutByIdAsync(string id, string userId)
     {
         Workout workout = await _workouts.Find(e => e.Id == id).FirstOrDefaultAsync();
+        if (workout == null)
+        {
+            throw new NotFoundException("Workout");
+        }
         if (!workout.isPublic && workout.CreatedBy != userId)
         {
-            throw new InvalidAccessException();
+            throw new InvalidAccessException("view");
         }
         return workout;
     }
@@ -32,6 +36,8 @@ public class WorkoutService : IWorkoutService
         workout.Id = null;
         //Set the workouts's created by to the user who created the
         workout.CreatedBy = createdBy;
+        //Set created date to now
+        workout.CreatedAt = DateTime.Now;
         await _workouts.InsertOneAsync(workout);
         return workout;
     }
@@ -46,7 +52,7 @@ public class WorkoutService : IWorkoutService
         }
         if (workout.CreatedBy != userId)
         {
-            throw new InvalidAccessException();
+            throw new InvalidAccessException("update");
         }
         await _workouts.ReplaceOneAsync(e => e.Id == workoutId, workoutIn);
     }

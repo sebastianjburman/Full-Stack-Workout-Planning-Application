@@ -22,7 +22,7 @@ public class ExerciseService : IExerciseService
         Exercise exercise = await _exercises.Find(e => e.Id == id).FirstOrDefaultAsync();
         if (exercise.CreatedBy != userId)
         {
-            throw new InvalidAccessException();
+            throw new InvalidAccessException("view");
         }
         return exercise;
 
@@ -48,7 +48,7 @@ public class ExerciseService : IExerciseService
         }
         if (exercise.CreatedBy != userId)
         {
-            throw new InvalidAccessException();
+            throw new InvalidAccessException("update");
         }
         await _exercises.ReplaceOneAsync(e => e.Id == exerciseId, exerciseIn);
     }
