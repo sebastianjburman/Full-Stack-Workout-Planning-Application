@@ -49,11 +49,11 @@ export class ExercisePageComponent implements OnInit {
 			},
 			error: (error) => {
 			}
-		})	
+		})
 	}
 
 	//These need to be called after exercise creation or update
-	private OnInitCalls():void{
+	private OnInitCalls(): void {
 		//Exercises created by user
 		this.exerciseService.getExercisesCreated(TokenManagement.getTokenFromLocalStorage()).subscribe({
 			next: (res) => {
@@ -61,7 +61,7 @@ export class ExercisePageComponent implements OnInit {
 			},
 			error: (error) => {
 			}
-		})	
+		})
 		//Recent exercises
 		this.exerciseService.getRecentExercises(TokenManagement.getTokenFromLocalStorage()).subscribe({
 			next: (res) => {
@@ -80,10 +80,7 @@ export class ExercisePageComponent implements OnInit {
 					this.alertType = "success";
 					this.alertMessage = "Exercise created successfully!";
 					this.alertOn = true;
-					this.createExerciseForm.get('name')?.reset();
-					this.createExerciseForm.get('description')?.reset();
-					this.createExerciseForm.get('sets')?.setValue(1);
-					this.createExerciseForm.get('reps')?.setValue(1);
+					this.clearExerciseForm()
 					//Update page data
 					this.OnInitCalls();
 				},
@@ -96,7 +93,7 @@ export class ExercisePageComponent implements OnInit {
 		}
 	}
 	open(content: any) {
-		this.modalService.open(content, { ariaLabelledBy: 'modal-basic-title',keyboard:false}).result.then(
+		this.modalService.open(content, { ariaLabelledBy: 'modal-basic-title', keyboard: false }).result.then(
 			(result) => {
 				this.closeResult = `Closed with: ${result}`;
 			},
@@ -105,9 +102,17 @@ export class ExercisePageComponent implements OnInit {
 			},
 		);
 	}
-	public closeExerciseModal():void{
+	public closeExerciseModal(): void {
 		this.modalService.dismissAll();
 		this.alertOn = false;
+		this.clearExerciseForm();
+	}
+
+	public clearExerciseForm(): void {
+		this.createExerciseForm.get('name')?.reset();
+		this.createExerciseForm.get('description')?.reset();
+		this.createExerciseForm.get('sets')?.setValue(1);
+		this.createExerciseForm.get('reps')?.setValue(1);
 	}
 
 	private getDismissReason(reason: any): string {
