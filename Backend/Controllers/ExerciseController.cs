@@ -4,7 +4,6 @@ using Backend.DTO;
 using Backend.Exceptions;
 using Backend.Helpers;
 using Backend.Models;
-using MongoDB.Bson;
 
 namespace Backend.Controllers
 {
@@ -30,7 +29,7 @@ namespace Backend.Controllers
             User contextUser = (User)HttpContext.Items["User"]!;
             try
             {
-                Exercise exercise = await _exerciseService.GetExerciseByIdAsync(id, contextUser.Id.ToString());
+                Exercise exercise = await _exerciseService.GetExerciseByIdAsync(id, contextUser.Id!);
                 if (exercise == null)
                 {
                     return NotFound(new { message = "Exercise not found" });
@@ -55,10 +54,10 @@ namespace Backend.Controllers
             try
             {
                 List<ExerciseViewModel> exerciseViewModels = new List<ExerciseViewModel>();
-                List<Exercise> exercises = await _exerciseService.GetAllExerciseCreatedAsync(contextUser.Id.ToString());
+                List<Exercise> exercises = await _exerciseService.GetAllExerciseCreatedAsync(contextUser.Id!);
                 foreach (Exercise exercise in exercises)
                 {
-                    User user = _userService.GetUser(exercise.CreatedBy);
+                    User user = _userService.GetUser(exercise.CreatedBy!);
                     exerciseViewModels.Add(new ExerciseViewModel
                     {
                         Id = exercise.Id,
@@ -90,7 +89,7 @@ namespace Backend.Controllers
                 List<Exercise> exercises = await _exerciseService.GetAllRecentlyCreatedExercisesByDate(limit);
                 foreach (Exercise exercise in exercises)
                 {
-                    User user = _userService.GetUser(exercise.CreatedBy);
+                    User user = _userService.GetUser(exercise.CreatedBy!);
                     exerciseViewModels.Add(new ExerciseViewModel
                     {
                         Id = exercise.Id,
@@ -138,7 +137,7 @@ namespace Backend.Controllers
             User contextUser = (User)HttpContext.Items["User"]!;
             try
             {
-                await _exerciseService.CreateExerciseAsync(createdExercise, contextUser.Id);
+                await _exerciseService.CreateExerciseAsync(createdExercise, contextUser.Id!);
                 return Ok();
             }
             catch (Exception e)
@@ -153,7 +152,7 @@ namespace Backend.Controllers
             User contextUser = (User)HttpContext.Items["User"]!;
             try
             {
-                await _exerciseService.UpdateExerciseAsync(id, contextUser.Id.ToString(), updatedExercise);
+                await _exerciseService.UpdateExerciseAsync(id, contextUser.Id!, updatedExercise);
                 return Ok();
             }
             catch (InvalidAccessException e)

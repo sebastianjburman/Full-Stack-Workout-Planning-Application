@@ -26,7 +26,7 @@ namespace Backend.Controllers
             User contextUser = (User)HttpContext.Items["User"]!;
             try
             {
-                Workout workout = await _workoutService.GetWorkoutByIdAsync(id, contextUser.Id.ToString());
+                Workout workout = await _workoutService.GetWorkoutByIdAsync(id, contextUser.Id!);
                 return Ok(workout);
             }
             catch (NotFoundException e)
@@ -49,7 +49,7 @@ namespace Backend.Controllers
             User contextUser = (User)HttpContext.Items["User"]!;
             try
             {
-                await _workoutService.CreateWorkoutAsync(createdWorkout, contextUser.Id.ToString());
+                await _workoutService.CreateWorkoutAsync(createdWorkout, contextUser.Id!);
                 return Ok();
             }
             catch (Exception e)
@@ -64,7 +64,7 @@ namespace Backend.Controllers
             User contextUser = (User)HttpContext.Items["User"]!;
             try
             {
-                await _workoutService.UpdateWorkoutAsync(id, contextUser.Id.ToString(), updatedWorkout);
+                await _workoutService.UpdateWorkoutAsync(id, contextUser.Id!, updatedWorkout);
                 return Ok();
             }
             catch (InvalidAccessException e)
