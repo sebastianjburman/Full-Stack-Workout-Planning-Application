@@ -44,9 +44,8 @@ namespace Backend.Helpers
 
                 var jwtToken = (JwtSecurityToken)validatedToken;
                 string userId = jwtToken.Claims.First(x => x.Type == "id").Value;
-                ObjectId userObjectId = new ObjectId(userId);
                 // attach user to context on successful jwt validation
-                context.Items["User"] = userService.GetUser(userObjectId);
+                context.Items["User"] = userService.GetUser(userId);
             }
             catch
             {

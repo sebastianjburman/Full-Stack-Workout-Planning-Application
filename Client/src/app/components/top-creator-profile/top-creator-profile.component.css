@@ -1,0 +1,4 @@
+.topCreatorContainer:hover{
+    background-color: rgb(233, 232, 232);
+    transition: 0.5s ease;
+}

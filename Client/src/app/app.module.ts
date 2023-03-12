@@ -18,6 +18,8 @@ import { ProfilePageComponent } from './pages/profile-page/profile-page.componen
 import { WorkoutPreviewComponent } from './components/workout-preview/workout-preview.component';
 import { UserViewProfileComponent } from './components/user-view-profile/user-view-profile.component';
 import { ExercisePageComponent } from './pages/exercise-page/exercise-page.component';
+import { ExercisePreviewComponent } from './components/exercise-preview/exercise-preview.component';
+import { TopCreatorProfileComponent } from './components/top-creator-profile/top-creator-profile.component';
 
 @NgModule({
   declarations: [
@@ -33,7 +35,9 @@ import { ExercisePageComponent } from './pages/exercise-page/exercise-page.compo
     ProfilePageComponent,
     WorkoutPreviewComponent,
     UserViewProfileComponent,
-    ExercisePageComponent
+    ExercisePageComponent,
+    ExercisePreviewComponent,
+    TopCreatorProfileComponent
   ],
   imports: [
     BrowserModule,

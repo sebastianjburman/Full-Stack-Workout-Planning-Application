@@ -7,7 +7,7 @@ namespace Backend.Interfaces
     public interface IUserService
     {
         Task CreateUser(UserDTO user);
-        User GetUser(ObjectId id);
+        User GetUser(string id);
         UserProfileDTO GetUserProfileByUsername(string userName);
         string Authenticate(string email, string password, bool rememberMe);
         public List<UserProfileDTO> GetProfiles(int count);

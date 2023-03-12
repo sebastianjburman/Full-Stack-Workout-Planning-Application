@@ -6,7 +6,7 @@ import { Observable } from 'rxjs';
 @Injectable({
   providedIn: 'root',
 })
-export class ExerciseServiceService {
+export class ExerciseService {
   constructor(private http: HttpClient) {}
   private url = 'v1/exercise';
 
@@ -34,6 +34,27 @@ export class ExerciseServiceService {
       },
       params: {
         id: id,
+      },
+    });
+  }
+  public getExercisesCreated(token: string): Observable<any> {
+    return this.http.get(`${this.url}/created`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+  }
+  public getRecentExercises(token: string): Observable<any> {
+    return this.http.get(`${this.url}/recent`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+  }
+  public getTopExerciseCreators(token: string): Observable<any> {
+    return this.http.get(`${this.url}/topExerciseCreators`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
       },
     });
   }

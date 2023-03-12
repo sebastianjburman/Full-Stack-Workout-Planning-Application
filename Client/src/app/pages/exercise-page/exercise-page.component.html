@@ -1,6 +1,100 @@
+<!--Create Exercise Modal-->
+<ng-template #content let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">Create Exercise</h4>
+    <button type="button" class="btn-close" aria-label="Close" (click)="closeExerciseModal()"></button>
+  </div>
+  <div class="modal-body">
+    <form [formGroup]="createExerciseForm">
+      <div *ngIf="alertOn" class="alert alert-{{alertType}}" role="alert">
+        {{alertMessage}}
+      </div>
+      <div class="row g-3">
+        <div class="col-12">
+          <label for="name" class="form-label">Name</label>
+          <input type="text" class="form-control" id="name" formControlName="name">
+          <div class="alert show alert-danger fade mt-2"
+            *ngIf="formName!.invalid && (formName!.dirty || formName!.touched)">
+            Name must be 5-30 alpha characters
+          </div>
+        </div>
+        <div class="col-12">
+          <label for="description" class="form-label">Description</label>
+          <textarea type="text" class="form-control" id="description" formControlName="description"></textarea>
+          <div class="alert show alert-danger fade mt-2"
+            *ngIf="formDescription!.invalid && (formDescription!.dirty || formDescription!.touched)">
+            Description must be 5-100 alpha characters
+          </div>
+        </div>
+        <div class="col-12">
+          <label for="sets" class="form-label">Sets</label>
+          <select class="form-control" id="sets" formControlName="sets">
+            <option>1</option>
+            <option>2</option>
+            <option>3</option>
+            <option>4</option>
+            <option>5</option>
+          </select>
+        </div>
+        <div class="col-12">
+          <label for="reps" class="form-label">Reps</label>
+          <select class="form-control" id="reps" formControlName="reps">
+            <option *ngFor="let number of repsNumbersArray">{{number+1}}</option>
+          </select>
+        </div>
+        <div class="col-12">
+          <button class="btn btn-primary btn-small" type="submit" (click)="createExercise()"
+            [disabled]="!createExerciseForm.valid">Create Exercise</button>
+        </div>
+      </div>
+    </form>
+  </div>
+</ng-template>
+<!-- Start of Page -->
 <app-navbar></app-navbar>
 <app-side-nav-bar></app-side-nav-bar>
 <main class="pageMainContainer">
-    <h1>Exercise Page</h1>
+  <div class="container">
+    <div class="row flex-md-row flex-sm-column">
+      <div class="col-md-6 col-12">
+        <h1 class="mt-3 mb-3 text-center">Exercises You Created</h1>
+        <button type="button" class="btn btn-lg btn-primary mt-2 mb-4" (click)="open(content)">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor"
+            class="bi bi-plus-circle-fill" viewBox="0 0 16 16">
+            <path
+              d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM8.5 4.5a.5.5 0 0 0-1 0v3h-3a.5.5 0 0 0 0 1h3v3a.5.5 0 0 0 1 0v-3h3a.5.5 0 0 0 0-1h-3v-3z" />
+          </svg>
+          Create
+        </button>
+        <app-exercise-preview *ngFor="let exercise of exercisesUserCreated" [exerciseName]="exercise.name"
+          [exerciseDescription]="exercise.description" [exerciseId]="exercise.id"
+          [exerciseCreatedByUsername]="exercise.createdByUsername"
+          [exerciseCreatedByPhotoUrl]="exercise.createdByPhotoUrl">
+        </app-exercise-preview>
+      </div>
+      <div class="col-md-6 col-12">
+        <div class="row">
+          <div class="col-12 flex-nowrap">
+            <h1 class="mt-3 mb-3 text-center">Top Exercise Creators</h1>
+            <div class="row d-flex flex-wrap">
+              <app-top-creator-profile class="col-6 flex-fill" *ngFor="let profile of topExerciseCreatorProfiles; let i = index"
+                [userName]="profile.userName" [avatar]="profile.avatar">
+              </app-top-creator-profile>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col">
+            <h1 class="mt-3 mb-3 text-center">Recently Created Exercises</h1>
+            <app-exercise-preview *ngFor="let exercise of exercisesRecent" [exerciseName]="exercise.name"
+              [exerciseDescription]="exercise.description" [exerciseId]="exercise.id"
+              [exerciseCreatedByUsername]="exercise.createdByUsername"
+              [exerciseCreatedByPhotoUrl]="exercise.createdByPhotoUrl">
+            </app-exercise-preview>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </main>
 <app-bottom-navbar></app-bottom-navbar>
