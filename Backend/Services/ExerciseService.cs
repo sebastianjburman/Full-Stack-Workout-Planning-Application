@@ -31,7 +31,7 @@ public class ExerciseService : IExerciseService
     }
     public async Task<List<Exercise>> GetAllRecentlyCreatedExercisesByDate(int limit)
     {
-        SortDefinition<Exercise> sort = Builders<Exercise>.Sort.Descending("_createdAt");
+        SortDefinition<Exercise> sort = Builders<Exercise>.Sort.Descending("createdAt");
         List<Exercise> exercises = await _exercises.FindAsync(Builders<Exercise>.Filter.Empty, new FindOptions<Exercise>
         {
             Limit = limit,
@@ -42,7 +42,12 @@ public class ExerciseService : IExerciseService
 
     public async Task<List<Exercise>> GetAllExerciseCreatedAsync(string userId)
     {
-        List<Exercise> exercises = await _exercises.FindAsync(e => e.CreatedBy == userId).Result.ToListAsync();
+        SortDefinition<Exercise> sort = Builders<Exercise>.Sort.Descending("createdAt");
+        List<Exercise> exercises = await _exercises.FindAsync(e => e.CreatedBy == userId,new FindOptions<Exercise>
+        {
+            Sort = sort
+
+        }).Result.ToListAsync();
         return exercises;
     }
 
