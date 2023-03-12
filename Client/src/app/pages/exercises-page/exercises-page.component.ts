@@ -9,10 +9,10 @@ import { ExerciseService } from 'src/app/services/exercise-service';
 
 @Component({
 	selector: 'app-exercise-page',
-	templateUrl: './exercise-page.component.html',
-	styleUrls: ['./exercise-page.component.css']
+	templateUrl: './exercises-page.component.html',
+	styleUrls: ['./exercises-page.component.css']
 })
-export class ExercisePageComponent implements OnInit {
+export class ExercisesPageComponent implements OnInit {
 
 	@ViewChild('content') content: any;
 	exercisesUserCreated: ExerciseViewModel[] = [];

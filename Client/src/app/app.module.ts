@@ -17,9 +17,10 @@ import { PeoplePageComponent } from './pages/people-page/people-page.component';
 import { ProfilePageComponent } from './pages/profile-page/profile-page.component';
 import { WorkoutPreviewComponent } from './components/workout-preview/workout-preview.component';
 import { UserViewProfileComponent } from './components/user-view-profile/user-view-profile.component';
-import { ExercisePageComponent } from './pages/exercise-page/exercise-page.component';
+import { ExercisesPageComponent } from './pages/exercises-page/exercises-page.component';
 import { ExercisePreviewComponent } from './components/exercise-preview/exercise-preview.component';
 import { TopCreatorProfileComponent } from './components/top-creator-profile/top-creator-profile.component';
+import { ExerciseViewPageComponent } from './pages/exercise-view-page/exercise-view-page.component';
 
 @NgModule({
   declarations: [
@@ -35,9 +36,10 @@ import { TopCreatorProfileComponent } from './components/top-creator-profile/top
     ProfilePageComponent,
     WorkoutPreviewComponent,
     UserViewProfileComponent,
-    ExercisePageComponent,
+    ExercisesPageComponent,
     ExercisePreviewComponent,
-    TopCreatorProfileComponent
+    TopCreatorProfileComponent,
+    ExerciseViewPageComponent
   ],
   imports: [
     BrowserModule,

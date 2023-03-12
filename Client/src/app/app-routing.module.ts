@@ -8,7 +8,8 @@ import { LoginSignupRedirectGuard } from './guards/login-signup-redirect.guard';
 import { WorkoutsPageComponent } from './pages/workouts-page/workouts-page.component';
 import { PeoplePageComponent } from './pages/people-page/people-page.component';
 import { ProfilePageComponent } from './pages/profile-page/profile-page.component';
-import { ExercisePageComponent } from './pages/exercise-page/exercise-page.component';
+import { ExercisesPageComponent } from './pages/exercises-page/exercises-page.component';
+import { ExerciseViewPageComponent } from './pages/exercise-view-page/exercise-view-page.component';
 const routes: Routes = [
   {
     path: 'login',
@@ -29,12 +30,17 @@ const routes: Routes = [
   { path: 'people', component: PeoplePageComponent, canActivate: [AuthGuard] },
   {
     path: 'exercises',
-    component: ExercisePageComponent,
+    component: ExercisesPageComponent,
     canActivate: [AuthGuard],
   },
   {
     path: 'profile/:username',
     component: ProfilePageComponent,
+    canActivate: [AuthGuard],
+  },
+  {
+    path: 'exercise/:id',
+    component: ExerciseViewPageComponent,
     canActivate: [AuthGuard],
   },
 
