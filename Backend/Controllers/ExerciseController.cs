@@ -26,15 +26,24 @@ namespace Backend.Controllers
         [HttpGet]
         public async Task<ActionResult> GetExercise(string id)
         {
-            User contextUser = (User)HttpContext.Items["User"]!;
             try
             {
-                Exercise exercise = await _exerciseService.GetExerciseByIdAsync(id, contextUser.Id!);
+                Exercise exercise = await _exerciseService.GetExerciseByIdAsync(id);
                 if (exercise == null)
                 {
                     return NotFound(new { message = "Exercise not found" });
                 }
-                return Ok(exercise);
+                User user = _userService.GetUser(exercise.CreatedBy!);
+                return Ok(new ExerciseViewModel
+                {
+                    Id = exercise.Id,
+                    Name = exercise.Name,
+                    Description = exercise.Description,
+                    Sets = exercise.Sets,
+                    Reps = exercise.Reps,
+                    CreatedByUsername = user.profile.UserName,
+                    CreatedByPhotoUrl = user.profile.Avatar,
+                });
             }
             catch (InvalidAccessException e)
             {

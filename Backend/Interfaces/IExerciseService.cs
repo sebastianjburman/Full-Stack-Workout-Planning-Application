@@ -6,7 +6,7 @@ namespace Backend.Interfaces
 {
     public interface IExerciseService
     {
-        Task<Exercise> GetExerciseByIdAsync(string id, string userId);
+        Task<Exercise> GetExerciseByIdAsync(string id);
 
         Task<List<Exercise>> GetAllExerciseCreatedAsync(string userId);
 

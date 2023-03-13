@@ -20,13 +20,9 @@ public class ExerciseService : IExerciseService
         _users = _database.GetCollection<User>("users");
     }
 
-    public async Task<Exercise> GetExerciseByIdAsync(string id, string userId)
+    public async Task<Exercise> GetExerciseByIdAsync(string id)
     {
         Exercise exercise = await _exercises.Find(e => e.Id == id).FirstOrDefaultAsync();
-        if (exercise.CreatedBy != userId)
-        {
-            throw new InvalidAccessException("view");
-        }
         return exercise;
     }
     public async Task<List<Exercise>> GetAllRecentlyCreatedExercisesByDate(int limit)

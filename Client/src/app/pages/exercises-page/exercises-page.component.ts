@@ -30,7 +30,7 @@ export class ExercisesPageComponent implements OnInit {
 			Validators.pattern(/^[a-zA-Z''-'\s]{5,30}$/)]),
 		description: new FormControl('', [
 			Validators.required,
-			Validators.pattern(/^[a-zA-Z''-''.','\s]{10,100}$/)]),
+			Validators.pattern(/^[a-zA-Z''-''.','\s]{10,400}$/)]),
 		sets: new FormControl(1, [
 			Validators.required]),
 		reps: new FormControl(1, [
