@@ -173,5 +173,23 @@ namespace Backend.Controllers
                 return BadRequest(new { message = e.Message });
             }
         }
+        [Authorize]
+        [HttpDelete]
+        public async Task<ActionResult> DeleteExercise(string id){
+            User contextUser = (User)HttpContext.Items["User"]!;
+            try
+            {
+                await _exerciseService.DeleteExerciseAsync(id, contextUser.Id!);
+                return Ok();
+            }
+            catch (InvalidAccessException e)
+            {
+                return Unauthorized(new { message = e.Message });
+            }
+            catch (Exception e)
+            {
+                return BadRequest(new { message = e.Message });
+            }
+        }
     }
 }

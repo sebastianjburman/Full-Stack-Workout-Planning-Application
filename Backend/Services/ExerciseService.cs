@@ -22,7 +22,7 @@ public class ExerciseService : IExerciseService
 
     public async Task<Exercise> GetExerciseByIdAsync(string id)
     {
-        Exercise exercise = await _exercises.Find(e => e.Id == id).FirstOrDefaultAsync();
+        Exercise exercise = await _exercises.FindAsync(e => e.Id == id).Result.FirstOrDefaultAsync();
         return exercise;
     }
     public async Task<List<Exercise>> GetAllRecentlyCreatedExercisesByDate(int limit)
@@ -61,7 +61,7 @@ public class ExerciseService : IExerciseService
     public async Task UpdateExerciseAsync(string exerciseId, string userId, Exercise exerciseIn)
     {
         //Make sure the user doesn't change the exercise's created by
-        Exercise exercise = await _exercises.Find(e => e.Id == exerciseId).FirstOrDefaultAsync();
+        Exercise exercise = await _exercises.FindAsync(e => e.Id == exerciseId).Result.FirstOrDefaultAsync();
         if (exerciseIn.CreatedBy != exercise.CreatedBy)
         {
             throw new Exception("You cannot change the exercise's created by.");
@@ -71,6 +71,14 @@ public class ExerciseService : IExerciseService
             throw new InvalidAccessException("update");
         }
         await _exercises.ReplaceOneAsync(e => e.Id == exerciseId, exerciseIn);
+    }
+    public async Task DeleteExerciseAsync(string exerciseId, string userId){
+        Exercise exercise = await _exercises.FindAsync(e=>e.Id==exerciseId).Result.FirstOrDefaultAsync();
+        //The user can't delete the exercise if they didn't create it
+        if (exercise.CreatedBy != userId)
+        {
+            throw new InvalidAccessException("delete");
+        }
     }
     public async Task<List<User>> GetTopUsersByExerciseCountAsync(int limit)
     {
@@ -86,7 +94,7 @@ public class ExerciseService : IExerciseService
 
         var userIds = userGroups.Select(group => group.UserId);
 
-        var users = await _users.Find(user => userIds.Contains(user.Id)).ToListAsync();
+        var users = await _users.FindAsync(user => userIds.Contains(user.Id)).Result.ToListAsync();
 
         return users;
     }
