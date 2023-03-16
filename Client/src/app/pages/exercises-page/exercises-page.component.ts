@@ -23,20 +23,7 @@ export class ExercisesPageComponent implements OnInit {
 	repsNumbersArray: number[] = Array.from(Array(30).keys());
 	closeResult = '';
 
-	createExerciseForm = new FormGroup({
-		name: new FormControl('', [
-			Validators.required,
-			Validators.pattern(/^[a-zA-Z''-'\s]{5,30}$/)]),
-		description: new FormControl('', [
-			Validators.required,
-			Validators.pattern(/^[a-zA-Z''-''.','\s]{10,400}$/)]),
-		sets: new FormControl(1, [
-			Validators.required]),
-		reps: new FormControl(1, [
-			Validators.required]),
-	});
-
-	constructor(private modalService: NgbModal, private exerciseService: ExerciseService, private toastService:ToastService, private router:Router) {
+	constructor(private modalService: NgbModal, private exerciseService: ExerciseService) {
 	}
 
 	ngOnInit(): void {
@@ -66,22 +53,6 @@ export class ExercisesPageComponent implements OnInit {
 		})
 	}
 
-	createExercise() {
-		if (this.createExerciseForm.valid) {
-			const createdExercise: Exercise = (this.createExerciseForm.value) as unknown as Exercise;
-			this.exerciseService.createExercise(createdExercise, TokenManagement.getTokenFromLocalStorage()).subscribe({
-				next: (res) => {
-					this.toastService.show("Successfully Created Exercise", { classname: "bg-success text-light", delay: 5000 ,header:"Success"});
-					this.clearExerciseForm();
-					this.modalService.dismissAll();
-					this.router.navigate([`/exercise/${res}`],)
-				},
-				error: (error) => {
-					this.toastService.show(error.error.message, { classname: 'bg-danger text-light', delay: 5000 ,header:"Error"});
-				}
-			})
-		}
-	}
 	open(content: any) {
 		this.modalService.open(content, { ariaLabelledBy: 'modal-basic-title', keyboard: false }).result.then(
 			(result) => {
@@ -93,13 +64,6 @@ export class ExercisesPageComponent implements OnInit {
 		);
 	}
 
-	public clearExerciseForm(): void {
-		this.createExerciseForm.get('name')?.reset();
-		this.createExerciseForm.get('description')?.reset();
-		this.createExerciseForm.get('sets')?.setValue(1);
-		this.createExerciseForm.get('reps')?.setValue(1);
-	}
-
 	private getDismissReason(reason: any): string {
 		if (reason === ModalDismissReasons.ESC) {
 			return 'by pressing ESC';
@@ -109,8 +73,5 @@ export class ExercisesPageComponent implements OnInit {
 			return `with: ${reason}`;
 		}
 	}
-
-	get formName() { return this.createExerciseForm.get('name'); }
-	get formDescription() { return this.createExerciseForm.get('description'); }
 
 }

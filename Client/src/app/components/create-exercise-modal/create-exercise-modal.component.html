@@ -1,0 +1,50 @@
+<div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">Create Exercise</h4>
+    <button type="button" class="btn-close" aria-label="Close" (click)="clearAllModals()"></button>
+  </div>
+  <div class="modal-body">
+    <form [formGroup]="createExerciseForm">
+      <div class="row g-3">
+        <div class="col-12">
+          <label for="name" class="form-label">Name</label>
+          <input type="text" class="form-control" id="name" formControlName="name">
+          <div class="alert show alert-danger fade mt-2"
+            *ngIf="formName!.invalid && (formName!.dirty || formName!.touched)">
+            Name must be 5-30 alpha characters
+          </div>
+        </div>
+        <div class="col-12">
+          <label for="description" class="form-label">Description</label>
+          <textarea type="text" class="form-control" id="description" formControlName="description"></textarea>
+          <div class="alert show alert-danger fade mt-2"
+            *ngIf="formDescription!.invalid && (formDescription!.dirty || formDescription!.touched)">
+            Description must be 5-100 alpha characters
+          </div>
+        </div>
+        <div class="col-12">
+          <label for="sets" class="form-label">Sets</label>
+          <select class="form-control" id="sets" formControlName="sets">
+            <option>1</option>
+            <option>2</option>
+            <option>3</option>
+            <option>4</option>
+            <option>5</option>
+          </select>
+        </div>
+        <div class="col-12">
+          <label for="reps" class="form-label">Reps</label>
+          <select class="form-control" id="reps" formControlName="reps">
+            <option *ngFor="let number of repsNumbersArray">{{number+1}}</option>
+          </select>
+        </div>
+        <div class="col-12">
+          <button class="btn btn-primary btn-small" type="submit" (click)="createExercise()"
+            [disabled]="!createExerciseForm.valid">Create Exercise
+          </button>
+          <button class="ms-2 btn btn-secondary btn-small" (click)="clearExerciseForm()">
+            Clear
+          </button>
+        </div>
+      </div>
+    </form>
+  </div>

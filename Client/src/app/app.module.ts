@@ -22,6 +22,7 @@ import { ExercisePreviewComponent } from './components/exercise-preview/exercise
 import { TopCreatorProfileComponent } from './components/top-creator-profile/top-creator-profile.component';
 import { ExerciseViewPageComponent } from './pages/exercise-view-page/exercise-view-page.component';
 import { ToastComponent } from './components/toast/toast.component';
+import { CreateExerciseModalComponent } from './components/create-exercise-modal/create-exercise-modal.component';
 
 @NgModule({
   declarations: [
@@ -42,6 +43,7 @@ import { ToastComponent } from './components/toast/toast.component';
     TopCreatorProfileComponent,
     ExerciseViewPageComponent,
     ToastComponent,
+    CreateExerciseModalComponent,
   ],
   imports: [
     BrowserModule,
