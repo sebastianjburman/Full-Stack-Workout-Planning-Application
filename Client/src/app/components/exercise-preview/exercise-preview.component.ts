@@ -6,7 +6,7 @@ import { Component, Input, OnInit } from '@angular/core';
   styleUrls: ['./exercise-preview.component.css']
 })
 export class ExercisePreviewComponent implements OnInit {
-  @Input() exerciseId!: Number;
+  @Input() exerciseId!: string;
   @Input() exerciseName!: string;
   @Input() exerciseDescription!: string;
   @Input() exerciseCreatedByUsername!: string;

@@ -4,6 +4,7 @@ using Backend.DTO;
 using Backend.Exceptions;
 using Backend.Helpers;
 using Backend.Models;
+using System.Text.Json;
 
 namespace Backend.Controllers
 {
@@ -146,8 +147,8 @@ namespace Backend.Controllers
             User contextUser = (User)HttpContext.Items["User"]!;
             try
             {
-                await _exerciseService.CreateExerciseAsync(createdExercise, contextUser.Id!);
-                return Ok();
+                Exercise exercise = await _exerciseService.CreateExerciseAsync(createdExercise, contextUser.Id!);
+                return Ok(JsonSerializer.Serialize(exercise.Id));
             }
             catch (Exception e)
             {

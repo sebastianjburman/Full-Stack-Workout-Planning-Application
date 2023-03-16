@@ -79,6 +79,7 @@ public class ExerciseService : IExerciseService
         {
             throw new InvalidAccessException("delete");
         }
+        await _exercises.DeleteOneAsync(e=>e.Id == exercise.Id);
     }
     public async Task<List<User>> GetTopUsersByExerciseCountAsync(int limit)
     {

@@ -27,6 +27,18 @@ export class ExerciseService {
       },
     });
   }
+
+  public deleteExercise(id: string, token: string): Observable<any> {
+    return this.http.delete(this.url, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+      params: {
+        id: id,
+      },
+    });
+  }
+
   public getExercise(id: string, token: string): Observable<any> {
     return this.http.get(this.url, {
       headers: {

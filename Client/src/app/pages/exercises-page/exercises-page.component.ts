@@ -1,11 +1,13 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 import { ModalDismissReasons, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { TokenManagement } from 'src/app/helpers/tokenManagement';
 import { Exercise } from 'src/app/models/exercise';
 import { ExerciseViewModel } from 'src/app/models/exerciseViewModel';
 import { ProfileDTO } from 'src/app/models/profileDTO';
 import { ExerciseService } from 'src/app/services/exercise-service';
+import { ToastService } from 'src/app/services/toast.service';
 
 @Component({
 	selector: 'app-exercise-page',
@@ -20,9 +22,6 @@ export class ExercisesPageComponent implements OnInit {
 	topExerciseCreatorProfiles: ProfileDTO[] = [];
 	repsNumbersArray: number[] = Array.from(Array(30).keys());
 	closeResult = '';
-	alertOn: boolean = false;
-	alertType: string = '';
-	alertMessage: string = '';
 
 	createExerciseForm = new FormGroup({
 		name: new FormControl('', [
@@ -37,23 +36,10 @@ export class ExercisesPageComponent implements OnInit {
 			Validators.required]),
 	});
 
-	constructor(private modalService: NgbModal, private exerciseService: ExerciseService) {
+	constructor(private modalService: NgbModal, private exerciseService: ExerciseService, private toastService:ToastService, private router:Router) {
 	}
 
 	ngOnInit(): void {
-		this.OnInitCalls();
-		//Top exercise creators
-		this.exerciseService.getTopExerciseCreators(TokenManagement.getTokenFromLocalStorage()).subscribe({
-			next: (res) => {
-				this.topExerciseCreatorProfiles = res;
-			},
-			error: (error) => {
-			}
-		})
-	}
-
-	//These need to be called after exercise creation or update
-	private OnInitCalls(): void {
 		//Exercises created by user
 		this.exerciseService.getExercisesCreated(TokenManagement.getTokenFromLocalStorage()).subscribe({
 			next: (res) => {
@@ -70,6 +56,14 @@ export class ExercisesPageComponent implements OnInit {
 			error: (error) => {
 			}
 		})
+		//Top exercise creators
+		this.exerciseService.getTopExerciseCreators(TokenManagement.getTokenFromLocalStorage()).subscribe({
+			next: (res) => {
+				this.topExerciseCreatorProfiles = res;
+			},
+			error: (error) => {
+			}
+		})
 	}
 
 	createExercise() {
@@ -77,17 +71,13 @@ export class ExercisesPageComponent implements OnInit {
 			const createdExercise: Exercise = (this.createExerciseForm.value) as unknown as Exercise;
 			this.exerciseService.createExercise(createdExercise, TokenManagement.getTokenFromLocalStorage()).subscribe({
 				next: (res) => {
-					this.alertType = "success";
-					this.alertMessage = "Exercise created successfully!";
-					this.alertOn = true;
-					this.clearExerciseForm()
-					//Update page data
-					this.OnInitCalls();
+					this.toastService.show("Successfully Created Exercise", { classname: "bg-success text-light", delay: 5000 ,header:"Success"});
+					this.clearExerciseForm();
+					this.modalService.dismissAll();
+					this.router.navigate([`/exercise/${res}`],)
 				},
 				error: (error) => {
-					this.alertType = "danger";
-					this.alertMessage = "Error creating exercise!"
-					this.alertOn = true;
+					this.toastService.show(error.error.message, { classname: 'bg-danger text-light', delay: 5000 ,header:"Error"});
 				}
 			})
 		}
@@ -101,11 +91,6 @@ export class ExercisesPageComponent implements OnInit {
 				this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
 			},
 		);
-	}
-	public closeExerciseModal(): void {
-		this.modalService.dismissAll();
-		this.alertOn = false;
-		this.clearExerciseForm();
 	}
 
 	public clearExerciseForm(): void {

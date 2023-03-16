@@ -1,6 +1,6 @@
 export class ExerciseViewModel {
     constructor(
-      public id: number,
+      public id: string,
       public name: string,
       public description: string,
       public sets: number,

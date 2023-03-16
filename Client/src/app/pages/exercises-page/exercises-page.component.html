@@ -2,13 +2,10 @@
 <ng-template #content let-modal>
   <div class="modal-header">
     <h4 class="modal-title" id="modal-basic-title">Create Exercise</h4>
-    <button type="button" class="btn-close" aria-label="Close" (click)="closeExerciseModal()"></button>
+    <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
   </div>
   <div class="modal-body">
     <form [formGroup]="createExerciseForm">
-      <div *ngIf="alertOn" class="alert alert-{{alertType}}" role="alert">
-        {{alertMessage}}
-      </div>
       <div class="row g-3">
         <div class="col-12">
           <label for="name" class="form-label">Name</label>

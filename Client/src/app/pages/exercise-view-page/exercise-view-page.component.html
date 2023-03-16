@@ -1,3 +1,18 @@
+<!--Modal-->
+<ng-template #content let-modal>
+    <div class="modal-header">
+        <h2 class="modal-title" id="modal-basic-title">Delete Exercise</h2>
+        <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
+    </div>
+    <div class="modal-body">
+        <p>Are you sure you want to delete this <b>Delete Exercise</b>?</p>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-danger" (click)="deleteExercise()">Delete</button>
+        <button type="button" class="btn btn-primary" (click)="modal.dismiss('Cross click')">Cancel</button>
+    </div>
+</ng-template>
+<!--Modal-->
 <app-navbar></app-navbar>
 <app-side-nav-bar></app-side-nav-bar>
 <main class="pageMainContainer">
@@ -30,7 +45,7 @@
                 <hr class="hr" />
             </div>
             <div>
-                <button class="btn btn-danger btn-small m-2">Delete</button>
+                <button  class="btn btn-danger btn-small m-2" [disabled]="!isUsersExercise()" (click)="open(content)">Delete</button>
                 <button class="btn btn-secondary btn-small">Make a Copy</button>
             </div>
         </div>
