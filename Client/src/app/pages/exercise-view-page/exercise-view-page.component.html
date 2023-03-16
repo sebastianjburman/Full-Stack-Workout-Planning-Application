@@ -1,4 +1,4 @@
-<!--Modal-->
+<!--Delete Exercise Modal-->
 <ng-template #content let-modal>
     <div class="modal-header">
         <h2 class="modal-title" id="modal-basic-title">Delete Exercise</h2>
@@ -12,7 +12,11 @@
         <button type="button" class="btn btn-primary" (click)="modal.dismiss('Cross click')">Cancel</button>
     </div>
 </ng-template>
-<!--Modal-->
+<!--Delete Exercise Modal-->
+<!--Copy Exercise Modal-->
+<ng-template #copyExerciseModal let-modal>
+    <app-create-exercise-modal [optionalExercise]="exercise"></app-create-exercise-modal>
+</ng-template>
 <app-navbar></app-navbar>
 <app-side-nav-bar></app-side-nav-bar>
 <main class="pageMainContainer">
@@ -46,7 +50,7 @@
             </div>
             <div>
                 <button  class="btn btn-danger btn-small m-2" [disabled]="!isUsersExercise()" (click)="open(content)">Delete</button>
-                <button class="btn btn-secondary btn-small">Make a Copy</button>
+                <button class="btn btn-secondary btn-small" (click)="open(copyExerciseModal)">Make a Copy</button>
             </div>
         </div>
     </div>

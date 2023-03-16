@@ -15,6 +15,7 @@ import { ToastService } from 'src/app/services/toast.service';
 export class ExerciseViewPageComponent implements OnInit {
 
   @ViewChild('content') content: any;
+  @ViewChild('copyExerciseModal') copyExerciseModal: any;
   closeResult = '';
   exercise: ExerciseViewModel | undefined
 
