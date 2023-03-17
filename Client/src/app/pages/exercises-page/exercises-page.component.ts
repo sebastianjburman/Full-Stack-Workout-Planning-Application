@@ -22,6 +22,14 @@ export class ExercisesPageComponent implements OnInit {
 	topExerciseCreatorProfiles: ProfileDTO[] = [];
 	repsNumbersArray: number[] = Array.from(Array(30).keys());
 	closeResult = '';
+	//Pagination
+
+	//User Created List
+	userCreatedPageNum:number = 1;
+	userItemsOnPage:number = 5;;
+	//Recently Created List
+	recentlyCreatedPageNum:number = 1;
+	recentlyCreatedItemOnPage:number = 5;
 
 	constructor(private modalService: NgbModal, private exerciseService: ExerciseService) {
 	}
