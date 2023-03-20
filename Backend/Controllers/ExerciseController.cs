@@ -89,6 +89,22 @@ namespace Backend.Controllers
         }
 
         [Authorize]
+        [HttpGet("createdsearch")]
+        public async Task<ActionResult> GetExerciseCreatedForSearch(string search)
+        {
+            User contextUser = (User)HttpContext.Items["User"]!;
+            try
+            {
+                List<Exercise> exercises = await _exerciseService.GetAllExerciseCreatedSearchAsync(contextUser.Id!,search);
+                return Ok(exercises);
+            }
+            catch (Exception e)
+            {
+                return BadRequest(new { message = e.Message });
+            }
+        }
+
+        [Authorize]
         [HttpGet("recent")]
         public async Task<ActionResult> GetRecentlyCreatedExercises()
         {

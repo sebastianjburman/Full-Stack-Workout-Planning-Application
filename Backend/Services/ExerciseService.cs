@@ -1,6 +1,7 @@
 using Backend.Exceptions;
 using Backend.Interfaces;
 using Backend.Models;
+using MongoDB.Bson;
 using MongoDB.Driver;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -44,6 +45,14 @@ public class ExerciseService : IExerciseService
             Sort = sort
 
         }).Result.ToListAsync();
+        return exercises;
+    }
+
+    public async Task<List<Exercise>> GetAllExerciseCreatedSearchAsync(string userId,string search)
+    {
+        var filterBuilder = Builders<Exercise>.Filter;
+        var filter = filterBuilder.And(filterBuilder.Eq("created_by", userId), filterBuilder.Regex("name", new BsonRegularExpression(search, "i")));
+        List<Exercise> exercises = await _exercises.FindAsync(filter).Result.ToListAsync();
         return exercises;
     }
 

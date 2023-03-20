@@ -10,6 +10,8 @@ namespace Backend.Interfaces
 
         Task<List<Exercise>> GetAllExerciseCreatedAsync(string userId);
 
+        Task<List<Exercise>> GetAllExerciseCreatedSearchAsync(string userId, string search);
+
         Task<List<Exercise>> GetAllRecentlyCreatedExercisesByDate(int limit);
 
         Task<Exercise> CreateExerciseAsync(Exercise exercise, string createdBy);
