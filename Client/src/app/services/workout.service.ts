@@ -6,7 +6,7 @@ import { Observable } from 'rxjs';
 @Injectable({
   providedIn: 'root',
 })
-export class WorkoutServiceService {
+export class WorkoutService {
   constructor(private http: HttpClient) {}
   private url = 'v1/workout';
 
