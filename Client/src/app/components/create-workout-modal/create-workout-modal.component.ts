@@ -7,6 +7,7 @@ import { Exercise } from 'src/app/models/exercise';
 import { Workout } from 'src/app/models/workout';
 import { ExerciseService } from 'src/app/services/exercise-service';
 import { ToastService } from 'src/app/services/toast.service';
+import { WorkoutService} from 'src/app/services/workout.service';
 
 @Component({
   selector: 'app-create-workout-modal',
@@ -26,7 +27,7 @@ export class CreateWorkoutModalComponent implements OnInit {
     isPublic: new FormControl(true, Validators.required)
   });
 
-  constructor(private modalService: NgbModal, private exerciseService: ExerciseService, private toastService: ToastService) { }
+  constructor(private modalService: NgbModal, private exerciseService: ExerciseService, private toastService: ToastService, private workoutService:WorkoutService) { }
 
   ngOnInit(): void {
   }
@@ -51,7 +52,15 @@ export class CreateWorkoutModalComponent implements OnInit {
     const workout: Workout = (this.createWorkoutForm.value) as Workout;
     const exercises = this.workoutExercises.map(ex => ex.id);
     workout.exercises = exercises;
-    console.log(workout)
+    this.workoutService.createWorkout(workout,TokenManagement.getTokenFromLocalStorage()).subscribe({
+      next: (res) => {
+        this.toastService.show("Successfully Created Workout", { classname: "bg-success text-light", delay: 5000, header: "Success" });
+        this.modalService.dismissAll();
+      },
+      error: (error) => {
+        this.toastService.show(error.error.message, { classname: 'bg-danger text-light', delay: 5000, header: "Error" });
+      } 
+    })
   }
 
   search: OperatorFunction<string, readonly Exercise[]> = (text$: Observable<string>) =>

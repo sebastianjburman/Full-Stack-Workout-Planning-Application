@@ -32,6 +32,10 @@ public class WorkoutService : IWorkoutService
 
     public async Task<Workout> CreateWorkoutAsync(Workout workout, string createdBy)
     {
+        if (workout.Exercises.Count >= 15)
+        {
+            throw new Exception("Cannot add more than 15 exercises to workout.");
+        }
         //Make workout id null so that mongo will generate a new one.
         workout.Id = null;
         //Set the workouts's created by to the user who created the

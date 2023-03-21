@@ -16,7 +16,7 @@ namespace Backend.Models
         [RegularExpression(@"[a-zA-Z''-''.','\s]{10,400}$", ErrorMessage = "Description is not in correct format. Min 10 characters and max 400 characters.")]
         public string? workoutDescription {get; set;}
         [BsonElement("exercises")]
-        public List<Exercise> Exercises = new List<Exercise>();
+        public List<string> Exercises {get;set;}
         [BsonElement("createdAt")]
         public DateTime CreatedAt { get; set; }
         [BsonElement("createdBy")]
@@ -25,13 +25,14 @@ namespace Backend.Models
         public bool isPublic { get; set; }
         public Workout()
         {
+            Exercises = new List<string>();
         }
-        public void AddExercise(Exercise exercise)
+        public void AddExercise(string exerciseId)
         {
-            if (Exercises.Count >= 12)
-                throw new Exception("Cannot add more than 12 exercises to workout.");
+            if (Exercises.Count >= 15)
+                throw new Exception("Cannot add more than 15 exercises to workout.");
 
-            Exercises.Add(exercise);
+            Exercises.Add(exerciseId);
         }
         public void RemoveExercise(int indexOfDeletedExercise)
         {
