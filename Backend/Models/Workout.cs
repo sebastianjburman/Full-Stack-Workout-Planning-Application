@@ -12,6 +12,9 @@ namespace Backend.Models
         [BsonElement("workoutName")]
         [RegularExpression(@"^[a-zA-Z''-'\s]{5,30}$", ErrorMessage = "Name is not in correct format. Min 5 characters and max 30 characters.")]
         public string? WorkoutName { get; set; }
+        [BsonElement("workoutDescription")]
+        [RegularExpression(@"[a-zA-Z''-''.','\s]{10,400}$", ErrorMessage = "Description is not in correct format. Min 10 characters and max 400 characters.")]
+        public string? workoutDescription {get; set;}
         [BsonElement("exercises")]
         public List<Exercise> Exercises = new List<Exercise>();
         [BsonElement("createdAt")]
