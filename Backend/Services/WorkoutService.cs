@@ -14,6 +14,12 @@ public class WorkoutService : IWorkoutService
         _client = new MongoClient(settings.ConnectionString);
         _database = _client.GetDatabase(settings.DatabaseName);
         _workouts = _database.GetCollection<Workout>("workouts");
+
+        // Create unique indexes
+        var workoutNameKey = Builders<Workout>.IndexKeys.Ascending(x => x.WorkoutName);
+        var uniqueIndexOption = new CreateIndexOptions { Unique = true };
+        var workoutNameIndexModel = new CreateIndexModel<Workout>(workoutNameKey, uniqueIndexOption);
+        _workouts.Indexes.CreateOne(workoutNameIndexModel);
     }
 
     public async Task<Workout> GetWorkoutByIdAsync(string id, string userId)

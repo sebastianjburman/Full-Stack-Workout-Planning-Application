@@ -3,6 +3,7 @@ using Backend.Interfaces;
 using Backend.Exceptions;
 using Backend.Helpers;
 using Backend.Models;
+using MongoDB.Driver;
 
 namespace Backend.Controllers
 {
@@ -52,6 +53,9 @@ namespace Backend.Controllers
                 await _workoutService.CreateWorkoutAsync(createdWorkout, contextUser.Id!);
                 return Ok();
             }
+            catch(MongoWriteException){
+                return BadRequest(new{message = "Workout name is already taken"});
+            }
             catch (Exception e)
             {
                 return BadRequest(new { message = e.Message });
@@ -66,6 +70,9 @@ namespace Backend.Controllers
             {
                 await _workoutService.UpdateWorkoutAsync(id, contextUser.Id!, updatedWorkout);
                 return Ok();
+            }
+            catch(MongoWriteException){
+                return BadRequest(new{message = "Workout name is already taken"});
             }
             catch (InvalidAccessException e)
             {

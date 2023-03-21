@@ -5,6 +5,7 @@ using Backend.Exceptions;
 using Backend.Helpers;
 using Backend.Models;
 using System.Text.Json;
+using MongoDB.Driver;
 
 namespace Backend.Controllers
 {
@@ -166,6 +167,9 @@ namespace Backend.Controllers
                 Exercise exercise = await _exerciseService.CreateExerciseAsync(createdExercise, contextUser.Id!);
                 return Ok(JsonSerializer.Serialize(exercise.Id));
             }
+            catch(MongoWriteException){
+                return BadRequest(new{message = "Exercise name is already taken"});
+            }
             catch (Exception e)
             {
                 return BadRequest(new { message = e.Message });
@@ -184,6 +188,9 @@ namespace Backend.Controllers
             catch (InvalidAccessException e)
             {
                 return Unauthorized(new { message = e.Message });
+            }
+            catch(MongoWriteException){
+                return BadRequest(new{message = "Exercise name is already taken"});
             }
             catch (Exception e)
             {

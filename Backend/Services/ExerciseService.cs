@@ -19,6 +19,12 @@ public class ExerciseService : IExerciseService
         _database = _client.GetDatabase(settings.DatabaseName);
         _exercises = _database.GetCollection<Exercise>("exercises");
         _users = _database.GetCollection<User>("users");
+
+        // Create unique indexes
+        var exerciseNameKey = Builders<Exercise>.IndexKeys.Ascending(x => x.Name);
+        var uniqueIndexOption = new CreateIndexOptions { Unique = true };
+        var exerciseNameIndexModel = new CreateIndexModel<Exercise>(exerciseNameKey, uniqueIndexOption);
+        _exercises.Indexes.CreateOne(exerciseNameIndexModel);
     }
 
     public async Task<Exercise> GetExerciseByIdAsync(string id)
