@@ -1,13 +1,13 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Exercise } from '../models/exercise';
-import { Observable } from 'rxjs';
+import {Observable, of } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ExerciseService {
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
   private url = 'v1/exercise';
 
   public createExercise(exercise: Exercise, token: string): Observable<any> {
@@ -55,6 +55,19 @@ export class ExerciseService {
         Authorization: `Bearer ${token}`,
       },
     });
+  }
+
+  public getExercisesCreatedSearch(token: string, search: string): Observable<any> {
+    if (search === '') {
+      return of([]);
+    }
+    return this.http
+      .get<Exercise[]>(`${this.url}/createdsearch`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+        params: { search: search }
+      })
   }
   public getRecentExercises(token: string): Observable<any> {
     return this.http.get(`${this.url}/recent`, {

@@ -17,7 +17,7 @@ export class WorkoutsPageComponent implements OnInit {
   }
 
 	open(createdWorkoutModal: any) {
-		this.modalService.open(createdWorkoutModal, { ariaLabelledBy: 'modal-basic-title' }).result.then(
+		this.modalService.open(createdWorkoutModal, { ariaLabelledBy: 'modal-basic-title', size:"lg"}).result.then(
 			(result) => {
 				this.closeResult = `Closed with: ${result}`;
 			},

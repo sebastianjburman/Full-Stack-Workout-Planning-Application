@@ -24,6 +24,7 @@ import { ExerciseViewPageComponent } from './pages/exercise-view-page/exercise-v
 import { ToastComponent } from './components/toast/toast.component';
 import { CreateExerciseModalComponent } from './components/create-exercise-modal/create-exercise-modal.component';
 import { CreateWorkoutModalComponent } from './components/create-workout-modal/create-workout-modal.component';
+import { ExerciseListComponent } from './components/exercise-list/exercise-list.component';
 
 @NgModule({
   declarations: [
@@ -46,6 +47,7 @@ import { CreateWorkoutModalComponent } from './components/create-workout-modal/c
     ToastComponent,
     CreateExerciseModalComponent,
     CreateWorkoutModalComponent,
+    ExerciseListComponent,
   ],
   imports: [
     BrowserModule,
