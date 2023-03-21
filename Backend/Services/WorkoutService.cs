@@ -38,9 +38,9 @@ public class WorkoutService : IWorkoutService
 
     public async Task<Workout> CreateWorkoutAsync(Workout workout, string createdBy)
     {
-        if (workout.Exercises.Count >= 15)
+        if (workout.Exercises.Count >= 15 || workout.Exercises.Count == 0)
         {
-            throw new Exception("Cannot add more than 15 exercises to workout.");
+            throw new Exception("Cannot have 0 exercises or more than 15 exercises to workout.");
         }
         //Make workout id null so that mongo will generate a new one.
         workout.Id = null;
@@ -63,6 +63,10 @@ public class WorkoutService : IWorkoutService
         if (workout.CreatedBy != userId)
         {
             throw new InvalidAccessException("update");
+        }
+        if (workoutIn.Exercises.Count >= 15 || workoutIn.Exercises.Count == 0)
+        {
+            throw new Exception("Cannot have 0 exercises or more than 15 exercises to workout.");
         }
         await _workouts.ReplaceOneAsync(e => e.Id == workoutId, workoutIn);
     }
