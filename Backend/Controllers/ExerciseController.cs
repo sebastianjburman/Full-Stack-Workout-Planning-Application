@@ -30,22 +30,12 @@ namespace Backend.Controllers
         {
             try
             {
-                Exercise exercise = await _exerciseService.GetExerciseByIdAsync(id);
+                ExerciseViewModel exercise = await _exerciseService.GetExerciseByIdAsync(id);
                 if (exercise == null)
                 {
                     return NotFound(new { message = "Exercise not found" });
                 }
-                User user = _userService.GetUser(exercise.CreatedBy!);
-                return Ok(new ExerciseViewModel
-                {
-                    Id = exercise.Id,
-                    Name = exercise.Name,
-                    Description = exercise.Description,
-                    Sets = exercise.Sets,
-                    Reps = exercise.Reps,
-                    CreatedByUsername = user.profile.UserName,
-                    CreatedByPhotoUrl = user.profile.Avatar,
-                });
+                return Ok(exercise);
             }
             catch (InvalidAccessException e)
             {
@@ -64,24 +54,8 @@ namespace Backend.Controllers
             User contextUser = (User)HttpContext.Items["User"]!;
             try
             {
-                List<ExerciseViewModel> exerciseViewModels = new List<ExerciseViewModel>();
-                List<Exercise> exercises = await _exerciseService.GetAllExerciseCreatedAsync(contextUser.Id!);
-                foreach (Exercise exercise in exercises)
-                {
-                    User user = _userService.GetUser(exercise.CreatedBy!);
-                    exerciseViewModels.Add(new ExerciseViewModel
-                    {
-                        Id = exercise.Id,
-                        Name = exercise.Name,
-                        Description = exercise.Description,
-                        Sets = exercise.Sets,
-                        Reps = exercise.Reps,
-                        CreatedByUsername = user.profile.UserName,
-                        CreatedByPhotoUrl = user.profile.Avatar,
-                    });
-                }
-
-                return Ok(exerciseViewModels);
+                List<ExerciseViewModel> exercises = await _exerciseService.GetAllExerciseCreatedAsync(contextUser.Id!);
+                return Ok(exercises);
             }
             catch (Exception e)
             {
@@ -91,12 +65,12 @@ namespace Backend.Controllers
 
         [Authorize]
         [HttpGet("createdsearch")]
-        public async Task<ActionResult> GetExerciseCreatedForSearch(string search)
+        public async Task<ActionResult> GetExercisesCreatedForSearch(string search)
         {
             User contextUser = (User)HttpContext.Items["User"]!;
             try
             {
-                List<Exercise> exercises = await _exerciseService.GetAllExerciseCreatedSearchAsync(contextUser.Id!,search);
+                List<Exercise> exercises = await _exerciseService.GetAllExerciseCreatedSearchAsync(contextUser.Id!, search);
                 return Ok(exercises);
             }
             catch (Exception e)
@@ -112,24 +86,8 @@ namespace Backend.Controllers
             int limit = 10;
             try
             {
-                List<ExerciseViewModel> exerciseViewModels = new List<ExerciseViewModel>();
-                List<Exercise> exercises = await _exerciseService.GetAllRecentlyCreatedExercisesByDate(limit);
-                foreach (Exercise exercise in exercises)
-                {
-                    User user = _userService.GetUser(exercise.CreatedBy!);
-                    exerciseViewModels.Add(new ExerciseViewModel
-                    {
-                        Id = exercise.Id,
-                        Name = exercise.Name,
-                        Description = exercise.Description,
-                        Sets = exercise.Sets,
-                        Reps = exercise.Reps,
-                        CreatedByUsername = user.profile.UserName,
-                        CreatedByPhotoUrl = user.profile.Avatar,
-                    });
-                }
-
-                return Ok(exerciseViewModels);
+                List<ExerciseViewModel> exercises = await _exerciseService.GetAllRecentlyCreatedExercisesByDate(limit);
+                return Ok(exercises);
             }
             catch (Exception e)
             {
@@ -167,8 +125,9 @@ namespace Backend.Controllers
                 Exercise exercise = await _exerciseService.CreateExerciseAsync(createdExercise, contextUser.Id!);
                 return Ok(JsonSerializer.Serialize(exercise.Id));
             }
-            catch(MongoWriteException){
-                return BadRequest(new{message = "Exercise name is already taken"});
+            catch (MongoWriteException)
+            {
+                return BadRequest(new { message = "Exercise name is already taken" });
             }
             catch (Exception e)
             {
@@ -189,8 +148,9 @@ namespace Backend.Controllers
             {
                 return Unauthorized(new { message = e.Message });
             }
-            catch(MongoWriteException){
-                return BadRequest(new{message = "Exercise name is already taken"});
+            catch (MongoWriteException)
+            {
+                return BadRequest(new { message = "Exercise name is already taken" });
             }
             catch (Exception e)
             {
@@ -199,7 +159,8 @@ namespace Backend.Controllers
         }
         [Authorize]
         [HttpDelete]
-        public async Task<ActionResult> DeleteExercise(string id){
+        public async Task<ActionResult> DeleteExercise(string id)
+        {
             User contextUser = (User)HttpContext.Items["User"]!;
             try
             {

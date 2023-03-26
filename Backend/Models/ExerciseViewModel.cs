@@ -1,7 +1,12 @@
+using MongoDB.Bson;
+using MongoDB.Bson.Serialization.Attributes;
+
 namespace Backend.Models
 {
     public class ExerciseViewModel
     {
+        [BsonId]
+        [BsonRepresentation(BsonType.ObjectId)]
         public string? Id { get; set; }
         public string? Name { get; set; }
         public string? Description { get; set; }
@@ -11,7 +16,3 @@ namespace Backend.Models
         public string? CreatedByPhotoUrl { get; set; }
     }
 }
-
-
-
-

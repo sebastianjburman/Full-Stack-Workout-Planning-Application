@@ -3,8 +3,6 @@ using Backend.Interfaces;
 using Backend.Models;
 using MongoDB.Bson;
 using MongoDB.Driver;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 
 public class ExerciseService : IExerciseService
 {
@@ -27,34 +25,100 @@ public class ExerciseService : IExerciseService
         _exercises.Indexes.CreateOne(exerciseNameIndexModel);
     }
 
-    public async Task<Exercise> GetExerciseByIdAsync(string id)
+    public async Task<ExerciseViewModel> GetExerciseByIdAsync(string id)
     {
-        Exercise exercise = await _exercises.FindAsync(e => e.Id == id).Result.FirstOrDefaultAsync();
-        return exercise;
-    }
-    public async Task<List<Exercise>> GetAllRecentlyCreatedExercisesByDate(int limit)
-    {
-        SortDefinition<Exercise> sort = Builders<Exercise>.Sort.Descending("createdAt");
-        List<Exercise> exercises = await _exercises.FindAsync(Builders<Exercise>.Filter.Empty, new FindOptions<Exercise>
+        var pipeline = new BsonDocument[]
         {
-            Limit = limit,
-            Sort = sort
-        }).Result.ToListAsync();
-        return exercises;
+            new BsonDocument("$match", new BsonDocument("_id", new ObjectId(id))),
+            new BsonDocument("$lookup",
+            new BsonDocument
+            {
+                { "from", "users" },
+                { "localField","created_by" },
+                { "foreignField", "_id" },
+                { "as", "createdUser" }
+            }
+            ),
+            new BsonDocument("$unwind", "$createdUser"),
+            new BsonDocument("$project",
+            new BsonDocument
+            {
+                { "Name", "$name" },
+                { "Description", "$description" },
+                { "Sets", "$sets" },
+                { "Reps", "$reps" },
+                { "CreatedByUsername", "$createdUser.profile.username" },
+                { "CreatedByPhotoUrl", "$createdUser.profile.avatar" },
+            }
+            ),
+            new BsonDocument("$limit", 1)
+        };
+         return await _exercises.AggregateAsync<ExerciseViewModel>(pipeline).Result.FirstOrDefaultAsync();
     }
 
-    public async Task<List<Exercise>> GetAllExerciseCreatedAsync(string userId)
+    public async Task<List<ExerciseViewModel>> GetAllRecentlyCreatedExercisesByDate(int limit)
     {
-        SortDefinition<Exercise> sort = Builders<Exercise>.Sort.Descending("createdAt");
-        List<Exercise> exercises = await _exercises.FindAsync(e => e.CreatedBy == userId,new FindOptions<Exercise>
+        var pipeline = new BsonDocument[]
         {
-            Sort = sort
-
-        }).Result.ToListAsync();
-        return exercises;
+            new BsonDocument("$sort", new BsonDocument("createdAt", -1)),
+            new BsonDocument("$limit", limit),
+            new BsonDocument("$lookup",
+                new BsonDocument
+                {
+                    { "from", "users" },
+                    { "localField", "created_by" },
+                    { "foreignField", "_id" },
+                    { "as", "createdUser" }
+                }
+            ),
+            new BsonDocument("$unwind", "$createdUser"),
+            new BsonDocument("$project",
+                new BsonDocument
+                {
+                    { "Name", "$name" },
+                    { "Description", "$description" },
+                    { "Sets", "$sets" },
+                    { "Reps", "$reps" },
+                    { "CreatedByUsername", "$createdUser.profile.username" },
+                    { "CreatedByPhotoUrl", "$createdUser.profile.avatar" },
+                }
+            ),
+        };
+        return await _exercises.AggregateAsync<ExerciseViewModel>(pipeline).Result.ToListAsync();
     }
 
-    public async Task<List<Exercise>> GetAllExerciseCreatedSearchAsync(string userId,string search)
+    public async Task<List<ExerciseViewModel>> GetAllExerciseCreatedAsync(string userId)
+    {
+        var pipeline = new BsonDocument[]
+        {
+            new BsonDocument("$match", new BsonDocument("created_by", new ObjectId(userId))),
+            new BsonDocument("$sort", new BsonDocument("createdAt", -1)),
+            new BsonDocument("$lookup",
+                new BsonDocument
+                {
+                    { "from", "users" },
+                    { "localField", "created_by" },
+                    { "foreignField", "_id" },
+                    { "as", "createdUser" }
+                }
+            ),
+            new BsonDocument("$unwind", "$createdUser"),
+            new BsonDocument("$project",
+                new BsonDocument
+                {
+                    { "Name", "$name" },
+                    { "Description", "$description" },
+                    { "Sets", "$sets" },
+                    { "Reps", "$reps" },
+                    { "CreatedByUsername", "$createdUser.profile.username" },
+                    { "CreatedByPhotoUrl", "$createdUser.profile.avatar" },
+                }
+            ),
+        };
+        return await _exercises.AggregateAsync<ExerciseViewModel>(pipeline).Result.ToListAsync();
+    }
+
+    public async Task<List<Exercise>> GetAllExerciseCreatedSearchAsync(string userId, string search)
     {
         var filterBuilder = Builders<Exercise>.Filter;
         var filter = filterBuilder.And(filterBuilder.Eq("created_by", userId), filterBuilder.Regex("name", new BsonRegularExpression(search, "i")));
@@ -87,22 +151,24 @@ public class ExerciseService : IExerciseService
         }
         await _exercises.ReplaceOneAsync(e => e.Id == exerciseId, exerciseIn);
     }
-    public async Task DeleteExerciseAsync(string exerciseId, string userId){
-        Exercise exercise = await _exercises.FindAsync(e=>e.Id==exerciseId).Result.FirstOrDefaultAsync();
+    public async Task DeleteExerciseAsync(string exerciseId, string userId)
+    {
+        Exercise exercise = await _exercises.FindAsync(e => e.Id == exerciseId).Result.FirstOrDefaultAsync();
         //The user can't delete the exercise if they didn't create it
         if (exercise.CreatedBy != userId)
         {
             throw new InvalidAccessException("delete");
         }
-        await _exercises.DeleteOneAsync(e=>e.Id == exercise.Id);
+        await _exercises.DeleteOneAsync(e => e.Id == exercise.Id);
     }
     public async Task<List<User>> GetTopUsersByExerciseCountAsync(int limit)
     {
         var userGroups = await _exercises.Aggregate()
-            .Group(exercise => exercise.CreatedBy, 
-                   group => new { 
-                       UserId = group.Key, 
-                       ExerciseCount = group.Count() 
+            .Group(exercise => exercise.CreatedBy,
+                   group => new
+                   {
+                       UserId = group.Key,
+                       ExerciseCount = group.Count()
                    })
             .SortByDescending(group => group.ExerciseCount)
             .Limit(limit)

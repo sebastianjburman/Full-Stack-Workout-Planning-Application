@@ -27,6 +27,7 @@ public class Exercise
     public DateTime CreatedAt { get; set; }
 
     [BsonElement("created_by")]
+    [BsonRepresentation(BsonType.ObjectId)]
     public string? CreatedBy { get; set; }
 }
 

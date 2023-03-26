@@ -53,7 +53,7 @@
               [exerciseCreatedByPhotoUrl]="exercise.createdByPhotoUrl">
             </app-exercise-preview>
             <div class="col-12 d-flex justify-content-center">
-              <ngb-pagination [(page)]="recentlyCreatedPageNum" [pageSize]="recentlyCreatedItemOnPage" [collectionSize]="10" size="md">
+              <ngb-pagination [(page)]="recentlyCreatedPageNum" [pageSize]="recentlyCreatedItemOnPage" [collectionSize]="exercisesRecent.length" size="md">
               </ngb-pagination>
             </div>
           </div>
