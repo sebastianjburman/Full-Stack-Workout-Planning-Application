@@ -1,6 +1,7 @@
 using Backend.Exceptions;
 using Backend.Interfaces;
 using Backend.Models;
+using MongoDB.Bson;
 using MongoDB.Driver;
 
 public class WorkoutService : IWorkoutService
@@ -71,4 +72,35 @@ public class WorkoutService : IWorkoutService
         await _workouts.ReplaceOneAsync(e => e.Id == workoutId, workoutIn);
     }
 
+    public async Task<List<WorkoutViewModel>> GetAllWorkoutsCreatedAsync(string userId)
+    {
+        var pipeline = new BsonDocument[]
+        {
+            new BsonDocument("$match", new BsonDocument("createdBy", new ObjectId(userId))),
+            new BsonDocument("$sort", new BsonDocument("createdAt", -1)),
+            new BsonDocument("$lookup",
+                new BsonDocument
+                {
+                    { "from", "users" },
+                    { "localField", "createdBy" },
+                    { "foreignField", "_id" },
+                    { "as", "createdUser" }
+                }
+            ),
+            new BsonDocument("$unwind", "$createdUser"),
+            new BsonDocument("$project",
+                new BsonDocument
+                {
+                    { "WorkoutName", "$workoutName" },
+                    { "WorkoutDescription", "$workoutDescription" },
+                    { "Exercises", "$exercises" },
+                    { "CreatedAt", "$createdAt" },
+                    { "CreatedByUsername", "$createdUser.profile.username" },
+                    { "CreatedByPhotoUrl", "$createdUser.profile.avatar" },
+                }
+            ),
+        };
+        List<WorkoutViewModel> workoutViewModel =  await _workouts.AggregateAsync<WorkoutViewModel>(pipeline).Result.ToListAsync();
+        return workoutViewModel;
+    }
 }

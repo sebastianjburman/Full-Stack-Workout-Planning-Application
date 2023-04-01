@@ -121,7 +121,7 @@ public class ExerciseService : IExerciseService
     public async Task<List<Exercise>> GetAllExerciseCreatedSearchAsync(string userId, string search)
     {
         var filterBuilder = Builders<Exercise>.Filter;
-        var filter = filterBuilder.And(filterBuilder.Eq("created_by", userId), filterBuilder.Regex("name", new BsonRegularExpression(search, "i")));
+        var filter = filterBuilder.And(filterBuilder.Eq("created_by", new ObjectId(userId)), filterBuilder.Regex("name", new BsonRegularExpression(search, "i")));
         List<Exercise> exercises = await _exercises.FindAsync(filter).Result.ToListAsync();
         return exercises;
     }

@@ -14,12 +14,13 @@ namespace Backend.Models
         public string? WorkoutName { get; set; }
         [BsonElement("workoutDescription")]
         [RegularExpression(@"[a-zA-Z''-''.','\s]{10,400}$", ErrorMessage = "Description is not in correct format. Min 10 characters and max 400 characters.")]
-        public string? workoutDescription {get; set;}
+        public string? WorkoutDescription {get; set;}
         [BsonElement("exercises")]
         public List<string> Exercises {get;set;}
         [BsonElement("createdAt")]
         public DateTime CreatedAt { get; set; }
         [BsonElement("createdBy")]
+        [BsonRepresentation(BsonType.ObjectId)]
         public string? CreatedBy { get; set; }
         [BsonElement("isPublic")]
         public bool isPublic { get; set; }
