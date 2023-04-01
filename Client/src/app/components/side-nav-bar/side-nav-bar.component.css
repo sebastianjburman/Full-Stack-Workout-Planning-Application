@@ -15,14 +15,14 @@
     fill: black;
 }
 .sideNavBtn:hover{
-    background-color: navy;
+    background-color: rgb(24, 71, 122);
 }
 .sideNavBtn:hover > svg{
     fill: white;
 }
 
 .sideNavBtnHovered{
-    background-color: navy;
+    background-color: rgb(24, 71, 122);
     transition: all.3s ease;
 }
 .sideNavBtnHovered > svg {

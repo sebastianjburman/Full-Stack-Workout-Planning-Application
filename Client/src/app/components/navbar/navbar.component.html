@@ -1,15 +1,15 @@
 <ng-template #content let-modal>
-	<div class="modal-header">
-		<h4 class="modal-title">Logout</h4>
-		<button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
-	</div>
-	<div class="modal-body">
-		<p>Are you sure you want to logout?</p>
-	</div>
+  <div class="modal-header">
+    <h4 class="modal-title">Logout</h4>
+    <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
+  </div>
+  <div class="modal-body">
+    <p>Are you sure you want to logout?</p>
+  </div>
   <div class="modal-footer">
     <button type="button" class="btn btn-primary btn-login fw-bold" (click)="logout()">Yes</button>
-		<button type="button" class="btn btn-primary btn-login fw-bold" (click)="modal.close('Close click')">No</button>
-	</div>
+    <button type="button" class="btn btn-primary btn-login fw-bold" (click)="modal.close('Close click')">No</button>
+  </div>
 </ng-template>
 <header class="py-3 border-bottom">
   <div class="container-fluid d-grid gap-3 align-items-center" style="grid-template-columns: 1fr 2fr;">
@@ -18,13 +18,19 @@
       <img class="bi me-2" src="../../../assets/Svg/Aromix.svg" width="50" height="40">
       <span class="fs-4 fw-bold">Aromix</span>
     </a>
-    <div class="d-flex align-items-center">
-      <form class="w-100 me-3" role="search">
-        <input type="search" class="form-control" placeholder="Search..." aria-label="Search">
-      </form>
+    <div class="d-flex align-items-center justify-content-end">
+      <button type="button" class="btn btn-primary me-2 text-nowrap">
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-search"
+          viewBox="0 0 16 16">
+          <path
+            d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z">
+          </path>
+        </svg>
+        Search
+      </button>
       <div ngbDropdown class="d-inline-block">
-        <img src={{userAvatarUrl}} alt="mdo" width="32" height="32"
-          class="rounded-circle" id="dropdownBasic2" ngbDropdownToggle>
+        <img src={{userAvatarUrl}} alt="mdo" width="32" height="32" class="rounded-circle" id="dropdownBasic2"
+          ngbDropdownToggle>
         <div class="mt-2" ngbDropdownMenu aria-labelledby="dropdownBasic1">
           <button ngbDropdownItem>{{username}}</button>
           <div class="dropdown-divider"></div>
