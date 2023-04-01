@@ -49,7 +49,7 @@ namespace Backend.Controllers
 
         [Authorize]
         [HttpGet("created")]
-        public async Task<ActionResult> GetExerciseCreated()
+        public async Task<ActionResult> GetExercisesCreated()
         {
             User contextUser = (User)HttpContext.Items["User"]!;
             try
