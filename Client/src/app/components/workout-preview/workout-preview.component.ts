@@ -13,10 +13,13 @@ export class WorkoutPreviewComponent implements OnInit {
   @Input() exerciseCount!: number;
   @Input() createdByUsername!: string;
   @Input() createdByPhotoUrl!: string;
-  
+
   constructor() { }
 
   ngOnInit(): void {
+    if (!this.createdByPhotoUrl) {
+      this.createdByPhotoUrl = '../../../assets/Images/defaultUrl.png';
+    }
   }
 
 }

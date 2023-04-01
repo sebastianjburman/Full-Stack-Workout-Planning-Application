@@ -14,11 +14,16 @@ export class WorkoutsPageComponent implements OnInit {
 	@ViewChild('createdWorkoutModal') createdWorkoutModal: any;
 	closeResult: string = '';
 	createdWorkouts: WorkoutViewModel[] = [];
+	recentlyCreatedWorkouts: WorkoutViewModel[] = [];
 	//Pagination
 
 	//User Created List
-	userCreatedPageNum:number = 1;
-	userItemsOnPage:number = 5;;
+	userCreatedPageNum: number = 1;
+	userItemsOnPage: number = 5;
+
+	//Recently Created List
+	recentlyCreatedPageNum: number = 1;
+	recentlyCreatedItemOnPage: number = 5;
 
 	constructor(private modalService: NgbModal, private workoutService: WorkoutService) { }
 
@@ -29,8 +34,14 @@ export class WorkoutsPageComponent implements OnInit {
 			},
 			error: (error) => {
 			}
-		})
-		)
+		}))
+		this.workoutService.getRecentlyCreatedWorkouts(TokenManagement.getTokenFromLocalStorage()).subscribe(({
+			next: (res) => {
+				this.recentlyCreatedWorkouts = res;
+			},
+			error: (error) => {
+			}
+		}))
 	}
 
 	open(createdWorkoutModal: any) {

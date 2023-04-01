@@ -44,4 +44,11 @@ export class WorkoutService {
       },
     });
   }
+  public getRecentlyCreatedWorkouts(token: string): Observable<any> {
+    return this.http.get(`${this.url}/recent`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+  }
 }
