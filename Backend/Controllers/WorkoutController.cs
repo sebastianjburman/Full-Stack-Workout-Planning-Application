@@ -107,10 +107,12 @@ namespace Backend.Controllers
         [HttpGet("recent")]
         public async Task<ActionResult> GetRecentlyCreatedWorkouts()
         {
+            User contextUser = (User)HttpContext.Items["User"]!;
             int limit = 10;
+            
             try
             {
-                List<WorkoutViewModel> workouts = await _workoutService.GetAllRecentlyCreatedWorkoutsByDate(limit);
+                List<WorkoutViewModel> workouts = await _workoutService.GetAllRecentlyCreatedWorkoutsByDate(limit,contextUser.Id!);
                 return Ok(workouts);
             }
             catch (Exception e)

@@ -22,7 +22,7 @@
                     *ngFor="let workout of createdWorkouts | slice: (userCreatedPageNum-1) * userItemsOnPage : userCreatedPageNum * userItemsOnPage"
                     [workoutName]="workout.workoutName" [workoutDescription]="workout.workoutDescription"
                     [Id]="workout.id" [createdByUsername]="workout.createdByUsername"
-                    [createdByPhotoUrl]="workout.createdByPhotoUrl" [exerciseCount]="workout.exercises.length">
+                    [createdByPhotoUrl]="workout.createdByPhotoUrl" [exerciseCount]="workout.exercises.length" [userLiked]="workout.userLiked">
                 </app-workout-preview>
                 <div class="col-12 d-flex justify-content-center">
                     <ngb-pagination [(page)]="userCreatedPageNum" [pageSize]="userItemsOnPage"
@@ -48,7 +48,7 @@
                             *ngFor="let workout of recentlyCreatedWorkouts | slice: (recentlyCreatedPageNum-1) * recentlyCreatedItemOnPage : recentlyCreatedPageNum * recentlyCreatedItemOnPage"
                             [workoutName]="workout.workoutName" [workoutDescription]="workout.workoutDescription"
                             [Id]="workout.id" [createdByUsername]="workout.createdByUsername"
-                            [createdByPhotoUrl]="workout.createdByPhotoUrl" [exerciseCount]="workout.exercises.length">
+                            [createdByPhotoUrl]="workout.createdByPhotoUrl" [exerciseCount]="workout.exercises.length" [userLiked]="workout.userLiked">
                         </app-workout-preview>
                         <div class="col-12 d-flex justify-content-center">
                             <ngb-pagination [(page)]="recentlyCreatedPageNum" [pageSize]="recentlyCreatedItemOnPage"

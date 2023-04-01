@@ -5,6 +5,7 @@ export class WorkoutViewModel {
         public workoutDescription: string,
         public exercises: string[],
         public isPublic: boolean,
+        public userLiked : boolean,
         public createdByUsername: string,
         public createdByPhotoUrl: string,
         public createdAt: string

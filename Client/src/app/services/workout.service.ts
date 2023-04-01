@@ -51,4 +51,25 @@ export class WorkoutService {
       },
     });
   }
+  public likeWorkout(token: string, workoutId: string): Observable<any> {
+    return this.http.post(`${this.url}/like`,'', {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+      params: {
+        workoutId: workoutId,
+      },
+    })
+  }
+
+  public unlikeWorkout(token: string, workoutId: string): Observable<any> {
+    return this.http.delete(`${this.url}/unlike`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+      params: {
+        workoutId: workoutId,
+      },
+    })
+  }
 }
