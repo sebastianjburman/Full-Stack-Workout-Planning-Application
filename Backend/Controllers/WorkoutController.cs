@@ -13,11 +13,13 @@ namespace Backend.Controllers
     {
         private readonly ILogger<UserController> _logger;
         private readonly IWorkoutService _workoutService;
+        private readonly IWorkoutLikeService _workoutLikeService;
 
-        public WorkoutController(ILogger<UserController> logger, IWorkoutService workoutService)
+        public WorkoutController(ILogger<UserController> logger, IWorkoutService workoutService, IWorkoutLikeService workoutLikeService)
         {
             _logger = logger;
             _workoutService = workoutService;
+            _workoutLikeService = workoutLikeService;
         }
 
         [Authorize]
@@ -53,8 +55,9 @@ namespace Backend.Controllers
                 await _workoutService.CreateWorkoutAsync(createdWorkout, contextUser.Id!);
                 return Ok();
             }
-            catch(MongoWriteException){
-                return BadRequest(new{message = "Workout name is already taken"});
+            catch (MongoWriteException)
+            {
+                return BadRequest(new { message = "Workout name is already taken" });
             }
             catch (Exception e)
             {
@@ -71,8 +74,9 @@ namespace Backend.Controllers
                 await _workoutService.UpdateWorkoutAsync(id, contextUser.Id!, updatedWorkout);
                 return Ok();
             }
-            catch(MongoWriteException){
-                return BadRequest(new{message = "Workout name is already taken"});
+            catch (MongoWriteException)
+            {
+                return BadRequest(new { message = "Workout name is already taken" });
             }
             catch (InvalidAccessException e)
             {
@@ -114,5 +118,41 @@ namespace Backend.Controllers
                 return BadRequest(new { message = e.Message });
             }
         }
+
+        [Authorize]
+        [HttpPost("like")]
+        public async Task<ActionResult> LikeWorkout(string workoutId)
+        {
+            User contextUser = (User)HttpContext.Items["User"]!;
+            try
+            {
+                await _workoutLikeService.LikeWorkoutAsync(workoutId, contextUser.Id!);
+                return Ok();
+            }
+            catch (MongoWriteException)
+            {
+                return BadRequest(new { message = "You already liked this workout" });
+            }
+            catch (Exception e)
+            {
+                return BadRequest(new { message = e.Message });
+            }
+        }
+        [Authorize]
+        [HttpDelete("unlike")]
+        public async Task<ActionResult> UnlikeWorkout(string workoutId)
+        {
+            User contextUser = (User)HttpContext.Items["User"]!;
+            try
+            {
+                await _workoutLikeService.UnlikeWorkoutAsync(workoutId, contextUser.Id!);
+                return Ok();
+            }
+            catch (Exception e)
+            {
+                return BadRequest(new { message = e.Message });
+            }
+        }
+
     }
 }

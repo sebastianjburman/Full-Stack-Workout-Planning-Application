@@ -25,6 +25,12 @@ builder.Services.AddSingleton<IWorkoutStoreDatabaseSettings>(sp => sp.GetRequire
 builder.Services.AddSingleton<IMongoClient>(s => new MongoClient(builder.Configuration.GetValue<string>("WorkoutStoreDatabaseSettings:ConnectionString")));
 builder.Services.AddScoped<IWorkoutService, WorkoutService>();
 
+//WorkoutLikes
+builder.Services.Configure<WorkoutLikeStoreDatabaseSettings>(builder.Configuration.GetSection(nameof(WorkoutLikeStoreDatabaseSettings)));
+builder.Services.AddSingleton<IWorkoutLikeStoreDatabaseSettings>(sp => sp.GetRequiredService<IOptions<WorkoutLikeStoreDatabaseSettings>>().Value);
+builder.Services.AddSingleton<IMongoClient>(s => new MongoClient(builder.Configuration.GetValue<string>("WorkoutLikeStoreDatabaseSettings:ConnectionString")));
+builder.Services.AddScoped<IWorkoutLikeService, WorkoutLikeService>();
+
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
