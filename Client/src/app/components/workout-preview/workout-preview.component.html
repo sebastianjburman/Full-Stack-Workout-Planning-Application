@@ -1,21 +1,21 @@
 <div class="row-4 card mb-4 rounded-3 shadow-sm">
     <div class="card-header py-3 d-flex flex-row align-items-center">
-        <h4 class="my-0 fw-normal">Beginner Workout</h4>
+        <h4 class="my-0 fw-normal">{{workoutName}}</h4>
         <div class="media text-muted ms-auto d-flex align-items-center">
-            <img data-src="https://upload.wikimedia.org/wikipedia/commons/d/d8/Friedrich-Johann-Justin-Bertuch_Mythical-Creature-Dragon_1806.jpg"
+            <img 
                 alt="32x32" class="rounded" style="width: 32px; height: 32px;"
-                src="https://upload.wikimedia.org/wikipedia/commons/d/d8/Friedrich-Johann-Justin-Bertuch_Mythical-Creature-Dragon_1806.jpg"
+                src={{createdByPhotoUrl}}
                 data-holder-rendered="true">
             <p class="media-body mb-0 small lh-125 d-none d-md-block" style="margin-left: 10px;">
-                <strong class="d-block text-black">@sjburman</strong>
+                <strong class="d-block text-black">@{{createdByUsername}}</strong>
             </p>
         </div>
     </div>
     <div class="card-body">
         <div>
-            <h1 class="card-title pricing-card-title">12 <small class="text-muted fw-light">Exersices</small></h1>
+            <h1 class="card-title pricing-card-title">{{exerciseCount}} <small class="text-muted fw-light">Exersices</small></h1>
         </div>
-        <p>This is a great exersice for beinngers it is good for beginner athlets</p>
+        <p>{{workoutDescription}}</p>
         <button type="button" class="btn btn-lg btn-primary">View Workout</button>
     </div>
 </div>

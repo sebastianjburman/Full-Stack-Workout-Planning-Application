@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 
 @Component({
   selector: 'app-workout-preview',
@@ -7,6 +7,13 @@ import { Component, OnInit } from '@angular/core';
 })
 export class WorkoutPreviewComponent implements OnInit {
 
+  @Input() Id!: string;
+  @Input() workoutName!: string;
+  @Input() workoutDescription!: string;
+  @Input() exerciseCount!: number;
+  @Input() createdByUsername!: string;
+  @Input() createdByPhotoUrl!: string;
+  
   constructor() { }
 
   ngOnInit(): void {

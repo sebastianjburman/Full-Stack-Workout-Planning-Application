@@ -7,7 +7,7 @@ import { Observable } from 'rxjs';
   providedIn: 'root',
 })
 export class WorkoutService {
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
   private url = 'v1/workout';
 
   public createWorkout(workout: Workout, token: string): Observable<any> {
@@ -34,6 +34,13 @@ export class WorkoutService {
       },
       params: {
         id: id,
+      },
+    });
+  }
+  public getWorkoutsCreated(token: string): Observable<any> {
+    return this.http.get(`${this.url}/created`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
       },
     });
   }

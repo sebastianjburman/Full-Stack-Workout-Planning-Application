@@ -94,13 +94,14 @@ public class WorkoutService : IWorkoutService
                     { "WorkoutName", "$workoutName" },
                     { "WorkoutDescription", "$workoutDescription" },
                     { "Exercises", "$exercises" },
+                    { "IsPublic", "$isPublic"},
                     { "CreatedAt", "$createdAt" },
                     { "CreatedByUsername", "$createdUser.profile.username" },
                     { "CreatedByPhotoUrl", "$createdUser.profile.avatar" },
                 }
             ),
         };
-        List<WorkoutViewModel> workoutViewModel =  await _workouts.AggregateAsync<WorkoutViewModel>(pipeline).Result.ToListAsync();
+        List<WorkoutViewModel> workoutViewModel = await _workouts.AggregateAsync<WorkoutViewModel>(pipeline).Result.ToListAsync();
         return workoutViewModel;
     }
 }

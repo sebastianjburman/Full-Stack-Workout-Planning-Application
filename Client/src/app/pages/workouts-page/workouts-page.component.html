@@ -18,15 +18,23 @@
                     </svg>
                     Create
                 </button>
-                <app-workout-preview></app-workout-preview>
-                <app-workout-preview></app-workout-preview>
+                <app-workout-preview
+                    *ngFor="let workout of createdWorkouts | slice: (userCreatedPageNum-1) * userItemsOnPage : userCreatedPageNum * userItemsOnPage"
+                    [workoutName]="workout.workoutName" [workoutDescription]="workout.workoutDescription"
+                    [Id]="workout.id" [createdByUsername]="workout.createdByUsername"
+                    [createdByPhotoUrl]="workout.createdByPhotoUrl" [exerciseCount]="workout.exercises.length">
+                </app-workout-preview>
+                <div class="col-12 d-flex justify-content-center">
+                    <ngb-pagination [(page)]="userCreatedPageNum" [pageSize]="userItemsOnPage"
+                        [collectionSize]="createdWorkouts.length" size="md" [maxSize]="5" [rotate]="true">
+                    </ngb-pagination>
+                </div>
             </div>
             <div class="col-md-6 col-12">
                 <div class="row">
                     <div class="col-12 flex-nowrap">
                         <h1 class="mt-3 mb-3 text-center">Most Liked Exercises</h1>
                         <div class="row d-flex flex-wrap">
-                            <app-workout-preview></app-workout-preview>
                             <app-workout-preview></app-workout-preview>
                         </div>
                     </div>
@@ -37,7 +45,6 @@
                         <div class="col-12 d-flex justify-content-center">
                         </div>
                         <app-workout-preview></app-workout-preview>
-                            <app-workout-preview></app-workout-preview>
                     </div>
                 </div>
             </div>
