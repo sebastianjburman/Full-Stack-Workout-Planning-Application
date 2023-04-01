@@ -9,12 +9,14 @@ public class WorkoutService : IWorkoutService
     private IMongoClient _client;
     private IMongoDatabase _database;
     private readonly IMongoCollection<Workout> _workouts;
+    private readonly IMongoCollection<Exercise> _exercises;
 
     public WorkoutService(IWorkoutStoreDatabaseSettings settings, IMongoClient client)
     {
         _client = new MongoClient(settings.ConnectionString);
         _database = _client.GetDatabase(settings.DatabaseName);
         _workouts = _database.GetCollection<Workout>("workouts");
+        _exercises = _database.GetCollection<Exercise>("exercises");
 
         // Create unique indexes
         var workoutNameKey = Builders<Workout>.IndexKeys.Ascending(x => x.WorkoutName);
@@ -42,6 +44,14 @@ public class WorkoutService : IWorkoutService
         if (workout.Exercises.Count >= 15 || workout.Exercises.Count == 0)
         {
             throw new Exception("Cannot have 0 exercises or more than 15 exercises to workout.");
+        }
+        //Check that all exercises exist in the workout
+        for (int i = 0; i<workout.Exercises.Count;i++){
+            string exerciseId = workout.Exercises.ElementAt(i);
+            var exercise = await _exercises.FindAsync(e=>e.Id==exerciseId).Result.FirstOrDefaultAsync();
+            if(exercise == null){
+                throw new Exception($"Exercise {exerciseId} in this workout does not exist");
+            }
         }
         //Make workout id null so that mongo will generate a new one.
         workout.Id = null;
