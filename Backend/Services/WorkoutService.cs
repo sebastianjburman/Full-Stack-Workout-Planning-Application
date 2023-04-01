@@ -61,6 +61,10 @@ public class WorkoutService : IWorkoutService
         {
             throw new Exception("You cannot change the workouts's created by.");
         }
+        if (workoutIn.CreatedAt != workout.CreatedAt)
+        {
+            throw new Exception("You cannot change the workouts's created at.");
+        }
         if (workout.CreatedBy != userId)
         {
             throw new InvalidAccessException("update");
