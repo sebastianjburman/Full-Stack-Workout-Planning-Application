@@ -104,4 +104,38 @@ public class WorkoutService : IWorkoutService
         List<WorkoutViewModel> workoutViewModel = await _workouts.AggregateAsync<WorkoutViewModel>(pipeline).Result.ToListAsync();
         return workoutViewModel;
     }
+
+    public async Task<List<WorkoutViewModel>> GetAllRecentlyCreatedWorkoutsByDate(int limit)
+    {
+        var pipeline = new BsonDocument[]
+        {
+            new BsonDocument("$match", new BsonDocument("isPublic", true)),
+            new BsonDocument("$sort", new BsonDocument("createdAt", -1)),
+            new BsonDocument("$limit", limit),
+            new BsonDocument("$lookup",
+                new BsonDocument
+                {
+                    { "from", "users" },
+                    { "localField", "createdBy" },
+                    { "foreignField", "_id" },
+                    { "as", "createdUser" }
+                }
+            ),
+            new BsonDocument("$unwind", "$createdUser"),
+            new BsonDocument("$project",
+                new BsonDocument
+                {
+                    { "WorkoutName", "$workoutName" },
+                    { "WorkoutDescription", "$workoutDescription" },
+                    { "Exercises", "$exercises" },
+                    { "IsPublic", "$isPublic"},
+                    { "CreatedAt", "$createdAt" },
+                    { "CreatedByUsername", "$createdUser.profile.username" },
+                    { "CreatedByPhotoUrl", "$createdUser.profile.avatar" },
+                }
+            ),
+        };
+        List<WorkoutViewModel> workoutViewModel = await _workouts.AggregateAsync<WorkoutViewModel>(pipeline).Result.ToListAsync();
+        return workoutViewModel;
+    }
 }

@@ -99,5 +99,20 @@ namespace Backend.Controllers
                 return BadRequest(new { message = e.Message });
             }
         }
+        [Authorize]
+        [HttpGet("recent")]
+        public async Task<ActionResult> GetRecentlyCreatedWorkouts()
+        {
+            int limit = 10;
+            try
+            {
+                List<WorkoutViewModel> workouts = await _workoutService.GetAllRecentlyCreatedWorkoutsByDate(limit);
+                return Ok(workouts);
+            }
+            catch (Exception e)
+            {
+                return BadRequest(new { message = e.Message });
+            }
+        }
     }
 }
