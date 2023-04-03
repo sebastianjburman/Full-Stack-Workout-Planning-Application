@@ -25,18 +25,80 @@ public class WorkoutService : IWorkoutService
         _workouts.Indexes.CreateOne(workoutNameIndexModel);
     }
 
-    public async Task<Workout> GetWorkoutByIdAsync(string id, string userId)
+    public async Task<WorkoutViewModel> GetWorkoutByIdAsync(string id, string userId)
     {
-        Workout workout = await _workouts.Find(e => e.Id == id).FirstOrDefaultAsync();
-        if (workout == null)
+        var pipeline = new BsonDocument[]
+        {
+        new BsonDocument("$match", new BsonDocument("_id", new ObjectId(id))),
+        new BsonDocument("$lookup",
+            new BsonDocument
+            {
+                { "from", "users" },
+                { "localField", "createdBy" },
+                { "foreignField", "_id" },
+                { "as", "createdUser" }
+            }
+        ),
+        new BsonDocument("$unwind", "$createdUser"),
+        new BsonDocument("$lookup",
+            new BsonDocument
+            {
+                { "from", "WorkoutLikes" },
+                { "let", new BsonDocument("workoutId", "$_id") },
+                { "pipeline", new BsonArray
+                    {
+                        new BsonDocument("$match",
+                            new BsonDocument("$expr",
+                                new BsonDocument("$and",
+                                    new BsonArray
+                                    {
+                                        //Checking if workoutId from WorkoutLikes collection is equal to workoutId from workouts collection
+                                        new BsonDocument("$eq", new BsonArray { "$workoutId", "$$workoutId" }),
+                                        //Checking if userId from WorkoutLikes collection is equal to userId from users collection
+                                        new BsonDocument("$eq", new BsonArray { "$userId", new ObjectId(userId) })
+                                    }
+                                )
+                            )
+                        )
+                    }
+                },
+                { "as", "userLike" }
+            }
+        ),
+        new BsonDocument("$project",
+            new BsonDocument
+            {
+                { "WorkoutName", "$workoutName" },
+                { "WorkoutDescription", "$workoutDescription" },
+                { "Exercises", "$exercises" },
+                { "IsPublic", "$isPublic"},
+                { "CreatedAt", "$createdAt" },
+                { "CreatedByUsername", "$createdUser.profile.username" },
+                { "CreatedByPhotoUrl", "$createdUser.profile.avatar" },
+                { "UserLiked", new BsonDocument("$cond",
+                    // Check if there are any objects in the userLike array if so then return true else return false
+                    new BsonArray
+                    {
+                        new BsonDocument("$gt", new BsonArray { new BsonDocument("$size", "$userLike"), 0 }),
+                        true,
+                        false
+                    }
+                )}
+            }
+        ),
+        };
+
+        var result = await _workouts.Aggregate<WorkoutViewModel>(pipeline).FirstOrDefaultAsync();
+
+        if (result == null)
         {
             throw new NotFoundException("Workout");
         }
-        if (!workout.isPublic && workout.CreatedBy != userId)
+        if (!result.IsPublic)
         {
             throw new InvalidAccessException("view");
         }
-        return workout;
+        return result;
     }
 
     public async Task<Workout> CreateWorkoutAsync(Workout workout, string createdBy)

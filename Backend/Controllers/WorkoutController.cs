@@ -29,7 +29,7 @@ namespace Backend.Controllers
             User contextUser = (User)HttpContext.Items["User"]!;
             try
             {
-                Workout workout = await _workoutService.GetWorkoutByIdAsync(id, contextUser.Id!);
+                WorkoutViewModel workout = await _workoutService.GetWorkoutByIdAsync(id, contextUser.Id!);
                 return Ok(workout);
             }
             catch (NotFoundException e)
