@@ -40,7 +40,7 @@ export class WorkoutViewPageComponent implements OnInit {
         }
       })
 
-      this.workoutService.getWorkoutExercises(TokenManagement.getTokenFromLocalStorage(),id).subscribe({
+      this.workoutService.getWorkoutExercises(TokenManagement.getTokenFromLocalStorage(), id).subscribe({
         next: (res) => {
           console.log(res)
           this.workoutExercises = res;
@@ -99,4 +99,16 @@ export class WorkoutViewPageComponent implements OnInit {
     })
   }
 
+  public deleteWorkout(): void {
+    this.workoutService.deleteWorkout(this.workout!.id, TokenManagement.getTokenFromLocalStorage()).subscribe({
+      next: (res) => {
+        this.toastService.show("Workout deleted successfully", { classname: "bg-success text-light", delay: 5000 ,header:"Success"});
+        this.modalService.dismissAll();
+        this.router.navigate(['/workouts']);
+      },
+      error: (res) => {
+        this.toastService.show('Something went wrong', { classname: 'bg-danger text-light', delay: 5000 ,header:"Error"});
+      }
+    })
+  }
 }
