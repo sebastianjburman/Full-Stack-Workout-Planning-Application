@@ -4,5 +4,6 @@ namespace Backend.Interfaces
     {
         Task LikeWorkoutAsync(string workoutId, string userId);
         Task UnlikeWorkoutAsync(string workoutId, string userId);
+        Task DeleteAllLikesByWorkoutIdAsync(string workoutId);
     }
 }

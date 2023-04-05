@@ -11,14 +11,16 @@ public class WorkoutService : IWorkoutService
     private readonly IMongoCollection<Workout> _workouts;
     private readonly IMongoCollection<Exercise> _exercises;
     private readonly IExerciseService _exerciseService;
+    private readonly IWorkoutLikeService _workoutLikeService;
 
-    public WorkoutService(IWorkoutStoreDatabaseSettings settings, IMongoClient client, IExerciseService exerciseService)
+    public WorkoutService(IWorkoutStoreDatabaseSettings settings, IMongoClient client, IExerciseService exerciseService, IWorkoutLikeService workoutLikeService)
     {
         _client = new MongoClient(settings.ConnectionString);
         _database = _client.GetDatabase(settings.DatabaseName);
         _workouts = _database.GetCollection<Workout>("workouts");
-        _exercises = _database.GetCollection<Exercise>("exercises");
         _exerciseService = exerciseService;
+        _exercises = _database.GetCollection<Exercise>("exercises");
+        _workoutLikeService = workoutLikeService;
 
         // Create unique indexes
         var workoutNameKey = Builders<Workout>.IndexKeys.Ascending(x => x.WorkoutName);
@@ -132,25 +134,40 @@ public class WorkoutService : IWorkoutService
 
     public async Task UpdateWorkoutAsync(string workoutId, string userId, Workout workoutIn)
     {
-        //Make sure the user doesn't change the workouts's created by
         Workout workout = await _workouts.Find(e => e.Id == workoutId).FirstOrDefaultAsync();
+        //Check if users changed the created by field
         if (workoutIn.CreatedBy != workout.CreatedBy)
         {
             throw new Exception("You cannot change the workouts's created by.");
         }
+        //Check if user is trying to update workouts created at time
         if (workoutIn.CreatedAt != workout.CreatedAt)
         {
             throw new Exception("You cannot change the workouts's created at.");
         }
+        //Check if the user created this workout
         if (workout.CreatedBy != userId)
         {
             throw new InvalidAccessException("update");
         }
-        if (workoutIn.Exercises.Count >= 15 || workoutIn.Exercises.Count == 0)
+        if (workoutIn.Exercises.Count >= 15)
         {
-            throw new Exception("Cannot have 0 exercises or more than 15 exercises to workout.");
+            throw new Exception("Cannot have more that 15 exercises in a workout");
         }
         await _workouts.ReplaceOneAsync(e => e.Id == workoutId, workoutIn);
+    }
+
+    public async Task DeleteWorkoutAsync(string workoutId,string userId)
+    {
+        //Make sure the user doesn't change the workouts's created by
+        Workout workout = await _workouts.Find(e => e.Id == workoutId).FirstOrDefaultAsync();
+        //Check if the user created this workout
+        if (workout.CreatedBy != userId)
+        {
+            throw new InvalidAccessException("delete");
+        }
+        await _workouts.DeleteOneAsync(e => e.Id == workoutId);
+        await _workoutLikeService.DeleteAllLikesByWorkoutIdAsync(workoutId);
     }
 
     public async Task<List<WorkoutViewModel>> GetAllWorkoutsCreatedAsync(string userId)
@@ -293,8 +310,9 @@ public class WorkoutService : IWorkoutService
         return result;
     }
 
-    public async Task<List<ExerciseViewModel>> GetWorkoutsExercises(string workoutId, string userId){
-        Workout workout = _workouts.FindAsync(w=>w.Id == workoutId).Result.FirstOrDefault();
+    public async Task<List<ExerciseViewModel>> GetWorkoutsExercises(string workoutId, string userId)
+    {
+        Workout workout = _workouts.FindAsync(w => w.Id == workoutId).Result.FirstOrDefault();
         if (workout == null)
         {
             throw new NotFoundException("Workout");
@@ -307,15 +325,17 @@ public class WorkoutService : IWorkoutService
         foreach (string exerciseId in workout.Exercises)
         {
             ExerciseViewModel exercise = await _exerciseService.GetExerciseByIdAsync(exerciseId);
-            if(exercise != null){
+            if (exercise != null)
+            {
                 exercises.Add(exercise);
             }
             //Cleans deleted exercises from the workout.
-            else{
+            else
+            {
                 //Update workouts exercise by remove this exercise id
-                List<string> updatedExercises = workout.Exercises.FindAll(e=>e!=exerciseId);
+                List<string> updatedExercises = workout.Exercises.FindAll(e => e != exerciseId);
                 var updateExercises = Builders<Workout>.Update.Set("exercises", updatedExercises);
-                await _workouts.UpdateOneAsync(w=>w.Id == workoutId,updateExercises);
+                await _workouts.UpdateOneAsync(w => w.Id == workoutId, updateExercises);
             }
         }
         return exercises;

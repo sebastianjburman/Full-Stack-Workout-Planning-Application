@@ -89,6 +89,21 @@ namespace Backend.Controllers
         }
 
         [Authorize]
+        [HttpDelete]
+        public async Task<ActionResult> DeleteWorkout(string id){
+            User contextUser = (User)HttpContext.Items["User"]!;
+            try
+            {
+                await _workoutService.DeleteWorkoutAsync(id, contextUser.Id!);
+                return Ok();
+            }
+            catch (Exception e)
+            {
+                return BadRequest(new { message = e.Message });
+            }
+        }
+
+        [Authorize]
         [HttpGet("created")]
         public async Task<ActionResult> GetExercisesCreated()
         {

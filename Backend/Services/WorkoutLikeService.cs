@@ -36,5 +36,10 @@ namespace Backend.Services
         {
             await _workoutLikes.DeleteOneAsync(wl => wl.WorkoutId == workoutId && wl.UserId == userId);
         }
+
+        public async Task DeleteAllLikesByWorkoutIdAsync(string workoutId)
+        {
+            await _workoutLikes.DeleteManyAsync(wl => wl.WorkoutId == workoutId);
+        }
     }
 }
