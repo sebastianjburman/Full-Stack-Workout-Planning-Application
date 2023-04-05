@@ -7,7 +7,7 @@ import { Exercise } from 'src/app/models/exercise';
   styleUrls: ['./exercise-list.component.css']
 })
 export class ExerciseListComponent implements OnInit {
-
+  @Input() indexNumber!: number;
   @Input() exerciseId!: string;
   @Input() exerciseName!: string;
   @Input() exerciseDescription!: string;

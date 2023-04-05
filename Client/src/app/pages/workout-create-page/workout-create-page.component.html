@@ -29,18 +29,20 @@
         <label class="form-label">Add Exercises</label>
         <input id="typeahead-http" type="text" class="form-control" [class.is-invalid]="searchFailed"
             [(ngModel)]="model" [ngbTypeahead]="search" placeholder="Exercise Search"
-            [resultTemplate]="exerciseSearchTemp"[inputFormatter]="formatter" [editable]="false" />
+            [resultTemplate]="exerciseSearchTemp" [inputFormatter]="formatter" [editable]="false" />
         <small *ngIf="searching" class="form-text text-muted">searching...</small>
         <div class="invalid-feedback" *ngIf="searchFailed">Sorry, suggestions could not be loaded.</div>
         <button [disabled]="model===undefined" type="button" class="btn btn-md btn-primary mt-3"
             (click)="addWorkout()">Add Exercise</button>
-        <div class="mb-3" *ngIf="workoutExercises.length>0" >
+        <div class="mb-3" *ngIf="workoutExercises.length>0">
             <h3 class="form-label mt-2">Workout Exercises List</h3>
             <hr class="hr" />
-            <app-exercise-list *ngFor="let exercise of workoutExercises" [exerciseName]="exercise.name"
-                [exerciseDescription]="exercise.description" [exerciseId]="exercise.id"
-                (removeExercise)="removeExercise($event)">
-            </app-exercise-list>
+            <div cdkDropList (cdkDropListDropped)="drop($event)">
+                <app-exercise-list *ngFor="let exercise of workoutExercises index as i" [exerciseName]="exercise.name"
+                    [exerciseDescription]="exercise.description" [exerciseId]="exercise.id"
+                    (removeExercise)="removeExercise($event)" [indexNumber]="i+1" cdkDrag>
+                </app-exercise-list>
+            </div>
             <hr class="hr" />
             <button class="btn btn-primary btn-md" [disabled]="!createWorkoutForm.valid" (click)="createWorkout()">
                 Create Workout</button>

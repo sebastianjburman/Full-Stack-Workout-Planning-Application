@@ -9,6 +9,7 @@ import { Workout } from 'src/app/models/workout';
 import { ExerciseService } from 'src/app/services/exercise-service';
 import { ToastService } from 'src/app/services/toast.service';
 import { WorkoutService } from 'src/app/services/workout.service';
+import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 
 @Component({
   selector: 'app-workout-create-page',
@@ -47,6 +48,10 @@ export class WorkoutCreatePageComponent implements OnInit {
 
   removeExercise(exerciseId: string) {
     this.workoutExercises = this.workoutExercises.filter(exercise => exercise.id != exerciseId)
+  }
+
+  drop(event: CdkDragDrop<Exercise[]>) {
+    moveItemInArray(this.workoutExercises, event.previousIndex, event.currentIndex);
   }
 
   createWorkout(): void {
