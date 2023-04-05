@@ -1,5 +1,4 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { ModalDismissReasons, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { TokenManagement } from 'src/app/helpers/tokenManagement';
 import { WorkoutViewModel } from 'src/app/models/workoutViewModel';
 import { WorkoutService } from 'src/app/services/workout.service';
@@ -25,7 +24,7 @@ export class WorkoutsPageComponent implements OnInit {
 	recentlyCreatedPageNum: number = 1;
 	recentlyCreatedItemOnPage: number = 5;
 
-	constructor(private modalService: NgbModal, private workoutService: WorkoutService) { }
+	constructor(private workoutService: WorkoutService) { }
 
 	ngOnInit(): void {
 		this.workoutService.getWorkoutsCreated(TokenManagement.getTokenFromLocalStorage()).subscribe(({
@@ -43,26 +42,4 @@ export class WorkoutsPageComponent implements OnInit {
 			}
 		}))
 	}
-
-	open(createdWorkoutModal: any) {
-		this.modalService.open(createdWorkoutModal, { ariaLabelledBy: 'modal-basic-title', size: "lg" }).result.then(
-			(result) => {
-				this.closeResult = `Closed with: ${result}`;
-			},
-			(reason) => {
-				this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
-			},
-		);
-	}
-
-	private getDismissReason(reason: any): string {
-		if (reason === ModalDismissReasons.ESC) {
-			return 'by pressing ESC';
-		} else if (reason === ModalDismissReasons.BACKDROP_CLICK) {
-			return 'by clicking on a backdrop';
-		} else {
-			return `with: ${reason}`;
-		}
-	}
-
 }

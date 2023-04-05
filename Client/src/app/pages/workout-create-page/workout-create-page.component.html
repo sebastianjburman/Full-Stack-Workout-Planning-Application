@@ -1,23 +1,24 @@
 <ng-template #exerciseSearchTemp let-r="result" let-t="term">
-    <h5>Name</h5>
     <ngb-highlight [result]="r.name" [term]="t"></ngb-highlight>
 </ng-template>
 
-<div>
-    <div class="modal-header">
-        <h4 class="modal-title" id="modal-basic-title">Create Workout</h4>
-        <button type="button" class="btn-close" aria-label="Close" (click)="clearAllModals()"></button>
-    </div>
-    <div class="modal-body">
+<app-navbar></app-navbar>
+<app-side-nav-bar></app-side-nav-bar>
+<main class="pageMainContainer">
+    <div class="container">
+        <h1 class="mt-2">Workout Create</h1>
         <form [formGroup]="createWorkoutForm">
             <label for="name" class="form-label">Name</label>
             <input type="text" class="form-control mb-1" id="name" formControlName="workoutName">
-            <div class="alert show alert-danger fade mt-2" *ngIf="formName!.invalid && (formName!.dirty || formName!.touched)">
+            <div class="alert show alert-danger fade mt-2"
+                *ngIf="formName!.invalid && (formName!.dirty || formName!.touched)">
                 Name must be 5-30 alphanumeric characters
             </div>
             <label for="description" class="form-label">Description</label>
-            <textarea type="text" class="form-control mb-1" id="description" formControlName="workoutDescription"></textarea>
-            <div class="alert show alert-danger fade mt-2" *ngIf="formDescription!.invalid && (formDescription!.dirty || formDescription!.touched)">
+            <textarea type="text" class="form-control mb-1" id="description"
+                formControlName="workoutDescription"></textarea>
+            <div class="alert show alert-danger fade mt-2"
+                *ngIf="formDescription!.invalid && (formDescription!.dirty || formDescription!.touched)">
                 Description must be 10-400 characters
             </div>
             <div class="form-check form-switch">
@@ -28,12 +29,12 @@
         <label class="form-label">Add Exercises</label>
         <input id="typeahead-http" type="text" class="form-control" [class.is-invalid]="searchFailed"
             [(ngModel)]="model" [ngbTypeahead]="search" placeholder="Exercise Search"
-            [resultTemplate]="exerciseSearchTemp" [inputFormatter]="formatter" [editable]="false" />
+            [resultTemplate]="exerciseSearchTemp"[inputFormatter]="formatter" [editable]="false" />
         <small *ngIf="searching" class="form-text text-muted">searching...</small>
         <div class="invalid-feedback" *ngIf="searchFailed">Sorry, suggestions could not be loaded.</div>
         <button [disabled]="model===undefined" type="button" class="btn btn-md btn-primary mt-3"
             (click)="addWorkout()">Add Exercise</button>
-        <div *ngIf="workoutExercises.length>0">
+        <div class="mb-3" *ngIf="workoutExercises.length>0" >
             <h3 class="form-label mt-2">Workout Exercises List</h3>
             <hr class="hr" />
             <app-exercise-list *ngFor="let exercise of workoutExercises" [exerciseName]="exercise.name"
@@ -41,6 +42,9 @@
                 (removeExercise)="removeExercise($event)">
             </app-exercise-list>
             <hr class="hr" />
-            <button class="btn btn-primary btn-md" [disabled]="!createWorkoutForm.valid"  (click)="createWorkout()"> Create Workout</button>
+            <button class="btn btn-primary btn-md" [disabled]="!createWorkoutForm.valid" (click)="createWorkout()">
+                Create Workout</button>
         </div>
     </div>
+</main>
+<app-bottom-navbar></app-bottom-navbar>

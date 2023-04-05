@@ -1,20 +1,21 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, TemplateRef } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { catchError, debounceTime, distinctUntilChanged, map, Observable, of, OperatorFunction, switchMap, tap } from 'rxjs';
+import { ResultTemplateContext } from '@ng-bootstrap/ng-bootstrap/typeahead/typeahead-window';
+import { Observable, OperatorFunction, debounceTime, distinctUntilChanged, switchMap } from 'rxjs';
 import { TokenManagement } from 'src/app/helpers/tokenManagement';
 import { Exercise } from 'src/app/models/exercise';
 import { Workout } from 'src/app/models/workout';
 import { ExerciseService } from 'src/app/services/exercise-service';
 import { ToastService } from 'src/app/services/toast.service';
-import { WorkoutService} from 'src/app/services/workout.service';
+import { WorkoutService } from 'src/app/services/workout.service';
 
 @Component({
-  selector: 'app-create-workout-modal',
-  templateUrl: './create-workout-modal.component.html',
-  styleUrls: ['./create-workout-modal.component.css']
+  selector: 'app-workout-create-page',
+  templateUrl: './workout-create-page.component.html',
+  styleUrls: ['./workout-create-page.component.css']
 })
-export class CreateWorkoutModalComponent implements OnInit {
+export class WorkoutCreatePageComponent implements OnInit {
 
   model: any;
   searching = false;
@@ -27,7 +28,7 @@ export class CreateWorkoutModalComponent implements OnInit {
     isPublic: new FormControl(true, Validators.required)
   });
 
-  constructor(private modalService: NgbModal, private exerciseService: ExerciseService, private toastService: ToastService, private workoutService:WorkoutService) { }
+  constructor(private modalService: NgbModal, private exerciseService: ExerciseService, private toastService: ToastService, private workoutService: WorkoutService) { }
 
   ngOnInit(): void {
   }
@@ -52,14 +53,14 @@ export class CreateWorkoutModalComponent implements OnInit {
     const workout: Workout = (this.createWorkoutForm.value) as Workout;
     const exercises = this.workoutExercises.map(ex => ex.id);
     workout.exercises = exercises;
-    this.workoutService.createWorkout(workout,TokenManagement.getTokenFromLocalStorage()).subscribe({
+    this.workoutService.createWorkout(workout, TokenManagement.getTokenFromLocalStorage()).subscribe({
       next: (res) => {
         this.toastService.show("Successfully Created Workout", { classname: "bg-success text-light", delay: 5000, header: "Success" });
         this.modalService.dismissAll();
       },
       error: (error) => {
         this.toastService.show(error.error.message, { classname: 'bg-danger text-light', delay: 5000, header: "Error" });
-      } 
+      }
     })
   }
 
@@ -83,3 +84,4 @@ export class CreateWorkoutModalComponent implements OnInit {
   get formIsPublic() { return this.createWorkoutForm.get('isPublic'); }
   formatter = (x: Exercise) => x.name;
 }
+

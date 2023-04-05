@@ -23,9 +23,9 @@ import { TopCreatorProfileComponent } from './components/top-creator-profile/top
 import { ExerciseViewPageComponent } from './pages/exercise-view-page/exercise-view-page.component';
 import { ToastComponent } from './components/toast/toast.component';
 import { CreateExerciseModalComponent } from './components/create-exercise-modal/create-exercise-modal.component';
-import { CreateWorkoutModalComponent } from './components/create-workout-modal/create-workout-modal.component';
 import { ExerciseListComponent } from './components/exercise-list/exercise-list.component';
 import { WorkoutViewPageComponent } from './pages/workout-view-page/workout-view-page.component';
+import { WorkoutCreatePageComponent } from './pages/workout-create-page/workout-create-page.component';
 
 @NgModule({
   declarations: [
@@ -47,9 +47,9 @@ import { WorkoutViewPageComponent } from './pages/workout-view-page/workout-view
     ExerciseViewPageComponent,
     ToastComponent,
     CreateExerciseModalComponent,
-    CreateWorkoutModalComponent,
     ExerciseListComponent,
     WorkoutViewPageComponent,
+    WorkoutCreatePageComponent,
   ],
   imports: [
     BrowserModule,

@@ -11,6 +11,7 @@ import { ProfilePageComponent } from './pages/profile-page/profile-page.componen
 import { ExercisesPageComponent } from './pages/exercises-page/exercises-page.component';
 import { ExerciseViewPageComponent } from './pages/exercise-view-page/exercise-view-page.component';
 import { WorkoutViewPageComponent } from './pages/workout-view-page/workout-view-page.component';
+import { WorkoutCreatePageComponent } from './pages/workout-create-page/workout-create-page.component';
 const routes: Routes = [
   {
     path: 'login',
@@ -47,6 +48,11 @@ const routes: Routes = [
   {
     path: 'workout/:id',
     component: WorkoutViewPageComponent,
+    canActivate: [AuthGuard],
+  },
+  {
+    path: 'workouts/create',
+    component: WorkoutCreatePageComponent,
     canActivate: [AuthGuard],
   },
 
