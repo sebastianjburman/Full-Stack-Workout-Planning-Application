@@ -10,13 +10,15 @@ public class WorkoutService : IWorkoutService
     private IMongoDatabase _database;
     private readonly IMongoCollection<Workout> _workouts;
     private readonly IMongoCollection<Exercise> _exercises;
+    private readonly IExerciseService _exerciseService;
 
-    public WorkoutService(IWorkoutStoreDatabaseSettings settings, IMongoClient client)
+    public WorkoutService(IWorkoutStoreDatabaseSettings settings, IMongoClient client, IExerciseService exerciseService)
     {
         _client = new MongoClient(settings.ConnectionString);
         _database = _client.GetDatabase(settings.DatabaseName);
         _workouts = _database.GetCollection<Workout>("workouts");
         _exercises = _database.GetCollection<Exercise>("exercises");
+        _exerciseService = exerciseService;
 
         // Create unique indexes
         var workoutNameKey = Builders<Workout>.IndexKeys.Ascending(x => x.WorkoutName);
@@ -73,6 +75,7 @@ public class WorkoutService : IWorkoutService
                 { "Exercises", "$exercises" },
                 { "IsPublic", "$isPublic"},
                 { "CreatedAt", "$createdAt" },
+                { "CreatedBy", "$createdBy"},
                 { "CreatedByUsername", "$createdUser.profile.username" },
                 { "CreatedByPhotoUrl", "$createdUser.profile.avatar" },
                 { "UserLiked", new BsonDocument("$cond",
@@ -94,7 +97,7 @@ public class WorkoutService : IWorkoutService
         {
             throw new NotFoundException("Workout");
         }
-        if (!result.IsPublic)
+        if (!result.IsPublic && result.CreatedBy != userId)
         {
             throw new InvalidAccessException("view");
         }
@@ -108,10 +111,12 @@ public class WorkoutService : IWorkoutService
             throw new Exception("Cannot have 0 exercises or more than 15 exercises to workout.");
         }
         //Check that all exercises exist in the workout
-        for (int i = 0; i<workout.Exercises.Count;i++){
+        for (int i = 0; i < workout.Exercises.Count; i++)
+        {
             string exerciseId = workout.Exercises.ElementAt(i);
-            var exercise = await _exercises.FindAsync(e=>e.Id==exerciseId).Result.FirstOrDefaultAsync();
-            if(exercise == null){
+            var exercise = await _exercises.FindAsync(e => e.Id == exerciseId).Result.FirstOrDefaultAsync();
+            if (exercise == null)
+            {
                 throw new Exception($"Exercise {exerciseId} in this workout does not exist");
             }
         }
@@ -286,5 +291,33 @@ public class WorkoutService : IWorkoutService
         var result = await _workouts.Aggregate<WorkoutViewModel>(pipeline).ToListAsync();
 
         return result;
+    }
+
+    public async Task<List<ExerciseViewModel>> GetWorkoutsExercises(string workoutId, string userId){
+        Workout workout = _workouts.FindAsync(w=>w.Id == workoutId).Result.FirstOrDefault();
+        if (workout == null)
+        {
+            throw new NotFoundException("Workout");
+        }
+        if (!workout.isPublic && workout.CreatedBy != userId)
+        {
+            throw new InvalidAccessException("view");
+        }
+        List<ExerciseViewModel> exercises = new List<ExerciseViewModel>();
+        foreach (string exerciseId in workout.Exercises)
+        {
+            ExerciseViewModel exercise = await _exerciseService.GetExerciseByIdAsync(exerciseId);
+            if(exercise != null){
+                exercises.Add(exercise);
+            }
+            //Cleans deleted exercises from the workout.
+            else{
+                //Update workouts exercise by remove this exercise id
+                List<string> updatedExercises = workout.Exercises.FindAll(e=>e!=exerciseId);
+                var updateExercises = Builders<Workout>.Update.Set("exercises", updatedExercises);
+                await _workouts.UpdateOneAsync(w=>w.Id == workoutId,updateExercises);
+            }
+        }
+        return exercises;
     }
 }

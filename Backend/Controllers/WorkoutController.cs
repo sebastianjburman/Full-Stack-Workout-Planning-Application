@@ -156,5 +156,20 @@ namespace Backend.Controllers
             }
         }
 
+        [Authorize]
+        [HttpGet("workoutexercises")]
+        public async Task<ActionResult> GetWorkoutExercises(string workoutId)
+        {
+            User contextUser = (User)HttpContext.Items["User"]!;
+            try
+            {
+                List<ExerciseViewModel> workoutExercises = await _workoutService.GetWorkoutsExercises(workoutId, contextUser.Id!);
+                return Ok(workoutExercises);
+            }
+            catch (Exception e)
+            {
+                return BadRequest(new { message = e.Message });
+            }
+        }
     }
 }

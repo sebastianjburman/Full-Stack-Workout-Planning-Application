@@ -1,1 +1,79 @@
-<p>workout-view-page works!</p>
+<!--Delete Workout Modal-->
+<ng-template #content let-modal>
+    <div class="modal-header">
+        <h2 class="modal-title" id="modal-basic-title">Delete Workout</h2>
+        <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
+    </div>
+    <div class="modal-body">
+        <p>Are you sure you want to delete this <b>Workout</b>?</p>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-danger">Delete</button>
+        <button type="button" class="btn btn-primary" (click)="modal.dismiss('Cross click')">Cancel</button>
+    </div>
+</ng-template>
+<!--Delete Workout Modal-->
+<app-navbar></app-navbar>
+<app-side-nav-bar></app-side-nav-bar>
+<main class="pageMainContainer">
+    <div class="d-flex justify-content-center flex-column mt-4 container-lg">
+        <div class="row-4 card mb-4 col-12 rounded-3 shadow-sm">
+            <div class="card-header py-3 d-flex flex-row align-items-center">
+                <h1 class="my-0 fw-normal text-truncate">{{workout?.workoutName}}</h1>
+                <div class="media text-muted ms-auto d-flex align-items-center">
+                    <img alt="32x32" data-holder-rendered="true" class="rounded" style="width: 32px; height: 32px;"
+                        src={{workout?.createdByPhotoUrl}}>
+                    <p class="media-body mb-0 small lh-125 d-none d-md-block" style="margin-left: 10px;">
+                        <strong class="d-block text-black text-black">{{workout?.createdByUsername}}</strong>
+                    </p>
+                </div>
+            </div>
+            <div class="mt-4">
+                <div class="d-inline p-1 ms-3 bg-light rounded-2" *ngIf="!workout?.isPublic">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                        class="bi bi-lock-fill" viewBox="0 0 16 16">
+                        <path
+                            d="M8 1a2 2 0 0 1 2 2v4H6V3a2 2 0 0 1 2-2zm3 6V3a3 3 0 0 0-6 0v4a2 2 0 0 0-2 2v5a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2z">
+                        </path>
+                    </svg>
+                    Private Workout
+                </div>
+                <h2 class="ms-3 mt-3">Description</h2>
+                <p class="ms-3">{{workout?.workoutDescription}}</p>
+            </div>
+            <div class="m-3 d-flex align-items-center">
+                <div>
+                <button *ngIf="!workout?.userLiked" type="button" class="btn btn-primary" (click)="likeWorkout()">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="tomato" class="bi bi-heart"
+                        viewBox="0 0 16 16">
+                        <path
+                            d="m8 2.748-.717-.737C5.6.281 2.514.878 1.4 3.053c-.523 1.023-.641 2.5.314 4.385.92 1.815 2.834 3.989 6.286 6.357 3.452-2.368 5.365-4.542 6.286-6.357.955-1.886.838-3.362.314-4.385C13.486.878 10.4.28 8.717 2.01L8 2.748zM8 15C-7.333 4.868 3.279-3.04 7.824 1.143c.06.055.119.112.176.171a3.12 3.12 0 0 1 .176-.17C12.72-3.042 23.333 4.867 8 15z">
+                        </path>
+                    </svg>
+                </button>
+                <button *ngIf="workout?.userLiked" type="button" class="btn btn-primary" (click)="unlikeWorkout()">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="tomato"
+                        class="bi bi-heart-fill" viewBox="0 0 16 16">
+                        <path fill-rule="evenodd"
+                            d="M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314z"></path>
+                    </svg>
+                </button>
+                </div>
+                <div>
+                    <button class="btn btn-danger btn-small m-3" [disabled]="!isUsersWorkout()"
+                        (click)="open(content)">Delete</button>
+                </div>
+            </div>
+            <div class="m-3">
+                <h2>Exercises</h2>
+                <app-exercise-preview *ngFor="let exercise of workoutExercises" [exerciseName]="exercise.name"
+                    [exerciseDescription]="exercise.description" [exerciseId]="exercise.id"
+                    [exerciseCreatedByUsername]="exercise.createdByUsername"
+                    [exerciseCreatedByPhotoUrl]="exercise.createdByPhotoUrl" [showUsernameAndPhoto]="false">
+                </app-exercise-preview>
+                <p *ngIf="workoutExercises.length==0">No exercises in this workout</p>
+            </div>
+        </div>
+    </div>
+</main>
+<app-bottom-navbar></app-bottom-navbar>

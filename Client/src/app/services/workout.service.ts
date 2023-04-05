@@ -61,9 +61,18 @@ export class WorkoutService {
       },
     })
   }
-
   public unlikeWorkout(token: string, workoutId: string): Observable<any> {
     return this.http.delete(`${this.url}/unlike`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+      params: {
+        workoutId: workoutId,
+      },
+    })
+  }
+  public getWorkoutExercises(token: string, workoutId: string): Observable<any> {
+    return this.http.get(`${this.url}/workoutexercises`,{
       headers: {
         Authorization: `Bearer ${token}`,
       },

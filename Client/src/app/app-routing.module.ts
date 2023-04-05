@@ -10,6 +10,7 @@ import { PeoplePageComponent } from './pages/people-page/people-page.component';
 import { ProfilePageComponent } from './pages/profile-page/profile-page.component';
 import { ExercisesPageComponent } from './pages/exercises-page/exercises-page.component';
 import { ExerciseViewPageComponent } from './pages/exercise-view-page/exercise-view-page.component';
+import { WorkoutViewPageComponent } from './pages/workout-view-page/workout-view-page.component';
 const routes: Routes = [
   {
     path: 'login',
@@ -43,6 +44,11 @@ const routes: Routes = [
     component: ExerciseViewPageComponent,
     canActivate: [AuthGuard],
   },
+  {
+    path: 'workout/:id',
+    component: WorkoutViewPageComponent,
+    canActivate: [AuthGuard],
+  },
 
   { path: '', redirectTo: '/login', pathMatch: 'full' },
 ];
@@ -50,4 +56,4 @@ const routes: Routes = [
   imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule],
 })
-export class AppRoutingModule {}
+export class AppRoutingModule { }

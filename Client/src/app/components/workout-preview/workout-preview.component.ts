@@ -16,6 +16,8 @@ export class WorkoutPreviewComponent implements OnInit {
   @Input() userLiked!: boolean;
   @Input() createdByUsername!: string;
   @Input() createdByPhotoUrl!: string;
+  @Input() isPublic!: boolean;
+  
 
   constructor(private workoutService: WorkoutService) { }
 

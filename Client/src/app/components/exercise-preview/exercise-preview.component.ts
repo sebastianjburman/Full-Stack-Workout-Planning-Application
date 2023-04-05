@@ -11,6 +11,7 @@ export class ExercisePreviewComponent implements OnInit {
   @Input() exerciseDescription!: string;
   @Input() exerciseCreatedByUsername!: string;
   @Input() exerciseCreatedByPhotoUrl!: string;
+  @Input() showUsernameAndPhoto: boolean = true;
   constructor() { }
 
   ngOnInit(): void {

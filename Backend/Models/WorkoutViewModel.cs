@@ -14,6 +14,8 @@ namespace Backend.Models
         public DateTime CreatedAt { get; set; }
         public bool UserLiked { get; set; }
         public bool IsPublic { get; set; }
+        [BsonRepresentation(BsonType.ObjectId)]
+        public string? CreatedBy { get; set; }
         public string? CreatedByUsername { get; set; }
         public string? CreatedByPhotoUrl { get; set; }
     }
