@@ -10,6 +10,7 @@ import { ExerciseService } from 'src/app/services/exercise-service';
 import { ToastService } from 'src/app/services/toast.service';
 import { WorkoutService } from 'src/app/services/workout.service';
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-workout-create-page',
@@ -29,7 +30,7 @@ export class WorkoutCreatePageComponent implements OnInit {
     isPublic: new FormControl(true, Validators.required)
   });
 
-  constructor(private modalService: NgbModal, private exerciseService: ExerciseService, private toastService: ToastService, private workoutService: WorkoutService) { }
+  constructor(private modalService: NgbModal, private exerciseService: ExerciseService, private toastService: ToastService, private workoutService: WorkoutService, private router:Router) { }
 
   ngOnInit(): void {
   }
@@ -62,6 +63,7 @@ export class WorkoutCreatePageComponent implements OnInit {
       next: (res) => {
         this.toastService.show("Successfully Created Workout", { classname: "bg-success text-light", delay: 5000, header: "Success" });
         this.modalService.dismissAll();
+        this.router.navigate(['/workouts']);
       },
       error: (error) => {
         this.toastService.show(error.error.message, { classname: 'bg-danger text-light', delay: 5000, header: "Error" });
