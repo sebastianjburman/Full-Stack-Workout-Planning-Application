@@ -27,6 +27,8 @@ import { ExerciseListComponent } from './components/exercise-list/exercise-list.
 import { WorkoutViewPageComponent } from './pages/workout-view-page/workout-view-page.component';
 import { WorkoutCreatePageComponent } from './pages/workout-create-page/workout-create-page.component';
 import { DragDropModule } from '@angular/cdk/drag-drop';
+import { NgChartsModule } from 'ng2-charts';
+import { NgbAccordionModule } from '@ng-bootstrap/ng-bootstrap';
 
 @NgModule({
   declarations: [
@@ -60,7 +62,9 @@ import { DragDropModule } from '@angular/cdk/drag-drop';
     ReactiveFormsModule,
     HttpClientModule,
     NgbDropdownModule,
-    DragDropModule
+    DragDropModule,
+    NgChartsModule,
+    NgbAccordionModule
   ],
   providers: [],
   bootstrap: [AppComponent]
