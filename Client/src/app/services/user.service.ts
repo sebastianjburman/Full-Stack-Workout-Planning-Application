@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { UserDTO } from '../models/userDTO';
 import { UserLoginDTO } from '../models/userLoginDTO';
 import { Observable } from 'rxjs';
+import { WeightEntry } from '../models/weightEntry';
 
 @Injectable({
   providedIn: 'root'
@@ -26,24 +27,24 @@ export class UserService {
       }
     })
   }
-  public getUserProfileByUserName(token:string, username:string): Observable<any>{
+  public getUserProfileByUserName(token: string, username: string): Observable<any> {
     return this.http.get(`${this.url}/profile`, {
       headers: {
         'Authorization': `Bearer ${token}`
       },
-      params:{
+      params: {
         'userName': username
       }
     })
   }
-  public getDiscoverProfiles(token:string): Observable<any>{
+  public getDiscoverProfiles(token: string): Observable<any> {
     return this.http.get(`${this.url}/profiles`, {
       headers: {
         'Authorization': `Bearer ${token}`
       },
     })
   }
-  public getUserProfile(token:string): Observable<any>{
+  public getUserProfile(token: string): Observable<any> {
     return this.http.get(`${this.url}/myprofile`, {
       headers: {
         'Authorization': `Bearer ${token}`
@@ -54,6 +55,30 @@ export class UserService {
     return this.http.get(`${this.url}/checkauth`, {
       headers: {
         'Authorization': `Bearer ${token}`
+      }
+    })
+  }
+  public getUserMonthlyWeightEntries(token: string): Observable<any> {
+    return this.http.get(`${this.url}/weightentries`, {
+      headers: {
+        'Authorization': `Bearer ${token}`
+      }
+    })
+  }
+  public addWeightEntry(token: string, weight: WeightEntry): Observable<any> {
+    return this.http.post(`${this.url}/weightentry`, weight, {
+      headers: {
+        'Authorization': `Bearer ${token}`
+      }
+    })
+  }
+  public deleteWeightEntry(token: string, entryId:string): Observable<any> {
+    return this.http.delete(`${this.url}/weightentry`, {
+      headers: {
+        'Authorization': `Bearer ${token}`
+      },
+      params: {
+        "id": entryId
       }
     })
   }
