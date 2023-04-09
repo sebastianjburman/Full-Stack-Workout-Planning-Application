@@ -13,7 +13,7 @@ public class WorkoutService : IWorkoutService
     private readonly IExerciseService _exerciseService;
     private readonly IWorkoutLikeService _workoutLikeService;
 
-    public WorkoutService(IWorkoutStoreDatabaseSettings settings, IMongoClient client, IExerciseService exerciseService, IWorkoutLikeService workoutLikeService)
+    public WorkoutService(IServiceDatabaseSettings settings, IMongoClient client, IExerciseService exerciseService, IWorkoutLikeService workoutLikeService)
     {
         _client = new MongoClient(settings.ConnectionString);
         _database = _client.GetDatabase(settings.DatabaseName);

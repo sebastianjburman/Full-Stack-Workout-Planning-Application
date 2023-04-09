@@ -1,8 +1,7 @@
 namespace Backend.Interfaces
 {
-    public interface IWorkoutLikeStoreDatabaseSettings
+    public interface IServiceDatabaseSettings
     {
-        string CollectionName { get;set;}
         string ConnectionString { get;set;}
         string DatabaseName { get;set;}
     }

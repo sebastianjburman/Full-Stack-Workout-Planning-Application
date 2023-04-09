@@ -17,7 +17,7 @@ namespace Backend.Services
         private IMongoClient _client;
         private IMongoDatabase _database;
         private IMongoCollection<User> _usersCollection;
-        public UserService(IUserStoreDatabaseSettings settings, IMongoClient mongoClient)
+        public UserService(IServiceDatabaseSettings settings, IMongoClient mongoClient)
         {
             _client = new MongoClient(settings.ConnectionString);
             _database = _client.GetDatabase(settings.DatabaseName);

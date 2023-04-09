@@ -11,7 +11,7 @@ public class ExerciseService : IExerciseService
     private readonly IMongoCollection<Exercise> _exercises;
     private readonly IMongoCollection<User> _users;
 
-    public ExerciseService(IExerciseStoreDatabaseSettings settings, IMongoClient client)
+    public ExerciseService(IServiceDatabaseSettings settings, IMongoClient client)
     {
         _client = new MongoClient(settings.ConnectionString);
         _database = _client.GetDatabase(settings.DatabaseName);

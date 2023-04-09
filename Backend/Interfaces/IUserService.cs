@@ -10,6 +10,6 @@ namespace Backend.Interfaces
         User GetUser(string id);
         UserProfileDTO GetUserProfileByUsername(string userName);
         string Authenticate(string email, string password, bool rememberMe);
-        public List<UserProfileDTO> GetProfiles(int count);
+        List<UserProfileDTO> GetProfiles(int count);
     }
 }

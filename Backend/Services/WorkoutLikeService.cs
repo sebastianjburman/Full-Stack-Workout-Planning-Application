@@ -7,11 +7,11 @@ namespace Backend.Services
     public class WorkoutLikeService : IWorkoutLikeService
     {
         private readonly IMongoCollection<WorkoutLike> _workoutLikes;
-        public WorkoutLikeService(IWorkoutLikeStoreDatabaseSettings settings)
+        public WorkoutLikeService(IServiceDatabaseSettings settings)
         {
             var client = new MongoClient(settings.ConnectionString);
             var database = client.GetDatabase(settings.DatabaseName);
-            _workoutLikes = database.GetCollection<WorkoutLike>(settings.CollectionName);
+            _workoutLikes = database.GetCollection<WorkoutLike>("WorkoutLikes");
 
             // Create unique indexes
             var workoutIdKey = Builders<WorkoutLike>.IndexKeys.Ascending(x => x.WorkoutId);
