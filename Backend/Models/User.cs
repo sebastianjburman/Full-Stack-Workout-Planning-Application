@@ -30,7 +30,7 @@ namespace Backend.Models
         [BsonElement("currentweight")]
         [Range(10, 1000, ErrorMessage = "Value for {0} must be between {1} and {2}.")]
         [Required]
-        public int CurrentWeight { get; set; }
+        public double CurrentWeight { get; set; }
         [Required]
         //Range in inches = 4 feet to 8 feet
         [Range(48, 96, ErrorMessage = "Value for {0} must be between {1} and {2}.")]

@@ -9,6 +9,7 @@ using Microsoft.IdentityModel.Tokens;
 using System.Security.Claims;
 using Backend.Exceptions;
 using MongoDB.Driver.Linq;
+using MongoDB.Bson;
 
 namespace Backend.Services
 {
@@ -32,9 +33,11 @@ namespace Backend.Services
             _usersCollection.Indexes.CreateOne(emailIndexModel);
             _usersCollection.Indexes.CreateOne(userNameIndexModel);
         }
-        public async Task CreateUser(UserDTO userDTO)
+        public async Task CreateUser(UserDTO userDTO, ObjectId generatedUserId)
         {
             User user = userDTO.ToUser();
+            user.CurrentWeight = Math.Round(user.CurrentWeight, 2);
+            user.Id = generatedUserId.ToString();
             //Make unique fields lowercase
             user.Email = user.Email?.ToLower();
             user.profile.UserName = user.profile.UserName?.ToLower();

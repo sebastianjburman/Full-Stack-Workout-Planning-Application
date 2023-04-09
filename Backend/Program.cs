@@ -10,14 +10,12 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.Configure<ServiceDatabaseSettings>(builder.Configuration.GetSection(nameof(ServiceDatabaseSettings)));
 builder.Services.AddSingleton<IServiceDatabaseSettings>(sp => sp.GetRequiredService<IOptions<ServiceDatabaseSettings>>().Value);
 builder.Services.AddSingleton<IMongoClient>(s => new MongoClient(builder.Configuration.GetValue<string>("ServiceDatabaseSettings:ConnectionString")));
-//Users
+
 builder.Services.AddScoped<IUserService, UserService>();
-//Exercises
 builder.Services.AddScoped<IExerciseService, ExerciseService>();
-//Workouts
 builder.Services.AddScoped<IWorkoutService, WorkoutService>();
-//WorkoutLikes
 builder.Services.AddScoped<IWorkoutLikeService, WorkoutLikeService>();
+builder.Services.AddScoped<IWeightService, WeightService>();
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();

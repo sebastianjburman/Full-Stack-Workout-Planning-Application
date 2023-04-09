@@ -4,6 +4,7 @@ using Backend.DTO;
 using Backend.Exceptions;
 using Backend.Helpers;
 using Backend.Models;
+using MongoDB.Bson;
 
 namespace Backend.Controllers
 {
@@ -13,11 +14,13 @@ namespace Backend.Controllers
     {
         private readonly ILogger<UserController> _logger;
         private readonly IUserService _userService;
+        private readonly IWeightService _weightEntryService;
 
-        public UserController(ILogger<UserController> logger, IUserService userService)
+        public UserController(ILogger<UserController> logger, IUserService userService, IWeightService weightEntryService)
         {
             _logger = logger;
             _userService = userService;
+            _weightEntryService = weightEntryService;
         }
         [Authorize]
         [HttpGet("checkauth")]
@@ -74,7 +77,9 @@ namespace Backend.Controllers
             {
                 try
                 {
-                    await _userService.CreateUser(newUser);
+                    ObjectId userObjectId = ObjectId.GenerateNewId();
+                    await _userService.CreateUser(newUser,userObjectId);
+                    await _weightEntryService.Create(Math.Round(newUser.CurrentWeight, 2), userObjectId.ToString());
                     return Ok();
                 }
                 catch (Exception ex)
@@ -105,6 +110,51 @@ namespace Backend.Controllers
             else
             {
                 return BadRequest(ModelState);
+            }
+        }
+        [Authorize]
+        [HttpPost("weightentry")]
+        public async Task<ActionResult> CreateWeightEntry(double weightEntry)
+        {
+            try
+            {
+                User contextUser = (User)HttpContext.Items["User"]!;
+                await _weightEntryService.Create(Math.Round(weightEntry, 2), contextUser.Id!);
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+        [Authorize]
+        [HttpDelete("weightentry")]
+        public async Task<ActionResult> DeleteWeightEntry(string id)
+        {
+            try
+            {
+                User contextUser = (User)HttpContext.Items["User"]!;
+                await _weightEntryService.Delete(id, contextUser.Id!);
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+        [Authorize]
+        [HttpGet("weightentries")]
+        public async Task<ActionResult> GetWeightEntries()
+        {
+            try
+            {
+                User contextUser = (User)HttpContext.Items["User"]!;
+                List<WeightEntry> weightEntries = await _weightEntryService.GetRecentMonthWeightEntry(contextUser.Id!);
+                return Ok(weightEntries);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
             }
         }
     }
