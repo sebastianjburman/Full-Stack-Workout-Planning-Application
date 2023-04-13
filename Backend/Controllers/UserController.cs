@@ -114,12 +114,12 @@ namespace Backend.Controllers
         }
         [Authorize]
         [HttpPost("weightentry")]
-        public async Task<ActionResult> CreateWeightEntry(double weightEntry)
+        public async Task<ActionResult> CreateWeightEntry([FromBody]WeightEntry weightEntry)
         {
             try
             {
                 User contextUser = (User)HttpContext.Items["User"]!;
-                await _weightEntryService.Create(Math.Round(weightEntry, 2), contextUser.Id!);
+                await _weightEntryService.Create(Math.Round(weightEntry.Weight, 2), contextUser.Id!);
                 return Ok();
             }
             catch (Exception ex)

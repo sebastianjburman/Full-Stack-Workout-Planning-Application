@@ -1,6 +1,105 @@
 <app-navbar></app-navbar>
 <app-side-nav-bar></app-side-nav-bar>
 <main class="pageMainContainer">
-    <h1>Home Page</h1>
+    <div class="container-lg p-3">
+        <div class="row flex-md-row flex-sm-column">
+            <div class="col-md-6">
+                <h2>Weight Log</h2>
+                <div class="col card p-3 mb-3" style="display: block;">
+                    <canvas baseChart height="400" [type]="'line'" [data]="lineChartData" [options]="lineChartOptions"
+                        [legend]="lineChartLegend">
+                    </canvas>
+                </div>
+                <ngb-accordion #acc="ngbAccordion">
+                    <ngb-panel title="Add Weight Log" id="weightPanel">
+                        <ng-template ngbPanelContent>
+                            <p class="alert alert-info">Note - You can only enter one weight entry per day.</p>
+                            <form class="mb-2" [formGroup]="weightEntryForm">
+                                <div class="d-flex align-items-center justify-content-between">
+                                    <input placeholder="Current Weight" type="text" class="form-control me-2"
+                                        formControlName="weightEntry">
+                                    <button class="btn btn-primary" (click)="addWeightEntryForToday()"
+                                        [disabled]="!formWeightEntry?.valid">Add</button>
+                                </div>
+                                <div class="alert show alert-danger fade mt-3"
+                                    *ngIf="formWeightEntry!.invalid && (formWeightEntry!.dirty || formWeightEntry!.touched)">
+                                    A weight entry is required and must be between 10 and 1000
+                                </div>
+                            </form>
+                            <h3 *ngIf="monthsWeightEntries.length > 0">Month Entries</h3>
+                            <ul class="list-group">
+                                <li *ngFor="let entry of monthsWeightEntries"
+                                    class="list-group-item d-flex justify-content-between align-items-center list-group-item-action">
+                                    {{entry.date | date: 'MM/dd/yyyy'}}
+                                    <div class="d-flex align-items-center">
+                                        <p class="m-0 bg-primary text-white p-2 rounded-3 me-2">{{entry.weight}} IB</p>
+                                        <button type="button" class="btn btn-danger"
+                                            (click)="deleteWeightEntry(entry.id)">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
+                                                fill="currentColor" class="bi bi-trash3" viewBox="0 0 16 16">
+                                                <path
+                                                    d="M6.5 1h3a.5.5 0 0 1 .5.5v1H6v-1a.5.5 0 0 1 .5-.5ZM11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3A1.5 1.5 0 0 0 5 1.5v1H2.506a.58.58 0 0 0-.01 0H1.5a.5.5 0 0 0 0 1h.538l.853 10.66A2 2 0 0 0 4.885 16h6.23a2 2 0 0 0 1.994-1.84l.853-10.66h.538a.5.5 0 0 0 0-1h-.995a.59.59 0 0 0-.01 0H11Zm1.958 1-.846 10.58a1 1 0 0 1-.997.92h-6.23a1 1 0 0 1-.997-.92L3.042 3.5h9.916Zm-7.487 1a.5.5 0 0 1 .528.47l.5 8.5a.5.5 0 0 1-.998.06L5 5.03a.5.5 0 0 1 .47-.53Zm5.058 0a.5.5 0 0 1 .47.53l-.5 8.5a.5.5 0 1 1-.998-.06l.5-8.5a.5.5 0 0 1 .528-.47ZM8 4.5a.5.5 0 0 1 .5.5v8.5a.5.5 0 0 1-1 0V5a.5.5 0 0 1 .5-.5Z">
+                                                </path>
+                                            </svg>
+                                        </button>
+                                    </div>
+                                </li>
+                            </ul>
+                        </ng-template>
+                    </ngb-panel>
+                </ngb-accordion>
+                <div class="col mt-3" style="max-height: 425px; height: 425px;">
+                    <h2>Week Workout Plan</h2>
+                    <div class="card text-black rounded-3 p-3">
+                        <ul class="list-group">
+                            <li
+                                class="list-group-item d-flex justify-content-between align-items-center list-group-item-action">
+                                Monday
+                                <p class="m-0 bg-primary text-white p-1 rounded-3">4 Workouts</p>
+                            </li>
+                            <li
+                                class="list-group-item d-flex justify-content-between align-items-center list-group-item-action">
+                                Tuesday
+                                <p class="m-0 bg-primary text-white p-1 rounded-3">4 Workouts</p>
+                            </li>
+                            <li
+                                class="list-group-item d-flex justify-content-between align-items-center list-group-item-action">
+                                Wendesday
+                                <p class="m-0 bg-primary text-white p-1 rounded-3 ">4 Workouts</p>
+                            </li>
+                            <li
+                                class="list-group-item d-flex justify-content-between align-items-center list-group-item-action">
+                                Thursday
+                                <p class="m-0 bg-primary text-white p-1 rounded-3">4 Workouts</p>
+                            </li>
+                            <li
+                                class="list-group-item d-flex justify-content-between align-items-center list-group-item-action">
+                                Friday
+                                <p class="m-0 bg-primary text-white p-1 rounded-3">4 Workouts</p>
+                            </li>
+                            <li
+                                class="list-group-item d-flex justify-content-between align-items-center list-group-item-action">
+                                Saturday
+                                <p class="m-0 bg-primary text-white p-1 rounded-3">4 Workouts</p>
+                            </li>
+                            <li
+                                class="list-group-item d-flex justify-content-between align-items-center list-group-item-action">
+                                Sunday
+                                <p class="m-0 bg-primary text-white p-1 rounded-3">4 Workouts</p>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="col-12" style="max-height: 425px; height: 425px;">
+                    <h2>Today's Workouts</h2>
+                    <app-workout-preview></app-workout-preview>
+                    <app-workout-preview></app-workout-preview>
+                    <app-workout-preview></app-workout-preview>
+                </div>
+            </div>
+        </div>
+    </div>
 </main>
 <app-bottom-navbar></app-bottom-navbar>
