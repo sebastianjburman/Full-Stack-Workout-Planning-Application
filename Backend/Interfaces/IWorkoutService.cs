@@ -10,5 +10,6 @@ namespace Backend.Interfaces
         Task<List<WorkoutViewModel>> GetAllWorkoutsCreatedAsync(string userId);
         Task<List<WorkoutViewModel>> GetAllRecentlyCreatedWorkoutsByDate(int limit,string userId);
         Task<List<ExerciseViewModel>> GetWorkoutsExercises(string workoutId, string userId);
+        Task<List<WorkoutViewModel>> GetAllPublicWorkoutFromUsername(string username, string userId);
     }
 }

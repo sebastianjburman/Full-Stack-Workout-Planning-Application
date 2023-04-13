@@ -91,4 +91,14 @@ export class WorkoutService {
       },
     })
   }
+  public getWorkoutsCreatedByUsername(token: string,username:string): Observable<any> {
+    return this.http.get(`${this.url}/createdusername`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+      params:{
+        username:username
+      }
+    });
+  }
 }

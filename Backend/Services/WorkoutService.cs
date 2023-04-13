@@ -157,7 +157,7 @@ public class WorkoutService : IWorkoutService
         await _workouts.ReplaceOneAsync(e => e.Id == workoutId, workoutIn);
     }
 
-    public async Task DeleteWorkoutAsync(string workoutId,string userId)
+    public async Task DeleteWorkoutAsync(string workoutId, string userId)
     {
         //Make sure the user doesn't change the workouts's created by
         Workout workout = await _workouts.Find(e => e.Id == workoutId).FirstOrDefaultAsync();
@@ -339,5 +339,72 @@ public class WorkoutService : IWorkoutService
             }
         }
         return exercises;
+    }
+    public async Task<List<WorkoutViewModel>> GetAllPublicWorkoutFromUsername(string username, string userId)
+    {
+        var pipeline = new BsonDocument[]
+        {
+        new BsonDocument("$sort", new BsonDocument("createdAt", -1)),
+        new BsonDocument("$match", new BsonDocument("isPublic", true)),
+        new BsonDocument("$lookup",
+            new BsonDocument
+            {
+                { "from", "users" },
+                { "localField", "createdBy" },
+                { "foreignField", "_id" },
+                { "as", "createdUser" }
+            }
+        ),
+        new BsonDocument("$unwind", "$createdUser"),
+        new BsonDocument("$match", new BsonDocument("createdUser.profile.username", username)),
+        new BsonDocument("$lookup",
+            new BsonDocument
+            {
+                { "from", "WorkoutLikes" },
+                { "let", new BsonDocument("workoutId", "$_id") },
+                { "pipeline", new BsonArray
+                    {
+                        new BsonDocument("$match",
+                            new BsonDocument("$expr",
+                                new BsonDocument("$and",
+                                    new BsonArray
+                                    {
+                                        //Checking if workoutId from WorkoutLikes collection is equal to workoutId from workouts collection
+                                        new BsonDocument("$eq", new BsonArray { "$workoutId", "$$workoutId" }),
+                                        //Checking if userId from WorkoutLikes collection is equal to userId from users collection
+                                        new BsonDocument("$eq", new BsonArray { "$userId", new ObjectId(userId) })
+                                    }
+                                )
+                            )
+                        )
+                    }
+                },
+                { "as", "userLike" }
+            }
+        ),
+        new BsonDocument("$project",
+            new BsonDocument
+            {
+                { "WorkoutName", "$workoutName" },
+                { "WorkoutDescription", "$workoutDescription" },
+                { "Exercises", "$exercises" },
+                { "IsPublic", "$isPublic"},
+                { "CreatedAt", "$createdAt" },
+                { "CreatedByUsername", "$createdUser.profile.username" },
+                { "CreatedByPhotoUrl", "$createdUser.profile.avatar" },
+                { "UserLiked", new BsonDocument("$cond",
+                    // Check if there are any objects in the userLike array if so then return true else return false
+                    new BsonArray
+                    {
+                        new BsonDocument("$gt", new BsonArray { new BsonDocument("$size", "$userLike"), 0 }),
+                        true,
+                        false
+                    }
+                )}
+            }
+        ),
+        };
+        var result = await _workouts.Aggregate<WorkoutViewModel>(pipeline).ToListAsync();
+        return result;
     }
 }

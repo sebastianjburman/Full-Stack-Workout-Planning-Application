@@ -4,19 +4,25 @@
     <div class="p-4 container-xl">
         <div class="image d-flex flex-column justify-content-center align-items-center card mb-4">
             <img class="rounded-circle mt-4"
-                src={{profileImg}}
+                src={{profile?.avatar}}
                 height="200" width="200">
-            <h2 class="mt-2">@{{profileUsername}}</h2>
+            <h2 class="mt-2">@{{profile?.userName}}</h2>
             <div class="text w-75 p-3">
                 <span>
-                    {{profileBio}}
+                    {{profile?.bio}}
                 </span>
             </div>
         </div>
         <div class="row">
             <div class="col-sm-12">
                 <h2 class="text-left">Created Workouts</h2>
-                <app-workout-preview></app-workout-preview>
+                <app-workout-preview
+                    *ngFor="let workout of createdWorkouts"
+                    [workoutName]="workout.workoutName" [workoutDescription]="workout.workoutDescription"
+                    [Id]="workout.id" [createdByUsername]="workout.createdByUsername"
+                    [createdByPhotoUrl]="workout.createdByPhotoUrl" [exerciseCount]="workout.exercises.length" [userLiked]="workout.userLiked"
+                    [isPublic]="workout.isPublic">
+                </app-workout-preview>
             </div>
         </div>
     </div>
