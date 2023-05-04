@@ -7,7 +7,7 @@ import { Observable } from 'rxjs';
   providedIn: 'root',
 })
 export class WorkoutService {
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) {}
   private url = 'v1/workout';
 
   public createWorkout(workout: Workout, token: string): Observable<any> {
@@ -62,14 +62,14 @@ export class WorkoutService {
     });
   }
   public likeWorkout(token: string, workoutId: string): Observable<any> {
-    return this.http.post(`${this.url}/like`,'', {
+    return this.http.post(`${this.url}/like`, '', {
       headers: {
         Authorization: `Bearer ${token}`,
       },
       params: {
         workoutId: workoutId,
       },
-    })
+    });
   }
   public unlikeWorkout(token: string, workoutId: string): Observable<any> {
     return this.http.delete(`${this.url}/unlike`, {
@@ -79,26 +79,39 @@ export class WorkoutService {
       params: {
         workoutId: workoutId,
       },
-    })
+    });
   }
-  public getWorkoutExercises(token: string, workoutId: string): Observable<any> {
-    return this.http.get(`${this.url}/workoutexercises`,{
+  public getWorkoutExercises(
+    token: string,
+    workoutId: string
+  ): Observable<any> {
+    return this.http.get(`${this.url}/workoutexercises`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
       params: {
         workoutId: workoutId,
       },
-    })
+    });
   }
-  public getWorkoutsCreatedByUsername(token: string,username:string): Observable<any> {
+  public getWorkoutsCreatedByUsername(
+    token: string,
+    username: string
+  ): Observable<any> {
     return this.http.get(`${this.url}/createdusername`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
-      params:{
-        username:username
-      }
+      params: {
+        username: username,
+      },
+    });
+  }
+  public getWorkoutsLikedByUser(token: string): Observable<any> {
+    return this.http.get(`${this.url}/liked`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
     });
   }
 }
