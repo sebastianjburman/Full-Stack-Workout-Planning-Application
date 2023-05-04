@@ -407,4 +407,90 @@ public class WorkoutService : IWorkoutService
         var result = await _workouts.Aggregate<WorkoutViewModel>(pipeline).ToListAsync();
         return result;
     }
+    public async Task<List<WorkoutViewModel>> GetAllPublicLikedWorkoutsForUser(string userId)
+    {
+        var pipeline = new BsonDocument[]
+        {
+            new BsonDocument("$lookup",
+            new BsonDocument
+            {
+                { "from", "WorkoutLikes" },
+                { "localField", "_id" },
+                { "foreignField", "workoutId" },
+                { "as", "likes" }
+            }
+            ),
+            new BsonDocument("$match",
+            new BsonDocument("likes.userId", new BsonDocument("$eq", new ObjectId(userId)))
+            ),
+            new BsonDocument("$unwind", "$likes"),
+            new BsonDocument("$sort",
+            new BsonDocument("likes.lastEdited", -1)
+            ),
+
+            new BsonDocument("$match", new BsonDocument("$or", new BsonArray
+            {
+                new BsonDocument("isPublic", true),
+                new BsonDocument("createdBy", new BsonDocument("$eq", userId))
+            })),
+            new BsonDocument("$lookup",
+            new BsonDocument
+            {
+                { "from", "users" },
+                { "localField", "createdBy" },
+                { "foreignField", "_id" },
+                { "as", "createdUser" }
+            }
+        ),
+            new BsonDocument("$unwind", "$createdUser"),
+            new BsonDocument("$lookup",
+            new BsonDocument
+            {
+                { "from", "WorkoutLikes" },
+                { "let", new BsonDocument("workoutId", "$_id") },
+                { "pipeline", new BsonArray
+                    {
+                        new BsonDocument("$match",
+                            new BsonDocument("$expr",
+                                new BsonDocument("$and",
+                                    new BsonArray
+                                    {
+                                        //Checking if workoutId from WorkoutLikes collection is equal to workoutId from workouts collection
+                                        new BsonDocument("$eq", new BsonArray { "$workoutId", "$$workoutId" }),
+                                        //Checking if userId from WorkoutLikes collection is equal to userId from users collection
+                                        new BsonDocument("$eq", new BsonArray { "$userId", new ObjectId(userId) })
+                                    }
+                                )
+                            )
+                        )
+                    }
+                },
+                { "as", "userLike" }
+            }
+        ),
+        new BsonDocument("$project",
+            new BsonDocument
+            {
+                { "WorkoutName", "$workoutName" },
+                { "WorkoutDescription", "$workoutDescription" },
+                { "Exercises", "$exercises" },
+                { "IsPublic", "$isPublic"},
+                { "CreatedAt", "$createdAt" },
+                { "CreatedByUsername", "$createdUser.profile.username" },
+                { "CreatedByPhotoUrl", "$createdUser.profile.avatar" },
+                { "UserLiked", new BsonDocument("$cond",
+                    // Check if there are any objects in the userLike array if so then return true else return false
+                    new BsonArray
+                    {
+                        new BsonDocument("$gt", new BsonArray { new BsonDocument("$size", "$userLike"), 0 }),
+                        true,
+                        false
+                    }
+                )}
+            }
+        ),
+        };
+        var result = await _workouts.Aggregate<WorkoutViewModel>(pipeline).ToListAsync();
+        return result;
+    }
 }

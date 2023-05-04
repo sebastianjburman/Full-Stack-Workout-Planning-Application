@@ -90,7 +90,8 @@ namespace Backend.Controllers
 
         [Authorize]
         [HttpDelete]
-        public async Task<ActionResult> DeleteWorkout(string id){
+        public async Task<ActionResult> DeleteWorkout(string id)
+        {
             User contextUser = (User)HttpContext.Items["User"]!;
             try
             {
@@ -124,10 +125,10 @@ namespace Backend.Controllers
         {
             User contextUser = (User)HttpContext.Items["User"]!;
             int limit = 10;
-            
+
             try
             {
-                List<WorkoutViewModel> workouts = await _workoutService.GetAllRecentlyCreatedWorkoutsByDate(limit,contextUser.Id!);
+                List<WorkoutViewModel> workouts = await _workoutService.GetAllRecentlyCreatedWorkoutsByDate(limit, contextUser.Id!);
                 return Ok(workouts);
             }
             catch (Exception e)
@@ -194,6 +195,21 @@ namespace Backend.Controllers
             try
             {
                 List<WorkoutViewModel> workouts = await _workoutService.GetAllPublicWorkoutFromUsername(username, contextUser.Id!);
+                return Ok(workouts);
+            }
+            catch (Exception e)
+            {
+                return BadRequest(new { message = e.Message });
+            }
+        }
+        [Authorize]
+        [HttpGet("liked")]
+        public async Task<ActionResult> GetWorkoutsLikedByUser()
+        {
+            User contextUser = (User)HttpContext.Items["User"]!;
+            try
+            {
+                List<WorkoutViewModel> workouts = await _workoutService.GetAllPublicLikedWorkoutsForUser(contextUser.Id!);
                 return Ok(workouts);
             }
             catch (Exception e)
