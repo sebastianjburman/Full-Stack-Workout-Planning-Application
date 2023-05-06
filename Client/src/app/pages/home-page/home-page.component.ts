@@ -21,6 +21,8 @@ import { WorkoutService } from 'src/app/services/workout.service';
 export class HomePageComponent implements OnInit {
   public monthsWeightEntries: WeightEntry[] = [];
   public pinnedWorkouts: WorkoutViewModel[] = [];
+  @ViewChild('acc') weightEntryAccordian: any;
+  public lineChartLegend = true;
 
   public lineChartData: ChartConfiguration<'line'>['data'] = {
     labels: [],
@@ -41,9 +43,6 @@ export class HomePageComponent implements OnInit {
     responsive: true,
     maintainAspectRatio: false,
   };
-  public lineChartLegend = true;
-
-  @ViewChild('acc') weightEntryAccordian: any;
 
   public weightEntryForm = new FormGroup({
     weightEntry: new FormControl('', [
