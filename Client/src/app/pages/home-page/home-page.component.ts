@@ -70,7 +70,7 @@ export class HomePageComponent implements OnInit {
       .getUserMonthlyWeightEntries(TokenManagement.getTokenFromLocalStorage())
       .subscribe({
         next: (weightEntries: WeightEntry[]) => {
-          this.monthsWeightEntries = weightEntries.reverse();
+          this.monthsWeightEntries = [...weightEntries].reverse();
           this.lineChartData.labels = weightEntries.map((x) =>
             new Date(x.date).toLocaleDateString('en-US')
           );
