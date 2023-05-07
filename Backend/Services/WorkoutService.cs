@@ -423,7 +423,6 @@ public class WorkoutService : IWorkoutService
             new BsonDocument("$match",
             new BsonDocument("likes.userId", new BsonDocument("$eq", new ObjectId(userId)))
             ),
-            new BsonDocument("$unwind", "$likes"),
             new BsonDocument("$sort",
             new BsonDocument("likes.lastEdited", -1)
             ),
@@ -491,6 +490,67 @@ public class WorkoutService : IWorkoutService
         ),
         };
         var result = await _workouts.Aggregate<WorkoutViewModel>(pipeline).ToListAsync();
+        return result;
+    }
+
+    public async Task<List<TopWorkoutViewModel>> GetMostLikedWorkouts(string userId, int count)
+    {
+        var pipeline = new BsonDocument[]
+        {
+            new BsonDocument("$lookup",
+            new BsonDocument
+            {
+                { "from", "WorkoutLikes" },
+                { "localField", "_id" },
+                { "foreignField", "workoutId" },
+                { "as", "likes" }
+            }
+            ),
+            new BsonDocument("$unwind", "$likes"),
+            new BsonDocument("$match", new BsonDocument("$or", new BsonArray
+            {
+                new BsonDocument("isPublic", true),
+                new BsonDocument("createdBy", new BsonDocument("$eq", userId))
+            })),
+            new BsonDocument("$lookup",
+            new BsonDocument
+            {
+                { "from", "users" },
+                { "localField", "createdBy" },
+                { "foreignField", "_id" },
+                { "as", "createdUser" }
+            }
+        ),
+        new BsonDocument("$unwind", "$createdUser"),
+        new BsonDocument("$group",
+        new BsonDocument
+        {
+            { "_id", "$_id" },
+            { "count", new BsonDocument("$sum", 1) },
+            { "workoutName", new BsonDocument("$first", "$workoutName") },
+            { "workoutDescription", new BsonDocument("$first", "$workoutDescription") },
+            { "exercises", new BsonDocument("$first", "$exercises") },
+            { "isPublic", new BsonDocument("$first", "$isPublic") },
+            { "createdAt", new BsonDocument("$first", "$createdAt") },
+            { "createdUser", new BsonDocument("$first", "$createdUser") }
+        }
+    ),
+        new BsonDocument("$sort", new BsonDocument("count", -1)),
+        new BsonDocument("$project",
+            new BsonDocument
+            {
+                { "WorkoutName", "$workoutName" },
+                { "WorkoutDescription", "$workoutDescription" },
+                { "Exercises", "$exercises" },
+                { "IsPublic", "$isPublic"},
+                { "CreatedAt", "$createdAt" },
+                { "CreatedByUsername", "$createdUser.profile.username" },
+                { "CreatedByPhotoUrl", "$createdUser.profile.avatar" },
+                { "Likes", "$count" }
+            }
+        ),
+        };
+        var result = await _workouts.Aggregate<TopWorkoutViewModel>(pipeline).ToListAsync();
         return result;
     }
 }

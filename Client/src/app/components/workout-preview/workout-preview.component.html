@@ -2,7 +2,7 @@
     <div class="card-header py-3 d-flex flex-row align-items-center">
         <h4 class="my-0 fw-normal text-truncate">{{workoutName}}</h4>
         <div class="media text-muted ms-auto d-flex align-items-center">
-            <img alt="32x32" class="rounded" style="width: 32px; height: 32px;" src={{createdByPhotoUrl}}
+            <img alt="32x32" class="rounded" style="width: 32px; height: 32px;" ngbTooltip={{createdByUsername}} src={{createdByPhotoUrl}}
                 data-holder-rendered="true">
             <p class="media-body mb-0 small lh-125 d-none d-md-block" style="margin-left: 10px;">
                 <strong class="d-block text-black">@{{createdByUsername}}</strong>

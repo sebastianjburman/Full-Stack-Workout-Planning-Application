@@ -114,4 +114,11 @@ export class WorkoutService {
       },
     });
   }
+  public getTopLikedWorkouts(token: string): Observable<any> {
+    return this.http.get(`${this.url}/topliked`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+  }
 }

@@ -29,7 +29,17 @@
             <div class="col-md-6 col-12">
                 <div class="row">
                     <div class="col">
-                        <h1 class="mt-3 mb-3 text-center">Recently Created Exercises</h1>
+                        <h1 class="mt-3 mb-3 text-center">Most Liked Workouts</h1>
+                        <div class="row d-flex flex-wrap">
+                            <app-top-workout-preview class="col-6 flex-fill" *ngFor="let workout of mostLikedWorkouts"
+                            [workoutName]="workout.workoutName" [likes]="workout.likes" [Id]="workout.id" [createdByUsername]="workout.createdByUsername">
+                            </app-top-workout-preview>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col">
+                        <h1 class="mt-3 mb-3 text-center">Recently Created Workouts</h1>
                         <div class="col-12 d-flex justify-content-center">
                         </div>
                         <app-workout-preview

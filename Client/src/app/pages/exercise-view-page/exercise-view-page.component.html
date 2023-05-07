@@ -25,7 +25,7 @@
             <div class="card-header py-3 d-flex flex-row align-items-center">
                 <h1 class="my-0 fw-normal text-truncate">{{exercise?.name}}</h1>
                 <div class="media text-muted ms-auto d-flex align-items-center">
-                    <img alt="32x32" data-holder-rendered="true" class="rounded" style="width: 32px; height: 32px;" src={{exercise?.createdByPhotoUrl}}>
+                    <img alt="32x32" data-holder-rendered="true" class="rounded" style="width: 32px; height: 32px;" src={{exercise?.createdByPhotoUrl}} ngbTooltip={{exercise?.createdByUsername}}>
                     <p class="media-body mb-0 small lh-125 d-none d-md-block" style="margin-left: 10px;">
                         <strong class="d-block text-black text-black">{{exercise?.createdByUsername}}</strong>
                     </p>

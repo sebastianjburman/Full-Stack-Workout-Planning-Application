@@ -29,6 +29,7 @@ import { WorkoutCreatePageComponent } from './pages/workout-create-page/workout-
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import { NgChartsModule } from 'ng2-charts';
 import { NgbAccordionModule } from '@ng-bootstrap/ng-bootstrap';
+import { TopWorkoutPreviewComponent } from './components/top-workout-preview/top-workout-preview.component';
 
 @NgModule({
   declarations: [
@@ -53,6 +54,7 @@ import { NgbAccordionModule } from '@ng-bootstrap/ng-bootstrap';
     ExerciseListComponent,
     WorkoutViewPageComponent,
     WorkoutCreatePageComponent,
+    TopWorkoutPreviewComponent,
   ],
   imports: [
     BrowserModule,

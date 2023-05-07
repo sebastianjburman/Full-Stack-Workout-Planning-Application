@@ -1,0 +1,19 @@
+<div class="card mb-3 box-shadow mt-2 ">
+  <div class="card-header d-flex flex-row align-items-center">
+        <h4 class="my-0 fw-normal text-truncate">{{workoutName}}</h4>
+        <div class="media text-muted ms-auto d-flex align-items-center" ngbTooltip={{createdByUsername}}>
+            <img alt="32x32" class="rounded" style="width: 32px; height: 32px;" src={{createdByPhotoUrl}}
+                data-holder-rendered="true">
+        </div>
+    </div>
+    <div class="fs-4 card-body">
+        <h3>
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="tomato" class="bi bi-heart-fill" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314z"></path>
+          </svg>
+          {{likes}} Likes
+        </h3>
+        <div>
+          <button type="button" class="btn btn-md btn-primary text-nowrap" [routerLink]="['/workout', Id]">View Workout</button>
+        </div>
+      </div>
+</div>

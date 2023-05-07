@@ -1,5 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { TokenManagement } from 'src/app/helpers/tokenManagement';
+import { TopWorkoutViewModel } from 'src/app/models/topWorkoutViewModel';
 import { WorkoutViewModel } from 'src/app/models/workoutViewModel';
 import { WorkoutService } from 'src/app/services/workout.service';
 
@@ -14,6 +15,7 @@ export class WorkoutsPageComponent implements OnInit {
 	closeResult: string = '';
 	createdWorkouts: WorkoutViewModel[] = [];
 	recentlyCreatedWorkouts: WorkoutViewModel[] = [];
+	mostLikedWorkouts: TopWorkoutViewModel[] = [];
 	//Pagination
 
 	//User Created List
@@ -41,5 +43,13 @@ export class WorkoutsPageComponent implements OnInit {
 			error: (error) => {
 			}
 		}))
+		this.workoutService.getTopLikedWorkouts(TokenManagement.getTokenFromLocalStorage()).subscribe(({
+			next: (res:TopWorkoutViewModel[]) => {
+				this.mostLikedWorkouts = res;
+			},
+			error: (error) => {
+			}
+		}))
+
 	}
 }

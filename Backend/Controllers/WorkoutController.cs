@@ -217,5 +217,20 @@ namespace Backend.Controllers
                 return BadRequest(new { message = e.Message });
             }
         }
+        [Authorize]
+        [HttpGet("topliked")]
+        public async Task<ActionResult> GetTopLikedWorkouts()
+        {
+            User contextUser = (User)HttpContext.Items["User"]!;
+            try
+            {
+                List<TopWorkoutViewModel> workouts = await _workoutService.GetMostLikedWorkouts(contextUser.Id!, 4);
+                return Ok(workouts);
+            }
+            catch (Exception e)
+            {
+                return BadRequest(new { message = e.Message });
+            }
+        }
     }
 }
