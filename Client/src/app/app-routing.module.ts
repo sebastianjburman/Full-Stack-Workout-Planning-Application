@@ -12,6 +12,7 @@ import { ExercisesPageComponent } from './pages/exercises-page/exercises-page.co
 import { ExerciseViewPageComponent } from './pages/exercise-view-page/exercise-view-page.component';
 import { WorkoutViewPageComponent } from './pages/workout-view-page/workout-view-page.component';
 import { WorkoutCreatePageComponent } from './pages/workout-create-page/workout-create-page.component';
+import { SettingsComponent } from './pages/settings/settings.component';
 const routes: Routes = [
   {
     path: 'login',
@@ -55,7 +56,11 @@ const routes: Routes = [
     component: WorkoutCreatePageComponent,
     canActivate: [AuthGuard],
   },
-
+  {
+    path: 'settings',
+    component: SettingsComponent,
+    canActivate: [AuthGuard],
+  },
   { path: '', redirectTo: '/login', pathMatch: 'full' },
 ];
 @NgModule({
