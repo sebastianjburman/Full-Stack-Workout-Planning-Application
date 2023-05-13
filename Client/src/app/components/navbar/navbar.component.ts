@@ -14,7 +14,7 @@ import { UserService } from 'src/app/services/user.service';
 export class NavbarComponent implements OnInit {
 
   @ViewChild('content') content: any;
-  userAvatarUrl:string = "../../../assets/Images/defaultUrl.png";
+  userAvatarUrl:string = "";
   username:string = "";
 
   constructor(private modalService: NgbModal, private userService: UserService) {
@@ -28,11 +28,12 @@ export class NavbarComponent implements OnInit {
         const profile:ProfileDTO = res;
         if(profile.avatar){
           this.userAvatarUrl = profile.avatar;
-          UserProfileManager.saveAvatarUrlToLocalStorage(profile.avatar)
         }
         else{
-          UserProfileManager.saveAvatarUrlToLocalStorage(this.userAvatarUrl)
+          this.userAvatarUrl = "../../../assets/Images/defaultUrl.png";
         }
+        UserProfileManager.saveAvatarUrlToLocalStorage(this.userAvatarUrl);
+
         if(profile.userName){
           this.username = profile.userName;
           UserProfileManager.saveUsernameToLocalStorage(profile.userName);

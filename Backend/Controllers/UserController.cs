@@ -15,12 +15,14 @@ namespace Backend.Controllers
         private readonly ILogger<UserController> _logger;
         private readonly IUserService _userService;
         private readonly IWeightService _weightEntryService;
+        private readonly IPhotoService _photoService;
 
-        public UserController(ILogger<UserController> logger, IUserService userService, IWeightService weightEntryService)
+        public UserController(ILogger<UserController> logger, IUserService userService, IWeightService weightEntryService, IPhotoService photoService)
         {
             _logger = logger;
             _userService = userService;
             _weightEntryService = weightEntryService;
+            _photoService = photoService;
         }
         [Authorize]
         [HttpGet("checkauth")]
@@ -78,7 +80,7 @@ namespace Backend.Controllers
                 try
                 {
                     ObjectId userObjectId = ObjectId.GenerateNewId();
-                    await _userService.CreateUser(newUser,userObjectId);
+                    await _userService.CreateUser(newUser, userObjectId);
                     await _weightEntryService.Create(Math.Round(newUser.CurrentWeight, 2), userObjectId.ToString());
                     return Ok();
                 }
@@ -114,7 +116,7 @@ namespace Backend.Controllers
         }
         [Authorize]
         [HttpPost("weightentry")]
-        public async Task<ActionResult> CreateWeightEntry([FromBody]WeightEntry weightEntry)
+        public async Task<ActionResult> CreateWeightEntry([FromBody] WeightEntry weightEntry)
         {
             try
             {
@@ -157,5 +159,56 @@ namespace Backend.Controllers
                 return BadRequest(ex.Message);
             }
         }
+        [Authorize]
+        [HttpPost("profilephoto")]
+        public async Task<ActionResult> UploadProfilePhoto([FromForm] IFormFile? file)
+        {
+            string baseUrl = $"{Request.Scheme}://{Request.Host}{Request.PathBase}";
+            try
+            {
+                User contextUser = (User)HttpContext.Items["User"]!;
+                if (file == null)
+                {
+                    await _photoService.DeletePhotoAsync(contextUser.Id!);
+                    return Ok();
+                }
+                if (!_photoService.IsImage(file))
+                {
+                    return BadRequest("Invalid file format");
+                }
+                await _photoService.UpdatePhotoAsync(contextUser.Id!, await ConvertFormFileToByteArray(file), baseUrl);
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+        [HttpGet("profilephoto")]
+        public async Task<ActionResult> GetProfilePhoto(string Id)
+        {
+            try
+            {
+                byte[] profilePhoto = await _photoService.GetPhotoAsync(Id);
+                if (profilePhoto == null)
+                {
+                    return NotFound();
+                }
+                return File(profilePhoto, "image/jpeg");
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+        private async Task<byte[]> ConvertFormFileToByteArray([FromForm] IFormFile file)
+        {
+            using (var memoryStream = new MemoryStream())
+            {
+                await file.CopyToAsync(memoryStream);
+                return memoryStream.ToArray();
+            }
+        }
+
     }
 }

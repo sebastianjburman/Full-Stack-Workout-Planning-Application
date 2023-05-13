@@ -16,6 +16,7 @@ builder.Services.AddScoped<IExerciseService, ExerciseService>();
 builder.Services.AddScoped<IWorkoutService, WorkoutService>();
 builder.Services.AddScoped<IWorkoutLikeService, WorkoutLikeService>();
 builder.Services.AddScoped<IWeightService, WeightService>();
+builder.Services.AddScoped<IPhotoService, PhotoService>();
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
