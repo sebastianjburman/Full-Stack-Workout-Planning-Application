@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { TokenManagement } from 'src/app/helpers/tokenManagement';
-import { UserProfileManager} from 'src/app/helpers/userAvatarManager';
+import { UserProfileManager } from 'src/app/helpers/userAvatarManager';
 import { ProfileDTO } from 'src/app/models/profileDTO';
 import { UserService } from 'src/app/services/user.service';
 
@@ -9,40 +9,46 @@ import { UserService } from 'src/app/services/user.service';
   selector: 'app-navbar',
   templateUrl: './navbar.component.html',
   styleUrls: ['./navbar.component.scss'],
-
 })
 export class NavbarComponent implements OnInit {
-
   @ViewChild('content') content: any;
-  userAvatarUrl:string = "";
-  username:string = "";
+  userAvatarUrl: string = '';
+  username: string = '';
+  defaultAvatarUrl: string = '../../../assets/Images/defaultUrl.png';
 
-  constructor(private modalService: NgbModal, private userService: UserService) {
-  }
+  constructor(
+    private modalService: NgbModal,
+    private userService: UserService
+  ) {}
 
   ngOnInit(): void {
     //Check if avatar url and username already exist in local storage
-    if(!(UserProfileManager.getAvatarUrlFromLocalStorage() && UserProfileManager.getUsernameFromLocalStorage())){
-      //Get avatar url and username and store it in local storage 
-      this.userService.getUserProfile(TokenManagement.getTokenFromLocalStorage()).subscribe(res=>{
-        const profile:ProfileDTO = res;
-        if(profile.avatar){
-          this.userAvatarUrl = profile.avatar;
-        }
-        else{
-          this.userAvatarUrl = "../../../assets/Images/defaultUrl.png";
-        }
-        UserProfileManager.saveAvatarUrlToLocalStorage(this.userAvatarUrl);
+    if (
+      !(
+        UserProfileManager.getAvatarUrlFromLocalStorage() &&
+        UserProfileManager.getUsernameFromLocalStorage()
+      )
+    ) {
+      //Get avatar url and username and store it in local storage
+      this.userService
+        .getUserProfile(TokenManagement.getTokenFromLocalStorage())
+        .subscribe((res) => {
+          const profile: ProfileDTO = res;
+          if (profile.avatar) {
+            this.userAvatarUrl = profile.avatar;
+          } else {
+            this.userAvatarUrl = '../../../assets/Images/defaultUrl.png';
+          }
+          UserProfileManager.saveAvatarUrlToLocalStorage(this.userAvatarUrl);
 
-        if(profile.userName){
-          this.username = profile.userName;
-          UserProfileManager.saveUsernameToLocalStorage(profile.userName);
-        }
-      })
-    }
-    else{
+          if (profile.userName) {
+            this.username = profile.userName;
+            UserProfileManager.saveUsernameToLocalStorage(profile.userName);
+          }
+        });
+    } else {
       this.userAvatarUrl = UserProfileManager.getAvatarUrlFromLocalStorage();
-      this.username = UserProfileManager.getUsernameFromLocalStorage()
+      this.username = UserProfileManager.getUsernameFromLocalStorage();
     }
   }
 
@@ -52,5 +58,8 @@ export class NavbarComponent implements OnInit {
   public logout(): void {
     TokenManagement.clearLocalStorage();
     location.reload();
+  }
+  handleImageError() {
+    UserProfileManager.removeAvatarUrlFromLocalStorage();
   }
 }

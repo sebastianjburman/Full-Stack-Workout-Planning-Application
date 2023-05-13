@@ -29,7 +29,7 @@
         Search
       </button>
       <div ngbDropdown class="d-inline-block">
-        <img src={{userAvatarUrl}} alt="mdo" width="32" height="32" class="rounded-circle" id="dropdownBasic2"
+        <img src={{userAvatarUrl}} (error)="handleImageError()" alt="mdo" width="32" height="32" class="rounded-circle" id="dropdownBasic2"
           ngbDropdownToggle>
         <div class="mt-2" ngbDropdownMenu aria-labelledby="dropdownBasic1">
           <button ngbDropdownItem>{{username}}</button>

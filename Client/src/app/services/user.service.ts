@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { UserDTO } from '../models/userDTO';
 import { UserLoginDTO } from '../models/userLoginDTO';
 import { Observable } from 'rxjs';
@@ -82,4 +82,22 @@ export class UserService {
       }
     })
   }
+  public uploadProfileImage(token: string, file: File): Observable<any> {
+    const formData: FormData = new FormData();
+    formData.append("file", file);
+    return this.http.post(`${this.url}/profilephoto`, formData, {
+      headers: {
+        'Authorization': `Bearer ${token}`,
+      }
+    });
+  }
+  public clearProfileImage(token: string): Observable<any> {
+    const formData: FormData = new FormData();
+    return this.http.post(`${this.url}/profilephoto`, formData, {
+      headers: {
+        'Authorization': `Bearer ${token}`,
+      }
+    });
+  }
+  
 }
