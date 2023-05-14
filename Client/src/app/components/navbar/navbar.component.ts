@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { ModalDismissReasons, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { TokenManagement } from 'src/app/helpers/tokenManagement';
 import { UserProfileManager } from 'src/app/helpers/userAvatarManager';
 import { ProfileDTO } from 'src/app/models/profileDTO';
@@ -12,13 +12,16 @@ import { UserService } from 'src/app/services/user.service';
 })
 export class NavbarComponent implements OnInit {
   @ViewChild('content') content: any;
+  @ViewChild('searchModal') searchModel: any;
   userAvatarUrl: string = '';
   username: string = '';
   defaultAvatarUrl: string = '../../../assets/Images/defaultUrl.png';
+  closeResult = '';
+  searchCategory: string = 'Exercises';
 
   constructor(
     private modalService: NgbModal,
-    private userService: UserService
+    private userService: UserService,
   ) {}
 
   ngOnInit(): void {
@@ -62,4 +65,28 @@ export class NavbarComponent implements OnInit {
   handleImageError() {
     UserProfileManager.removeAvatarUrlFromLocalStorage();
   }
+
+  openSearchModal(searchModal:any) {
+		this.modalService.open(searchModal, { ariaLabelledBy: 'modal-basic-title', size:'lg' }).result.then(
+			(result) => {
+				this.closeResult = `Closed with: ${result}`;
+			},
+			(reason) => {
+				this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
+			},
+		);
+	}
+  public setSearchCategory(category: string): void {
+    this.searchCategory = category;
+  }
+
+  private getDismissReason(reason: any): string {
+		if (reason === ModalDismissReasons.ESC) {
+			return 'by pressing ESC';
+		} else if (reason === ModalDismissReasons.BACKDROP_CLICK) {
+			return 'by clicking on a backdrop';
+		} else {
+			return `with: ${reason}`;
+		}
+	}
 }

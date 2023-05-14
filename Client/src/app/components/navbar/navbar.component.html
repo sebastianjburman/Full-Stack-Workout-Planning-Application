@@ -11,6 +11,31 @@
     <button type="button" class="btn btn-primary btn-login fw-bold" (click)="modal.close('Close click')">No</button>
   </div>
 </ng-template>
+
+<ng-template #searchModal let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title">Search</h4>
+    <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
+  </div>
+  <div class="modal-body">
+    <div>
+      <button (click)="setSearchCategory('Exercises')"[ngClass]="searchCategory === 'Exercises' ? 'rounded btn btn-primary m-1' : 'rounded btn btn-outline-primary m-1'" >Exercises</button>
+      <button (click)="setSearchCategory('Workouts')"[ngClass]="searchCategory === 'Workouts' ? 'rounded btn btn-primary m-1' : 'rounded btn btn-outline-primary m-1'" >Workouts</button>
+      <button (click)="setSearchCategory('People')" [ngClass]="searchCategory === 'People' ? 'rounded btn btn-primary m-1' : 'rounded btn btn-outline-primary m-1'" >People</button>
+    </div>
+    <div class="col-md-10 m-1 mt-3">
+      <div class="input-group">
+        <span class="input-group-text" id="basic-addon1">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+            <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"></path>
+          </svg>
+        </span>
+        <input type="text" class="form-control" placeholder="Search {{searchCategory}}" aria-label="Input group example" aria-describedby="basic-addon1">
+      </div>
+    </div>
+  </div>
+</ng-template>
+
 <header class="py-3 border-bottom">
   <div class="container-fluid d-grid gap-3 align-items-center" style="grid-template-columns: 1fr 2fr;">
     <a href="/"
@@ -19,7 +44,7 @@
       <span class="fs-4 fw-bold">Aromix</span>
     </a>
     <div class="d-flex align-items-center justify-content-end">
-      <button type="button" class="btn btn-primary me-2 text-nowrap">
+      <button type="button" class="btn btn-primary me-2 text-nowrap"(click)="openSearchModal(searchModal)">
         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-search"
           viewBox="0 0 16 16">
           <path
