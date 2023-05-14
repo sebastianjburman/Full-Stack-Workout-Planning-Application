@@ -553,4 +553,14 @@ public class WorkoutService : IWorkoutService
         var result = await _workouts.Aggregate<TopWorkoutViewModel>(pipeline).ToListAsync();
         return result;
     }
+
+    public async Task<List<Workout>> SearchPublicWorkoutsAsync(string userId, string search)
+    {
+        var isPublicOrUserÇreated = Builders<Workout>.Filter.Or(
+        Builders<Workout>.Filter.Eq(w => w.isPublic, true),
+        Builders<Workout>.Filter.Eq(w => w.CreatedBy, userId));
+        var searchFilter = Builders<Workout>.Filter.Regex(w => w.WorkoutName, new BsonRegularExpression(search, "i"));
+        List<Workout> workouts = await _workouts.Aggregate().Match(isPublicOrUserÇreated).Match(searchFilter).ToListAsync();
+        return workouts;
+    }
 }

@@ -13,5 +13,6 @@ namespace Backend.Interfaces
         Task<List<WorkoutViewModel>> GetAllPublicWorkoutFromUsername(string username, string userId);
         Task<List<WorkoutViewModel>> GetAllPublicLikedWorkoutsForUser(string userId);
         Task<List<TopWorkoutViewModel>> GetMostLikedWorkouts(string userId, int count);
+        Task<List<Workout>> SearchPublicWorkoutsAsync(string userId, string search);
     }
 }

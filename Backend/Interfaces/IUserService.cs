@@ -11,5 +11,6 @@ namespace Backend.Interfaces
         UserProfileDTO GetUserProfileByUsername(string userName);
         string Authenticate(string email, string password, bool rememberMe);
         List<UserProfileDTO> GetProfiles(int count);
+        Task<List<UserProfileDTO>> SearchProfilesAsync(string search);
     }
 }

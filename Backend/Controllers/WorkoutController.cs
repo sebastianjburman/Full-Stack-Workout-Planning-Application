@@ -232,5 +232,20 @@ namespace Backend.Controllers
                 return BadRequest(new { message = e.Message });
             }
         }
+        [Authorize]
+        [HttpGet("search")]
+        public async Task<ActionResult> SearchWorkouts(string search)
+        {
+            User contextUser = (User)HttpContext.Items["User"]!;
+            try
+            {
+                List<Workout> workouts = await _workoutService.SearchPublicWorkoutsAsync(contextUser.Id!, search);
+                return Ok(workouts);
+            }
+            catch (Exception e)
+            {
+                return BadRequest(new { message = e.Message });
+            }
+        }
     }
 }

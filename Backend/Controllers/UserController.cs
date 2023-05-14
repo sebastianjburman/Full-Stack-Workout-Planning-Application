@@ -201,6 +201,20 @@ namespace Backend.Controllers
                 return BadRequest(ex.Message);
             }
         }
+        [Authorize]
+        [HttpGet("profilesearch")]
+        public async Task<ActionResult> SearchProfiles(string search)
+        {
+            try
+            {
+                List<UserProfileDTO> profiles = await _userService.SearchProfilesAsync(search);
+                return Ok(profiles);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
         private async Task<byte[]> ConvertFormFileToByteArray([FromForm] IFormFile file)
         {
             using (var memoryStream = new MemoryStream())
@@ -209,6 +223,5 @@ namespace Backend.Controllers
                 return memoryStream.ToArray();
             }
         }
-
     }
 }

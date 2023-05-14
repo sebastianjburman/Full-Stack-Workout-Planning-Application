@@ -180,4 +180,12 @@ public class ExerciseService : IExerciseService
 
         return users;
     }
+    
+    public async Task<List<Exercise>> SearchExercisesAsync(string search)
+    {
+        var filterBuilder = Builders<Exercise>.Filter;
+        var filter = filterBuilder.Regex("name", new BsonRegularExpression(search, "i"));
+        List<Exercise> exercises = await _exercises.FindAsync(filter).Result.ToListAsync();
+        return exercises; 
+    }
 }

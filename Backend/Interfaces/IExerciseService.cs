@@ -14,6 +14,7 @@ namespace Backend.Interfaces
         Task DeleteExerciseAsync(string exerciseId, string userId);
         Task UpdateExerciseAsync(string exerciseId, string userId, Exercise exerciseIn);
         Task<List<User>> GetTopUsersByExerciseCountAsync(int limit);
+        Task<List<Exercise>> SearchExercisesAsync(string search);
     }
 }
 

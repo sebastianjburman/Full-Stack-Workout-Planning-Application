@@ -176,5 +176,19 @@ namespace Backend.Controllers
                 return BadRequest(new { message = e.Message });
             }
         }
+        [Authorize]
+        [HttpGet("search")]
+        public async Task<ActionResult> ExercisesSearch(string search)
+        {
+            try
+            {
+                List<Exercise> exercises = await _exerciseService.SearchExercisesAsync(search);
+                return Ok(exercises);
+            }
+            catch (Exception e)
+            {
+                return BadRequest(new { message = e.Message });
+            }
+        }
     }
 }

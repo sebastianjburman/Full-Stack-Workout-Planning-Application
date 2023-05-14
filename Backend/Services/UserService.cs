@@ -60,6 +60,18 @@ namespace Backend.Services
             }
             return userProfiles;
         }
+        public async Task<List<UserProfileDTO>> SearchProfilesAsync(string search)
+        {
+            var filterBuilder = Builders<User>.Filter;
+            var filter = filterBuilder.Regex(x=>x.profile.UserName, new BsonRegularExpression(search, "i"));
+            List<User> userProfiles = await _usersCollection.FindAsync(filter).Result.ToListAsync();
+            List<UserProfileDTO> userProfilesDTO = new List<UserProfileDTO>();
+            foreach (var user in userProfiles)
+            {
+                userProfilesDTO.Add(user.profile.ToUserProfileDTO());
+            }
+            return userProfilesDTO; 
+        }
         public string Authenticate(string email, string password, bool rememberMe)
         {
             User foundUser = _usersCollection.Find(user => user.Email == email).FirstOrDefault();
