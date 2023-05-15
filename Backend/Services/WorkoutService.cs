@@ -430,7 +430,7 @@ public class WorkoutService : IWorkoutService
             new BsonDocument("$match", new BsonDocument("$or", new BsonArray
             {
                 new BsonDocument("isPublic", true),
-                new BsonDocument("createdBy", new BsonDocument("$eq", userId))
+                new BsonDocument("createdBy", new BsonDocument("$eq", new ObjectId(userId)))
             })),
             new BsonDocument("$lookup",
             new BsonDocument
@@ -507,11 +507,7 @@ public class WorkoutService : IWorkoutService
             }
             ),
             new BsonDocument("$unwind", "$likes"),
-            new BsonDocument("$match", new BsonDocument("$or", new BsonArray
-            {
-                new BsonDocument("isPublic", true),
-                new BsonDocument("createdBy", new BsonDocument("$eq", userId))
-            })),
+            new BsonDocument("isPublic", true),
             new BsonDocument("$lookup",
             new BsonDocument
             {
