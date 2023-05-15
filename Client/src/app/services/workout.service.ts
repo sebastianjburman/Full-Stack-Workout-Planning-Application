@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Workout } from '../models/workout';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -120,5 +120,17 @@ export class WorkoutService {
         Authorization: `Bearer ${token}`,
       },
     });
+  }
+  public searchWorkout(token: string, search: string): Observable<any> {
+    if (search === '') {
+      return of([]);
+    }
+    return this.http
+      .get<Workout[]>(`${this.url}/search`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+        params: { search: search }
+      })
   }
 }

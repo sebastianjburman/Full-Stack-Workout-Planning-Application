@@ -1,3 +1,20 @@
+<ng-template #exerciseSearchTemp let-r="result" let-t="term">
+  <div> 
+    <ngb-highlight [result]="r.name" [term]="t"></ngb-highlight>
+  </div>
+</ng-template>
+<ng-template #workoutSearchTemp let-r="result" let-t="term">
+  <div> 
+    <ngb-highlight [result]="r.workoutName" [term]="t"></ngb-highlight>
+  </div>
+</ng-template>
+<ng-template #profileSearchTemp let-r="result" let-t="term">
+  <div> 
+    <img class="me-2 rounded-circle" style="width: 25px; height: 25px;" src={{r.avatar}} (error)="handleImageErrorSearch($event)">
+    <ngb-highlight [result]="r.userName" [term]="t"></ngb-highlight>
+  </div>
+</ng-template>
+
 <ng-template #content let-modal>
   <div class="modal-header">
     <h4 class="modal-title">Logout</h4>
@@ -24,14 +41,70 @@
       <button (click)="setSearchCategory('People')" [ngClass]="searchCategory === 'People' ? 'rounded btn btn-primary m-1' : 'rounded btn btn-outline-primary m-1'" >People</button>
     </div>
     <div class="col-md-10 m-1 mt-3">
-      <div class="input-group">
+      <!--Exercise Search-->
+      <div class="input-group" *ngIf="searchCategory === 'Exercises'">
         <span class="input-group-text" id="basic-addon1">
           <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
             <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"></path>
           </svg>
         </span>
-        <input type="text" class="form-control" placeholder="Search {{searchCategory}}" aria-label="Input group example" aria-describedby="basic-addon1">
+        <input 
+        placeholder="Search Exercises" 
+        id="typeahead-http"
+        type="text"
+        class="form-control"
+        [class.is-invalid]="searchFailed"
+        [(ngModel)]="model"
+        [ngbTypeahead]="searchExercise"
+        [resultTemplate]="exerciseSearchTemp"
+        [inputFormatter]="exerciseFormatter"
+        [editable]="false"
+        (selectItem)="onSearchSelectExercise($event)">
       </div>
+      <!--Workout Search-->
+      <div class="input-group" *ngIf="searchCategory === 'Workouts'">
+        <span class="input-group-text" id="basic-addon1">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+            <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"></path>
+          </svg>
+        </span>
+        <input 
+        placeholder="Search Workouts" 
+        id="typeahead-http"
+        type="text"
+        class="form-control"
+        [class.is-invalid]="searchFailed"
+        [(ngModel)]="model"
+        [ngbTypeahead]="searchWorkout"
+        [resultTemplate]="workoutSearchTemp"
+        [inputFormatter]="workoutFormatter"
+        [editable]="false"
+        (selectItem)="onSearchSelectWorkout($event)">
+      </div>
+      <!--Profile Search-->
+      <div class="input-group" *ngIf="searchCategory === 'People'">
+        <span class="input-group-text" id="basic-addon1">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+            <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"></path>
+          </svg>
+        </span>
+        <input 
+        placeholder="Search Profiles" 
+        id="typeahead-http"
+        type="text"
+        class="form-control"
+        [class.is-invalid]="searchFailed"
+        [(ngModel)]="model"
+        [ngbTypeahead]="searchProfile"
+        [resultTemplate]="profileSearchTemp"
+        [inputFormatter]="profileFormatter"
+        [editable]="false"
+        (selectItem)="onSearchSelectProfile($event)">
+      </div>
+    <small *ngIf="searching" class="form-text text-muted">searching...</small>
+    <div class="invalid-feedback" *ngIf="searchFailed">
+      Sorry, suggestions could not be loaded.
+    </div> 
     </div>
   </div>
 </ng-template>

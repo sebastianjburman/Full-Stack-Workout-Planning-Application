@@ -83,4 +83,17 @@ export class ExerciseService {
       },
     });
   }
+
+  public searchExercises(token: string, search: string): Observable<any> {
+    if (search === '') {
+      return of([]);
+    }
+    return this.http
+      .get<Exercise[]>(`${this.url}/search`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+        params: { search: search }
+      })
+  }
 }

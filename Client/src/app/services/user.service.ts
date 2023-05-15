@@ -2,8 +2,9 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { UserDTO } from '../models/userDTO';
 import { UserLoginDTO } from '../models/userLoginDTO';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { WeightEntry } from '../models/weightEntry';
+import { ProfileDTO } from '../models/profileDTO';
 
 @Injectable({
   providedIn: 'root'
@@ -98,6 +99,18 @@ export class UserService {
         'Authorization': `Bearer ${token}`,
       }
     });
+  }
+  public searchPeople(token: string, search: string): Observable<any> {
+    if (search === '') {
+      return of([]);
+    }
+    return this.http
+      .get<ProfileDTO[]>(`${this.url}/profilesearch`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+        params: { search: search }
+      })
   }
   
 }
