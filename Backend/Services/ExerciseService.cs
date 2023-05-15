@@ -139,17 +139,17 @@ public class ExerciseService : IExerciseService
 
     public async Task UpdateExerciseAsync(string exerciseId, string userId, Exercise exerciseIn)
     {
-        //Make sure the user doesn't change the exercise's created by
         Exercise exercise = await _exercises.FindAsync(e => e.Id == exerciseId).Result.FirstOrDefaultAsync();
-        if (exerciseIn.CreatedBy != exercise.CreatedBy)
-        {
-            throw new Exception("You cannot change the exercise's created by.");
-        }
         if (exercise.CreatedBy != userId)
         {
             throw new InvalidAccessException("update");
         }
-        await _exercises.ReplaceOneAsync(e => e.Id == exerciseId, exerciseIn);
+        var update = Builders<Exercise>.Update
+        .Set(e => e.Name, exerciseIn.Name)
+        .Set(e => e.Description, exerciseIn.Description)
+        .Set(e => e.Sets, exerciseIn.Sets)
+        .Set(e => e.Reps, exerciseIn.Reps);
+        await _exercises.UpdateOneAsync(e => e.Id == exerciseId, update);
     }
     public async Task DeleteExerciseAsync(string exerciseId, string userId)
     {

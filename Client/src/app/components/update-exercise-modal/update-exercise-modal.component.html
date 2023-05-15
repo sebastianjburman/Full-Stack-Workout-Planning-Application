@@ -1,9 +1,9 @@
 <div class="modal-header">
-    <h4 class="modal-title" id="modal-basic-title">Create Exercise</h4>
+    <h4 class="modal-title" id="modal-basic-title">Update Exercise</h4>
     <button type="button" class="btn-close" aria-label="Close" (click)="clearAllModals()"></button>
   </div>
   <div class="modal-body">
-    <form [formGroup]="createExerciseForm">
+    <form [formGroup]="updateExerciseForm">
       <div class="row g-3">
         <div class="col-12">
           <label for="name" class="form-label">Name</label>
@@ -67,8 +67,8 @@
           </select>
         </div>
         <div class="col-12">
-          <button class="btn btn-primary btn-small" type="submit" (click)="createExercise()"
-            [disabled]="!createExerciseForm.valid">Create Exercise
+          <button class="btn btn-primary btn-small" type="submit" (click)="updateExercise()"
+            [disabled]="!updateExerciseForm.valid">Update Exercise
           </button>
           <button class="ms-2 btn btn-secondary btn-small" (click)="clearExerciseForm()">
             Clear

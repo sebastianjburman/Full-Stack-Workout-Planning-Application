@@ -17,6 +17,10 @@
 <ng-template #copyExerciseModal let-modal>
     <app-create-exercise-modal [optionalExercise]="exercise"></app-create-exercise-modal>
 </ng-template>
+<!--Update Exercise Modal-->
+<ng-template #updateExerciseModal let-modal>
+    <app-update-exercise-modal [exerciseToUpdate]="exercise" (refreshExercisePage)="getExercise()"></app-update-exercise-modal>
+</ng-template>
 <app-navbar></app-navbar>
 <app-side-nav-bar></app-side-nav-bar>
 <main class="pageMainContainer">
@@ -49,8 +53,9 @@
                 <hr class="hr" />
             </div>
             <div>
-                <button  class="btn btn-danger btn-small m-2" [disabled]="!isUsersExercise()" (click)="open(content)">Delete</button>
-                <button class="btn btn-secondary btn-small" (click)="open(copyExerciseModal)">Make a Copy</button>
+                <button class="btn btn-danger btn-small m-1" *ngIf="isUsersExercise" (click)="open(content)">Delete</button>
+                <button class="btn btn-primary btn-small m-1" *ngIf="isUsersExercise" (click)="open(updateExerciseModal)">Update</button>
+                <button class="btn btn-primary btn-small m-1" (click)="open(copyExerciseModal)">Make a Copy</button>
             </div>
         </div>
     </div>

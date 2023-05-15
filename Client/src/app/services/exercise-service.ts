@@ -18,6 +18,7 @@ export class ExerciseService {
     });
   }
   public updateExercise(exercise: Exercise, token: string): Observable<any> {
+    console.log(exercise);
     return this.http.put(this.url, exercise, {
       headers: {
         Authorization: `Bearer ${token}`,

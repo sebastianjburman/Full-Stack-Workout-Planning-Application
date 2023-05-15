@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { ModalDismissReasons, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { TokenManagement } from 'src/app/helpers/tokenManagement';
@@ -16,6 +16,7 @@ export class ExerciseViewPageComponent implements OnInit {
 
   @ViewChild('content') content: any;
   @ViewChild('copyExerciseModal') copyExerciseModal: any;
+  @ViewChild('updateExerciseModal') updateExerciseModal: any;
   closeResult = '';
   exercise: ExerciseViewModel | undefined
 
@@ -28,19 +29,22 @@ export class ExerciseViewPageComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.getExercise();
+  }
+
+  getExercise(): void {
     this.route.params.subscribe(async (params) => {
       const id = params['id'];
-      this.exerciseService.getExercise(id, TokenManagement.getTokenFromLocalStorage()).subscribe({
-        next: (res) => {
-          this.exercise = new ExerciseViewModel(res.id, res.name, res.description, res.sets, res.reps, res.createdByUsername, res.createdByPhotoUrl)
-          if (!this.exercise.createdByPhotoUrl) {
-            this.exercise.createdByPhotoUrl = '../../../assets/Images/defaultUrl.png';
-          }
-        },
-        error: (error) => {
+    this.exerciseService.getExercise(id, TokenManagement.getTokenFromLocalStorage()).subscribe({
+      next: (res) => {
+        this.exercise = new ExerciseViewModel(res.id, res.name, res.description, res.sets, res.reps, res.createdByUsername, res.createdByPhotoUrl)
+        if (!this.exercise.createdByPhotoUrl) {
+          this.exercise.createdByPhotoUrl = '../../../assets/Images/defaultUrl.png';
         }
-      })
-    })
+      },
+      error: (error) => {
+      }
+    })})
   }
 
   deleteExercise(): void {

@@ -31,6 +31,7 @@ import { NgChartsModule } from 'ng2-charts';
 import { NgbAccordionModule } from '@ng-bootstrap/ng-bootstrap';
 import { TopWorkoutPreviewComponent } from './components/top-workout-preview/top-workout-preview.component';
 import { SettingsComponent } from './pages/settings/settings.component';
+import { UpdateExerciseModalComponent } from './components/update-exercise-modal/update-exercise-modal.component';
 
 @NgModule({
   declarations: [
@@ -57,6 +58,7 @@ import { SettingsComponent } from './pages/settings/settings.component';
     WorkoutCreatePageComponent,
     TopWorkoutPreviewComponent,
     SettingsComponent,
+    UpdateExerciseModalComponent,
   ],
   imports: [
     BrowserModule,

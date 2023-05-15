@@ -29,8 +29,6 @@ export class CreateExerciseModalComponent implements OnInit {
 	});
 	@Input() optionalExercise?: ExerciseViewModel;
 
-	repsNumbersArray: number[] = Array.from(Array(30).keys());
-
 	constructor(private modalService: NgbModal, private exerciseService: ExerciseService, private toastService: ToastService, private router: Router) { }
 
 	ngOnInit(): void {
