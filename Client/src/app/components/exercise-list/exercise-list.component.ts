@@ -11,7 +11,7 @@ export class ExerciseListComponent implements OnInit {
   @Input() exerciseId!: string;
   @Input() exerciseName!: string;
   @Input() exerciseDescription!: string;
-  @Output() removeExercise = new EventEmitter<string>();
+  @Output() removeExercise = new EventEmitter<number>();
   
   constructor() { }
 
@@ -19,7 +19,7 @@ export class ExerciseListComponent implements OnInit {
   }
 
   remove() {
-    this.removeExercise.emit(this.exerciseId);
+    this.removeExercise.emit(this.indexNumber-1);
   }
 
 }

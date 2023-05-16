@@ -68,8 +68,11 @@ export class WorkoutUpdatePageComponent implements OnInit {
     }
   }
 
-  removeExercise(exerciseId: string) {
-    this.workoutExercises = this.workoutExercises.filter(exercise => exercise.id != exerciseId)
+  removeExercise(exerciseIndex: number) {
+    const copy = [...this.workoutExercises];
+    copy.splice(exerciseIndex, 1);
+    this.workoutExercises = copy;
+    console.log(copy)
   }
 
   drop(event: CdkDragDrop<Exercise[]>) {
