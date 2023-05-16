@@ -18,6 +18,8 @@ builder.Services.AddScoped<IWorkoutLikeService, WorkoutLikeService>();
 builder.Services.AddScoped<IWeightService, WeightService>();
 builder.Services.AddScoped<IPhotoService, PhotoService>();
 
+builder.Services.Configure<JwtSecret>(builder.Configuration.GetSection("JwtSecret"));
+
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();

@@ -3,6 +3,7 @@ using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Text;
 using Backend.Interfaces;
+using Backend.Models;
 using MongoDB.Bson;
 
 namespace Backend.Helpers
@@ -10,10 +11,12 @@ namespace Backend.Helpers
     public class JwtMiddleware
     {
         private readonly RequestDelegate _next;
+        private readonly JwtSecret _appSettings;
 
-        public JwtMiddleware(RequestDelegate next)
+        public JwtMiddleware(RequestDelegate next, IOptions<JwtSecret> appSettings)
         {
             _next = next;
+            _appSettings = appSettings.Value;
         }
         public async Task Invoke(HttpContext context, IUserService userService)
         {
@@ -29,7 +32,7 @@ namespace Backend.Helpers
             try
             {
                 var tokenHandler = new JwtSecurityTokenHandler();
-                var key = Encoding.ASCII.GetBytes("eyJhbGciOiJIUzI1NiJ9.eyJSb2xlIjoiQWRtaW4iLCJJc3N1ZXIiOiJJc3N1ZXIiLCJVc2VybmFtZSI6IkphdmFJblVzZSIsImV4cCI6MTY3MjYwODA4NCwiaWF0IjoxNjcyNjA4MDg0fQ.3Xerv6eY7OVSWmw3Cr829ScidVu3cD8XUcieY-uAc0c");
+                var key = Encoding.ASCII.GetBytes(_appSettings.Secret);
                 tokenHandler.ValidateToken(token, new TokenValidationParameters
                 {
                     ValidateIssuerSigningKey = true,

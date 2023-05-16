@@ -8,6 +8,7 @@ using System.Text;
 using Microsoft.IdentityModel.Tokens;
 using System.Security.Claims;
 using Backend.Exceptions;
+using Microsoft.Extensions.Options;
 using MongoDB.Driver.Linq;
 using MongoDB.Bson;
 
@@ -18,11 +19,13 @@ namespace Backend.Services
         private IMongoClient _client;
         private IMongoDatabase _database;
         private IMongoCollection<User> _usersCollection;
-        public UserService(IServiceDatabaseSettings settings, IMongoClient mongoClient)
+        private readonly JwtSecret _jwtSecret;
+        public UserService(IServiceDatabaseSettings settings, IMongoClient mongoClient, IOptions<JwtSecret> jwtSecret)
         {
             _client = new MongoClient(settings.ConnectionString);
             _database = _client.GetDatabase(settings.DatabaseName);
             _usersCollection = _database.GetCollection<User>("users");
+            _jwtSecret = jwtSecret.Value;
 
             // Create the unique indexes
             var emailKey = Builders<User>.IndexKeys.Ascending(x => x.Email);
@@ -105,16 +108,16 @@ namespace Backend.Services
         private string GenerateJwtToken(User user, bool rememberMe)
         {
             var tokenHandler = new JwtSecurityTokenHandler();
-            var key = Encoding.ASCII.GetBytes("eyJhbGciOiJIUzI1NiJ9.eyJSb2xlIjoiQWRtaW4iLCJJc3N1ZXIiOiJJc3N1ZXIiLCJVc2VybmFtZSI6IkphdmFJblVzZSIsImV4cCI6MTY3MjYwODA4NCwiaWF0IjoxNjcyNjA4MDg0fQ.3Xerv6eY7OVSWmw3Cr829ScidVu3cD8XUcieY-uAc0c");
+            var key = Encoding.ASCII.GetBytes(_jwtSecret.Secret);
             int hoursTillExpire = 1;
             if (rememberMe)
             {
-                //One Week till expire
-                hoursTillExpire = 168;
+                //2 days till expire
+                hoursTillExpire = 48;
             }
             var tokenDescriptor = new SecurityTokenDescriptor
             {
-                Subject = new ClaimsIdentity(new[] { new Claim("id", user.Id!.ToString()) }),
+                Subject = new ClaimsIdentity(new[] { new Claim("id", user.Id!.ToString())}),
                 Expires = DateTime.UtcNow.AddHours(hoursTillExpire),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
             };
