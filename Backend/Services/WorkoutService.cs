@@ -501,7 +501,7 @@ public class WorkoutService : IWorkoutService
             }
             ),
             new BsonDocument("$unwind", "$likes"),
-            new BsonDocument("isPublic", true),
+            new BsonDocument("$match", new BsonDocument("isPublic", true)),
             new BsonDocument("$lookup",
             new BsonDocument
             {
