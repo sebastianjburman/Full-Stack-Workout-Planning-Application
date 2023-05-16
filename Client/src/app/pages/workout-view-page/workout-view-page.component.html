@@ -36,7 +36,7 @@
                             </svg>
                         </button>
                         <div ngbDropdownMenu class="mt-2" aria-labelledby="dropdownBasic1">
-                            <button ngbDropdownItem>Edit</button>
+                            <button ngbDropdownItem [routerLink]="['/workoutupdate',workout?.id]">Edit</button>
                             <button ngbDropdownItem (click)="open(content)">Delete</button>
                         </div>
                     </div>

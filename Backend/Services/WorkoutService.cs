@@ -135,17 +135,6 @@ public class WorkoutService : IWorkoutService
     public async Task UpdateWorkoutAsync(string workoutId, string userId, Workout workoutIn)
     {
         Workout workout = await _workouts.Find(e => e.Id == workoutId).FirstOrDefaultAsync();
-        //Check if users changed the created by field
-        if (workoutIn.CreatedBy != workout.CreatedBy)
-        {
-            throw new Exception("You cannot change the workouts's created by.");
-        }
-        //Check if user is trying to update workouts created at time
-        if (workoutIn.CreatedAt != workout.CreatedAt)
-        {
-            throw new Exception("You cannot change the workouts's created at.");
-        }
-        //Check if the user created this workout
         if (workout.CreatedBy != userId)
         {
             throw new InvalidAccessException("update");
@@ -154,7 +143,12 @@ public class WorkoutService : IWorkoutService
         {
             throw new Exception("Cannot have more that 15 exercises in a workout");
         }
-        await _workouts.ReplaceOneAsync(e => e.Id == workoutId, workoutIn);
+        var update = Builders<Workout>.Update
+        .Set(e => e.WorkoutName, workoutIn.WorkoutName)
+        .Set(e => e.WorkoutDescription, workoutIn.WorkoutDescription)
+        .Set(e => e.isPublic, workoutIn.isPublic)
+        .Set(e => e.Exercises, workoutIn.Exercises);
+        await _workouts.UpdateOneAsync(w => w.Id == workout.Id, update);
     }
 
     public async Task DeleteWorkoutAsync(string workoutId, string userId)

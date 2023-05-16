@@ -9,6 +9,11 @@ $primary: rgb(24, 71, 122);
     height: calc(100% - 73px);
     overflow-y: scroll;
 }
+
+.dropdown-toggle::after {
+    display:none;
+}
+
 // X-Small devices (portrait phones, less than 576px)
 @media (max-width: 575.98px) {  
     .pageMainContainer{

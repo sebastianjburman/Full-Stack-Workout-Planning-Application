@@ -1,0 +1,107 @@
+  <ng-template #exerciseSearchTemp let-r="result" let-t="term">
+    <ngb-highlight [result]="r.name" [term]="t"></ngb-highlight>
+  </ng-template>
+  
+  <app-navbar></app-navbar>
+  <app-side-nav-bar></app-side-nav-bar>
+  <main class="pageMainContainer">
+    <div class="container mt-3">
+      <div class="card p-3">
+        <h1 class="mt-2">Workout Update</h1>
+        <form [formGroup]="updateWorkoutForm">
+          <label for="name" class="form-label">Name</label>
+          <input
+            type="text"
+            class="form-control mb-1"
+            id="name"
+            formControlName="workoutName"
+          />
+          <div
+            class="alert show alert-danger fade mt-2"
+            *ngIf="formName!.invalid && (formName!.dirty || formName!.touched)"
+          >
+            Name must be 5-30 alphanumeric characters
+          </div>
+          <label for="description" class="form-label">Description</label>
+          <textarea
+            type="text"
+            class="form-control mb-1"
+            id="description"
+            formControlName="workoutDescription"
+          ></textarea>
+          <div
+            class="alert show alert-danger fade mt-2"
+            *ngIf="
+              formDescription!.invalid &&
+              (formDescription!.dirty || formDescription!.touched)
+            "
+          >
+            Description must be 10-400 characters
+          </div>
+          <div class="form-check form-switch">
+            <input
+              mdbCheckbox
+              class="form-check-input"
+              type="checkbox"
+              formControlName="isPublic"
+            />
+            <label class="form-check-label" for="flexSwitchCheckDefault"
+              >Public Workout</label
+            >
+          </div>
+        </form>
+        <label class="form-label">Add Exercises</label>
+        <input
+          id="typeahead-http"
+          type="text"
+          class="form-control"
+          [class.is-invalid]="searchFailed"
+          [(ngModel)]="model"
+          [ngbTypeahead]="search"
+          placeholder="Exercise Search"
+          [resultTemplate]="exerciseSearchTemp"
+          [inputFormatter]="formatter"
+          [editable]="false"
+        />
+        <small *ngIf="searching" class="form-text text-muted">searching...</small>
+        <div class="invalid-feedback" *ngIf="searchFailed">
+          Sorry, suggestions could not be loaded.
+        </div>
+        <div>
+          <button
+            [disabled]="model === undefined"
+            type="button"
+            class="btn btn-md btn-primary mt-3"
+            (click)="addWorkout()"
+          >
+            Add Exercise
+          </button>
+        </div>
+        <div class="mb-3" *ngIf="workoutExercises.length > 0">
+          <h3 class="form-label mt-2">Workout Exercises List</h3>
+          <hr class="hr" />
+          <div cdkDropList (cdkDropListDropped)="drop($event)">
+            <app-exercise-list
+              *ngFor="let exercise of workoutExercises; index as i"
+              [exerciseName]="exercise.name"
+              [exerciseDescription]="exercise.description"
+              [exerciseId]="exercise.id"
+              (removeExercise)="removeExercise($event)"
+              [indexNumber]="i + 1"
+              cdkDrag
+            >
+            </app-exercise-list>
+          </div>
+          <hr class="hr" />
+          <button
+            class="btn btn-primary btn-md"
+            [disabled]="!updateWorkoutForm.valid"
+            (click)="updateWorkout()"
+          >
+            Update Workout
+          </button>
+        </div>
+      </div>
+    </div>
+  </main>
+  <app-bottom-navbar></app-bottom-navbar>

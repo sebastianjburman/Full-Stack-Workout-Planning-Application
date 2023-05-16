@@ -32,6 +32,7 @@ import { NgbAccordionModule } from '@ng-bootstrap/ng-bootstrap';
 import { TopWorkoutPreviewComponent } from './components/top-workout-preview/top-workout-preview.component';
 import { SettingsComponent } from './pages/settings/settings.component';
 import { UpdateExerciseModalComponent } from './components/update-exercise-modal/update-exercise-modal.component';
+import { WorkoutUpdatePageComponent } from './pages/workout-update-page/workout-update-page.component';
 
 @NgModule({
   declarations: [
@@ -59,6 +60,7 @@ import { UpdateExerciseModalComponent } from './components/update-exercise-modal
     TopWorkoutPreviewComponent,
     SettingsComponent,
     UpdateExerciseModalComponent,
+    WorkoutUpdatePageComponent,
   ],
   imports: [
     BrowserModule,
