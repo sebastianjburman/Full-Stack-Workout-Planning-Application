@@ -88,7 +88,7 @@
         <div class="col-12" style="max-height: 425px; height: 425px">
           <h2>Pinned(Liked) Workouts</h2>
           <app-workout-preview
-            *ngFor="let workout of pinnedWorkouts"
+            *ngFor="let workout of pinnedWorkouts | slice: (pinnedWorkoutPageNum-1) * pinnedWorkoutPageNum : pinnedWorkoutPageNum * pinnedWorkoutPageNum"
             [workoutName]="workout.workoutName"
             [workoutDescription]="workout.workoutDescription"
             [Id]="workout.id"
@@ -99,6 +99,16 @@
             [isPublic]="workout.isPublic"
           >
           </app-workout-preview>
+          <div class="col-12 d-flex justify-content-center">
+            <ngb-pagination
+            [(page)]="pinnedWorkoutPageNum"
+            [pageSize]="pinnedWorkoutPageNum"
+            [collectionSize]="pinnedWorkouts.length"
+            size="md" 
+            [maxSize]="5" 
+            [rotate]="true">
+            </ngb-pagination>
+          </div>
         </div>
       </div>
     </div>

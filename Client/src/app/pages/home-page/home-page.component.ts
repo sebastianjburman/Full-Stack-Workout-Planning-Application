@@ -24,6 +24,10 @@ export class HomePageComponent implements OnInit {
   @ViewChild('acc') weightEntryAccordian: any;
   public lineChartLegend = true;
 
+  //Pinned Workouts Pagination
+  pinnedWorkoutPageNum: number = 1;
+	pinnedWorkoutsOnPage: number = 5;
+
   public lineChartData: ChartConfiguration<'line'>['data'] = {
     labels: [],
     datasets: [
