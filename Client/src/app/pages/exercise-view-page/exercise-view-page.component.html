@@ -34,6 +34,21 @@
                         <strong class="d-block text-black text-black">{{exercise?.createdByUsername}}</strong>
                     </p>
                 </div>
+                <div ngbDropdown class="d-inline-block ms-3">
+                    <button type="button" class="btn btn-primary" id="dropdownBasic1"  ngbDropdownToggle>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor"
+                            class="bi bi-three-dots" viewBox="0 0 16 16">
+                            <path
+                                d="M3 9.5a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3z">
+                            </path>
+                        </svg>
+                    </button>
+                    <div ngbDropdownMenu class="mt-2" aria-labelledby="dropdownBasic1">
+                        <button ngbDropdownItem (click)="open(copyExerciseModal)">Copy</button>
+                        <button *ngIf="isUsersExercise()" ngbDropdownItem (click)="open(updateExerciseModal)">Edit</button>
+                        <button *ngIf="isUsersExercise()" ngbDropdownItem (click)="open(content)">Delete</button>
+                    </div>
+                </div>
             </div>
             <div class="mt-4">
                 <h2 class="ms-3">Description</h2>
@@ -46,16 +61,10 @@
                 </div>
                 <hr class="hr" />
                 <h2 class="ms-3">Reps</h2>
-                <div class="ms-3 text-bg-primary rounded d-flex align-items-center justify-content-center"
+                <div class="ms-3 mb-3 text-bg-primary rounded d-flex align-items-center justify-content-center"
                     style="width: 55px; height: 55px;">
                     <h3 class="m-0">{{exercise?.reps}}</h3>
                 </div>
-                <hr class="hr" />
-            </div>
-            <div>
-                <button class="btn btn-danger btn-small m-1" *ngIf="isUsersExercise" (click)="open(content)">Delete</button>
-                <button class="btn btn-primary btn-small m-1" *ngIf="isUsersExercise" (click)="open(updateExerciseModal)">Update</button>
-                <button class="btn btn-primary btn-small m-1" (click)="open(copyExerciseModal)">Make a Copy</button>
             </div>
         </div>
     </div>

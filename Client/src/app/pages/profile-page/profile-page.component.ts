@@ -14,6 +14,7 @@ import { WorkoutService } from 'src/app/services/workout.service';
 export class ProfilePageComponent implements OnInit {
   profile: ProfileDTO | undefined;
   createdWorkouts: WorkoutViewModel[] = [];
+  isUsersProfile: boolean = false;
 
   constructor(
     private userService: UserService,
@@ -30,6 +31,7 @@ export class ProfilePageComponent implements OnInit {
           username
         ).subscribe({
           next: (res) => {
+            this.isUsersProfile = false;
             this.profile = res;
             //If user has a profile avatar set it.
             if (this.profile?.avatar == null) {
@@ -40,6 +42,7 @@ export class ProfilePageComponent implements OnInit {
               this.workoutService.getWorkoutsCreated(TokenManagement.getTokenFromLocalStorage()).subscribe({
                 next: (res) => {
                   this.createdWorkouts = res;
+                  this.isUsersProfile = true;
                 },
                 error: (error) => {
                 }

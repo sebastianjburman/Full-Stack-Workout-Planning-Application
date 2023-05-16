@@ -13,6 +13,9 @@
                     </svg>
                     Create
                 </button>
+                <div class="col-12 alert alert-info" *ngIf="createdWorkouts.length === 0" role="alert">
+                    <h6>Your created workouts will show here.</h6>
+                </div>
                 <app-workout-preview
                     *ngFor="let workout of createdWorkouts | slice: (userCreatedPageNum-1) * userItemsOnPage : userCreatedPageNum * userItemsOnPage"
                     [workoutName]="workout.workoutName" [workoutDescription]="workout.workoutDescription"

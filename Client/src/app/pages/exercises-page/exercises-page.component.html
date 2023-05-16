@@ -18,6 +18,9 @@
           </svg>
           Create
         </button>
+        <div class="col-12 alert alert-info" *ngIf="exercisesUserCreated.length === 0" role="alert">
+          <h6>Your created exercise will show here.</h6>
+      </div>
         <app-exercise-preview
           *ngFor="let exercise of exercisesUserCreated | slice: (userCreatedPageNum-1) * userItemsOnPage : userCreatedPageNum * userItemsOnPage"
           [exerciseName]="exercise.name" [exerciseDescription]="exercise.description" [exerciseId]="exercise.id"

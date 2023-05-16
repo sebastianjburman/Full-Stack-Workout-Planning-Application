@@ -81,7 +81,9 @@
                     [exerciseCreatedByUsername]="exercise.createdByUsername"
                     [exerciseCreatedByPhotoUrl]="exercise.createdByPhotoUrl" [showUsernameAndPhoto]="false">
                 </app-exercise-preview>
-                <p *ngIf="workoutExercises.length==0">No exercises in this workout</p>
+                <div *ngIf="workoutExercises.length === 0" class="col-12 alert alert-info" role="alert">
+                    <h6>There are no exercises in this workout.</h6>
+                </div>
             </div>
         </div>
     </div>

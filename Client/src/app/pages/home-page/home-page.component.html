@@ -99,6 +99,9 @@
             [isPublic]="workout.isPublic"
           >
           </app-workout-preview>
+          <div *ngIf="pinnedWorkouts.length === 0" class="col-12 alert alert-info" role="alert">
+            <h6>Your liked workouts will be pinned here.</h6>
+          </div>
           <div class="col-12 d-flex justify-content-center">
             <ngb-pagination
             [(page)]="pinnedWorkoutPageNum"

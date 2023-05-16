@@ -23,6 +23,13 @@
                     [createdByPhotoUrl]="workout.createdByPhotoUrl" [exerciseCount]="workout.exercises.length" [userLiked]="workout.userLiked"
                     [isPublic]="workout.isPublic">
                 </app-workout-preview>
+                <div *ngIf="isUsersProfile && createdWorkouts.length === 0" class="col-12 alert alert-info" role="alert">
+                    <h6>You don't have any workouts created. Click the button below to create one.</h6>
+                    <button class="btn btn-primary" [routerLink]="['/workouts/create']">Create Workout</button>
+                </div>
+                <div *ngIf="!isUsersProfile && createdWorkouts.length === 0" class="col-12 alert alert-info" role="alert">
+                    <h6>This user doesn't have any workouts created</h6>
+                </div>
             </div>
         </div>
     </div>
