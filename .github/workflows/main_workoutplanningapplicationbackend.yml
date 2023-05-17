@@ -23,7 +23,7 @@ jobs:
         with:
           dotnet-version: '7.x'
           include-prerelease: true
-          
+
       - name: App Settings Variable Substitution
         uses: microsoft/variable-substitution@v1
         with:
@@ -33,10 +33,10 @@ jobs:
           JwtSecret.Secret : ${{ secrets.JWTSECRET }}
 
       - name: Build with dotnet
-        run: dotnet build --configuration Release
+        run: dotnet build ./Backend --configuration Release
 
       - name: dotnet publish
-        run: dotnet publish -c Release -o ${{env.DOTNET_ROOT}}/myapp
+        run: dotnet publish ./Backend -c Release -o ${{env.DOTNET_ROOT}}/myapp
 
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v2
