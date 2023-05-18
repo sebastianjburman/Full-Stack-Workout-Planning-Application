@@ -37,7 +37,8 @@ public class PhotoService : IPhotoService
         };
         await _profilePhotos.InsertOneAsync(profilePhoto);
         ProfilePhoto photo = await _profilePhotos.FindAsync(x => x.UserId == userId).Result.FirstOrDefaultAsync();
-        var update = Builders<User>.Update.Set(u => u.profile.Avatar ,"https://localhost:7195/v1/user/profilephoto?id="+photo.Id);
+        var update = Builders<User>.Update.Set(u => u.profile.Avatar ,"https://workoutplanningapplicationbackend.azurewebsites.net/v1/user/profilephoto?id="+photo.Id);
+        
         await _usersCollection.UpdateOneAsync(x => x.Id == userId, update);
     }
 
