@@ -13,7 +13,7 @@ export class UserService {
 
   constructor(private http: HttpClient) {
   }
-  private url = 'v1/user';
+  private url = 'https://workoutplanningapplicationbackend.azurewebsites.net/v1/user';
 
   public createUser(user: UserDTO): Observable<any> {
     return this.http.post(this.url, user);

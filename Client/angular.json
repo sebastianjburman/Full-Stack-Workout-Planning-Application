@@ -71,11 +71,9 @@
           "configurations": {
             "production": {
               "browserTarget": "workout-planning-application-client:build:production",
-              "proxyConfig": "proxy.config.json"
             },
             "development": {
               "browserTarget": "workout-planning-application-client:build:development",
-              "proxyConfig": "proxy.config.json"
             }
           },
           "defaultConfiguration": "development"

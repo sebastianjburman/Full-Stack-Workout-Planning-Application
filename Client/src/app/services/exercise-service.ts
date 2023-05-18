@@ -8,7 +8,7 @@ import {Observable, of } from 'rxjs';
 })
 export class ExerciseService {
   constructor(private http: HttpClient) { }
-  private url = 'v1/exercise';
+  private url = 'https://workoutplanningapplicationbackend.azurewebsites.net/v1/exercise';
 
   public createExercise(exercise: Exercise, token: string): Observable<any> {
     return this.http.post(this.url, exercise, {

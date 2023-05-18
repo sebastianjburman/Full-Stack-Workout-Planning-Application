@@ -1,7 +1,0 @@
-{
-    "/v1/*": {
-        "target":"https://workoutplanningapplicationbackend.azurewebsites.net",
-        "secure":false,
-        "changeOrigin": true
-    }
-}

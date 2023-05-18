@@ -24,6 +24,17 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+builder.Services.AddCors(options =>
+    {
+        options.AddPolicy("AllowSpecificOrigins",
+            builder =>
+            {
+                builder.WithOrigins("https://workoutplanningapplication.netlify.app", "https://www.workoutplanningapplication.netlify.app")
+                       .AllowAnyMethod()
+                       .AllowAnyHeader();
+            });
+    });
+
 
 var app = builder.Build();
 if (app.Environment.IsDevelopment())
