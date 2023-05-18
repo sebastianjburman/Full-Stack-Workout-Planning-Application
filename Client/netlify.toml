@@ -1,0 +1,4 @@
+[[redirects]]
+  from = "/v1/*"
+  to = "https://workoutplanningapplicationbackend.azurewebsites.net"
+  status = 200
