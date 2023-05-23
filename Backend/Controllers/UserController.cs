@@ -79,10 +79,12 @@ namespace Backend.Controllers
             {
                 try
                 {
+                    /*
                     ObjectId userObjectId = ObjectId.GenerateNewId();
                     await _userService.CreateUser(newUser, userObjectId);
                     await _weightEntryService.Create(Math.Round(newUser.CurrentWeight, 2), userObjectId.ToString());
-                    return Ok();
+                    */
+                    return BadRequest("User creation is disabled. If you would like try out this application, please email me.");
                 }
                 catch (Exception ex)
                 {
