@@ -5,6 +5,7 @@ import { UserLoginDTO } from '../models/userLoginDTO';
 import { Observable, of } from 'rxjs';
 import { WeightEntry } from '../models/weightEntry';
 import { ProfileDTO } from '../models/profileDTO';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -13,7 +14,7 @@ export class UserService {
 
   constructor(private http: HttpClient) {
   }
-  private url = 'https://workoutplanningapplicationbackend.azurewebsites.net/v1/user';
+  private url = `${environment.backendUrl}/v1/user`;
 
   public createUser(user: UserDTO): Observable<any> {
     return this.http.post(this.url, user);

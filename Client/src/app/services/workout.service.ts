@@ -2,13 +2,14 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Workout } from '../models/workout';
 import { Observable, of } from 'rxjs';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root',
 })
 export class WorkoutService {
   constructor(private http: HttpClient) {}
-  private url = 'https://workoutplanningapplicationbackend.azurewebsites.net/v1/workout';
+  private url = `${environment.backendUrl}/v1/workout`;
 
   public createWorkout(workout: Workout, token: string): Observable<any> {
     return this.http.post(this.url, workout, {

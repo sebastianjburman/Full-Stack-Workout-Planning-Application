@@ -28,7 +28,7 @@ public class PhotoService : IPhotoService
         _profilePhotos.Indexes.CreateOne(userIdIndexModel);
     }
 
-    public async Task AddPhotoAsync(string userId, byte[] data)
+    public async Task AddPhotoAsync(string userId, byte[] data,string baseUrl)
     {
         var profilePhoto = new ProfilePhoto
         {
@@ -37,7 +37,7 @@ public class PhotoService : IPhotoService
         };
         await _profilePhotos.InsertOneAsync(profilePhoto);
         ProfilePhoto photo = await _profilePhotos.FindAsync(x => x.UserId == userId).Result.FirstOrDefaultAsync();
-        var update = Builders<User>.Update.Set(u => u.profile.Avatar ,"https://workoutplanningapplicationbackend.azurewebsites.net/v1/user/profilephoto?id="+photo.Id);
+        var update = Builders<User>.Update.Set(u => u.profile.Avatar ,$"{baseUrl}/v1/user/profilephoto?id="+photo.Id);
         
         await _usersCollection.UpdateOneAsync(x => x.Id == userId, update);
     }
@@ -58,7 +58,7 @@ public class PhotoService : IPhotoService
         var profilePhoto = await _profilePhotos.FindAsync(x => x.UserId == userId).Result.FirstOrDefaultAsync();
         if (profilePhoto == null)
         {
-            await AddPhotoAsync(userId, data);
+            await AddPhotoAsync(userId, data, baseUrl);
         }
         else
         {

@@ -73,7 +73,7 @@ namespace Backend.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult> CreateUser([FromBody] UserDTO newUser)
+        public ActionResult CreateUser([FromBody] UserDTO newUser)
         {
             if (ModelState.IsValid)
             {
