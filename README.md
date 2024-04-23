@@ -1,5 +1,8 @@
 # Full-Stack-Workout-Planning-Application
 
+<img width="1375" alt="workoutapplication" src="https://github.com/sebastianjburman/Full-Stack-Workout-Planning-Application/assets/74584954/ee568c4f-611a-490a-9cd6-d6a64b60579a">
+
+
 This is a workout planning application developed using .NET for the backend, MongoDB as the database, and Angular for the frontend. The main objective of this project is to provide a platform for sharing and organizing workouts. Additionally, it serves as a demonstration of my skills in developing a full-stack application with Angular.
 
 ## Features
